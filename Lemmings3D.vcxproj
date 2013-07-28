@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{363DBFFE-F472-49B3-9FC2-E7C227FAC281}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>OverlordTest</RootNamespace>
+    <ProjectName>Lemmings3D</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>PugiXML\src;..\OverlordEngine;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>winmm.lib;Debug\OverlordEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="GameClasses\Entities\EditorBuilder.cpp" />
+    <ClCompile Include="GameClasses\Entities\Level.cpp" />
+    <ClCompile Include="GameClasses\Entities\ParameterClass.cpp" />
+    <ClCompile Include="GameClasses\Entities\Player.cpp" />
+    <ClCompile Include="GameClasses\Entities\PlayerController.cpp" />
+    <ClCompile Include="GameClasses\Entities\RenderContext.cpp" />
+    <ClCompile Include="GameClasses\Entities\RisingWater.cpp" />
+    <ClCompile Include="GameClasses\Entities\StatusReport.cpp" />
+    <ClCompile Include="GameClasses\Entities\Timer.cpp" />
+    <ClCompile Include="GameClasses\Entities\UserSettings.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\ColissionEntity.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\CubeColission.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\EditorCamera.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\GameEntity.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\InstancedObject.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\LemmingCharacter.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\PreviewObject.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\PhysicsCube.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\WorldInstancedObject.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\EditModeScreen.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\BaseModeScreen.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Editor\EditorModeBuilder.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Editor\EditorModeEraser.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Editor\EditorModePainter.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\GameModeScreen.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\GameScreen.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\BaseScreen.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\Ball.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\Bone.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\Character.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\Door.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\House.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\Key.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\Peddle.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\Wall.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Labs\Week6.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Labs\Week2.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Labs\Week4.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Labs\Week5.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Labs\week6_picking.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Labs\Weel1.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\MenuScreen.cpp" />
+    <ClCompile Include="GameClasses\Helpers\HeightmapParser.cpp" />
+    <ClCompile Include="GameClasses\Helpers\Rectangle.cpp" />
+    <ClCompile Include="GameClasses\Lemmings3D.cpp" />
+    <ClCompile Include="GameClasses\Lib\GlobalParameters.cpp" />
+    <ClCompile Include="GameClasses\Lib\Debug.cpp" />
+    <ClCompile Include="GameClasses\Lib\LemmingsHelpers.cpp" />
+    <ClCompile Include="GameClasses\Main.cpp" />
+    <ClCompile Include="GameClasses\Managers\ColissionCollector.cpp" />
+    <ClCompile Include="GameClasses\Managers\ConsoleManager.cpp" />
+    <ClCompile Include="GameClasses\Managers\ScreenManager.cpp" />
+    <ClCompile Include="GameClasses\Managers\ManagerInterface.cpp" />
+    <ClCompile Include="GameClasses\Managers\Stopwatch.cpp" />
+    <ClCompile Include="GameClasses\Managers\TimeManager.cpp" />
+    <ClCompile Include="GameClasses\Materials\FlatColorMaterial.cpp" />
+    <ClCompile Include="GameClasses\Materials\FlatTextureMaterial.cpp" />
+    <ClCompile Include="GameClasses\Materials\InstancedBlockMaterial.cpp" />
+    <ClCompile Include="GameClasses\Materials\InstancedWaterMaterial.cpp" />
+    <ClCompile Include="GameClasses\Materials\PreviewMaterial.cpp" />
+    <ClCompile Include="GameClasses\Materials\SkikeyMaterial.cpp" />
+    <ClCompile Include="GameClasses\Materials\SkinnedMaterial.cpp" />
+    <ClCompile Include="GameClasses\UserInterface\AmountButton.cpp" />
+    <ClCompile Include="GameClasses\UserInterface\BaseCursor.cpp" />
+    <ClCompile Include="GameClasses\UserInterface\UIButton.cpp" />
+    <ClCompile Include="GameClasses\UserInterface\UIButtonWT.cpp" />
+    <ClCompile Include="GameClasses\UserInterface\UIDockInterface.cpp" />
+    <ClCompile Include="GameClasses\UserInterface\UIElement.cpp" />
+    <ClCompile Include="GameClasses\UserInterface\UIImage.cpp" />
+    <ClCompile Include="GameClasses\UserInterface\UITextField.cpp" />
+    <ClCompile Include="GameClasses\UserInterface\UITogleButton.cpp" />
+    <ClCompile Include="GameClasses\XML\XMLConverter.cpp" />
+    <ClCompile Include="GameClasses\XML\XMLParser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameClasses\Entities\EditorBuilder.h" />
+    <ClInclude Include="GameClasses\Entities\Level.h" />
+    <ClInclude Include="GameClasses\Entities\ParameterClass.h" />
+    <ClInclude Include="GameClasses\Entities\Player.h" />
+    <ClInclude Include="GameClasses\Entities\PlayerController.h" />
+    <ClInclude Include="GameClasses\Entities\RenderContext.h" />
+    <ClInclude Include="GameClasses\Entities\RisingWater.h" />
+    <ClInclude Include="GameClasses\Entities\StatusReport.h" />
+    <ClInclude Include="GameClasses\Entities\Timer.h" />
+    <ClInclude Include="GameClasses\Entities\UserSettings.h" />
+    <ClInclude Include="GameClasses\GameObjects\ColissionEntity.h" />
+    <ClInclude Include="GameClasses\GameObjects\CubeColission.h" />
+    <ClInclude Include="GameClasses\GameObjects\EditorCamera.h" />
+    <ClInclude Include="GameClasses\GameObjects\GameEntity.h" />
+    <ClInclude Include="GameClasses\GameObjects\InstancedObject.h" />
+    <ClInclude Include="GameClasses\GameObjects\LemmingCharacter.h" />
+    <ClInclude Include="GameClasses\GameObjects\PhysicsCube.h" />
+    <ClInclude Include="GameClasses\GameObjects\PreviewObject.h" />
+    <ClInclude Include="GameClasses\GameObjects\WorldInstancedObject.h" />
+    <ClInclude Include="GameClasses\GameScenes\EditModeScreen.h" />
+    <ClInclude Include="GameClasses\GameScenes\BaseModeScreen.h" />
+    <ClInclude Include="GameClasses\GameScenes\Editor\EditorModeBuilder.h" />
+    <ClInclude Include="GameClasses\GameScenes\Editor\EditorModeEraser.h" />
+    <ClInclude Include="GameClasses\GameScenes\Editor\EditorModePainter.h" />
+    <ClInclude Include="GameClasses\GameScenes\GameModeScreen.h" />
+    <ClInclude Include="GameClasses\GameScenes\GameScreen.h" />
+    <ClInclude Include="GameClasses\GameScenes\BaseScreen.h" />
+    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\Ball.h" />
+    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\Bone.h" />
+    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\Character.h" />
+    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\Door.h" />
+    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\House.h" />
+    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\Key.h" />
+    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\Peddle.h" />
+    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\Wall.h" />
+    <ClInclude Include="GameClasses\GameScenes\Labs\week6_picking.h" />
+    <ClInclude Include="GameClasses\GameScenes\Labs\Week1.h" />
+    <ClInclude Include="GameClasses\GameScenes\Labs\Week2.h" />
+    <ClInclude Include="GameClasses\GameScenes\Labs\Week4.h" />
+    <ClInclude Include="GameClasses\GameScenes\Labs\Week5.h" />
+    <ClInclude Include="GameClasses\GameScenes\Labs\Week6.h" />
+    <ClInclude Include="GameClasses\GameScenes\MenuScreen.h" />
+    <ClInclude Include="GameClasses\Helpers\HeightmapParser.h" />
+    <ClInclude Include="GameClasses\Helpers\Rectangle.h" />
+    <ClInclude Include="GameClasses\Interfaces\IAction.h" />
+    <ClInclude Include="GameClasses\Interfaces\IColissionUser.h" />
+    <ClInclude Include="GameClasses\Interfaces\IEditMode.h" />
+    <ClInclude Include="GameClasses\Interfaces\IGeometryBatch.h" />
+    <ClInclude Include="GameClasses\Lemmings3D.h" />
+    <ClInclude Include="GameClasses\Lib\GlobalParameters.h" />
+    <ClInclude Include="GameClasses\Lib\Debug.h" />
+    <ClInclude Include="GameClasses\Lib\LemmingsHelpers.h" />
+    <ClInclude Include="GameClasses\Main.h" />
+    <ClInclude Include="GameClasses\Managers\ColissionCollector.h" />
+    <ClInclude Include="GameClasses\Managers\ConsoleManager.h" />
+    <ClInclude Include="GameClasses\Managers\ScreenManager.h" />
+    <ClInclude Include="GameClasses\Managers\ManagerInterface.h" />
+    <ClInclude Include="GameClasses\Managers\Stopwatch.h" />
+    <ClInclude Include="GameClasses\Managers\TimeManager.h" />
+    <ClInclude Include="GameClasses\Materials\FlatColorMaterial.h" />
+    <ClInclude Include="GameClasses\Materials\FlatTextureMaterial.h" />
+    <ClInclude Include="GameClasses\Materials\InstancedBlockMaterial.h" />
+    <ClInclude Include="GameClasses\Materials\InstancedWaterMaterial.h" />
+    <ClInclude Include="GameClasses\Materials\PreviewMaterial.h" />
+    <ClInclude Include="GameClasses\Materials\SkinnedMaterial.h" />
+    <ClInclude Include="GameClasses\Materials\SpikeyMaterial.h" />
+    <ClInclude Include="GameClasses\UserInterface\AmountButton.h" />
+    <ClInclude Include="GameClasses\UserInterface\BaseCursor.h" />
+    <ClInclude Include="GameClasses\UserInterface\UIButton.h" />
+    <ClInclude Include="GameClasses\UserInterface\UIButtonWT.h" />
+    <ClInclude Include="GameClasses\UserInterface\UIDockInterface.h" />
+    <ClInclude Include="GameClasses\UserInterface\UIElement.h" />
+    <ClInclude Include="GameClasses\UserInterface\UIImage.h" />
+    <ClInclude Include="GameClasses\UserInterface\UITextField.h" />
+    <ClInclude Include="GameClasses\UserInterface\UIToggleButton.h" />
+    <ClInclude Include="GameClasses\XML\XMLConverter.h" />
+    <ClInclude Include="GameClasses\XML\XMLParser.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

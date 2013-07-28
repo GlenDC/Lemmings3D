@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Parameters>
+	<Parameter name="Name" value="GlenDC" />
+	<Parameter name="EDITOR_CAMERA_POS" value="212.967;352.001;372.057" />
+	<Parameter name="EDITOR_CAMERA_YAW" value="84.1165" />
+	<Parameter name="EDITOR_CAMERA_PITCH" value="19.2735" />
+	<Parameter name="EDITOR_CAMERA_FOV" value="85" />
+	<Parameter name="EDITOR_CAMERA_SPEED" value="100" />
+	<Parameter name="EDITOR_CAMERA_ROT_SPEED" value="0.5" />
+	<Parameter name="MUTE_MASTER_VOLUME" value="0" />
+</Parameters>

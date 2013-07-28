@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Parameters>
+	<!-- Cursor Variables -->
+	<Parameter name="CURSOR_SPEED" value="50.0" />
+	<Parameter name="CURSOR_SCROLL_BORDER" value="10" />
+	<Parameter name="MOUSE_SPEED_ACCELERATION" value = "1.5" />
+	<Parameter name="CONTENT_DIRECTORY" value = "./resources/Lemmings3D/" />
+	<Parameter name="UI_DIRECTORY" value = "./resources/Lemmings3D/UI/" />
+	<Parameter name="LEVEL_DIRECTORY" value = "levels/" />
+	<Parameter name="HEIGHTMAP_DIRECTORY" value = "levels/heightmaps/" />
+	<Parameter name="TARGET_SCREEN_RESOLUTION_UI" value = "1920.0;1080.0" />
+	<Parameter name="LEVEL_OFFSET" value = "1;1;1" />
+	<Parameter name="GRID_SIZE" value = "8.0" />
+	<Parameter name="DEFAULT_PLAYER" value="GlenDC" />
+	<Parameter name="LOG_WAIT_TIME" value="0.5" />
+	<Parameter name="MAX_LOG_DELAY_TIME" value="2.0" />
+	<Parameter name="ALLOW_STATUS_LOG" value="True" />
+</Parameters>
