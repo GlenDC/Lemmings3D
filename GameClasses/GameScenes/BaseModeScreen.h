@@ -29,9 +29,9 @@ public:
 	BaseModeScreen(const GameScreen * parent, const InputManager * inputManager);
 	virtual ~BaseModeScreen(void);
 
-	virtual void Initialize(void);
-	virtual void Update(const GameContext& context);
-	virtual void Draw(const GameContext& context);
+	virtual void Initialize(void) = 0;
+	virtual void Update(const GameContext& context) = 0;
+	virtual void Draw(const GameContext& context) = 0;
 
 	void SetMainTitle(const tstring & title);
 

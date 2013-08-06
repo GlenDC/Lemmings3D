@@ -27,15 +27,12 @@ GameModeScreen::~GameModeScreen(void)
 
 void GameModeScreen::Initialize()
 {
-	BaseModeScreen::Initialize();
 }
 
 void GameModeScreen::Update(const GameContext& context)
 {
-	BaseModeScreen::Update(context);
 }
 
 void GameModeScreen::Draw(const GameContext& context)
 {
-	BaseModeScreen::Draw(context);
 }

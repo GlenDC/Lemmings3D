@@ -1,14 +1,18 @@
+//====================== #INCLUDES ===================================
 #include "Player.h"
-#include "Helpers/GeneralStructs.h"
+//--------------------------------------------------------------------
 #include "OverlordComponents.h"
-#include "../UserInterface/UIDockInterface.h"
-#include "Scenegraph/GameScene.h"
-#include "../Managers/ScreenManager.h"
+#include "Helpers/GeneralStructs.h"
+#include "Helpers/SpriteFont.h"
 #include "Managers/ContentManager.h"
 #include "Scenegraph/GameObject.h"
+#include "Scenegraph/GameScene.h"
+//--------------------------------------------------------------------
 #include "../GameObjects/LemmingCharacter.h"
-#include "Helpers/SpriteFont.h"
+#include "../Managers/ScreenManager.h"
 #include "../Managers/SpritefontManager.h"
+#include "../UserInterface/UIDockInterface.h"
+//====================================================================
 
 Player::Player(const tstring & name, GameScene *pScene)
 	: m_Name(name)

@@ -30,12 +30,3 @@ BaseModeScreen::BaseModeScreen(const GameScreen * parent, const InputManager *in
 
 // Public virtual destructor: delete nothing
 BaseModeScreen::~BaseModeScreen(void) {}
-
-// Initialize nothing
-void BaseModeScreen::Initialize(void) {}
-
-// Update nothing
-void BaseModeScreen::Update(const GameContext& context) {}
-
-// Draw nothing
-void BaseModeScreen::Draw(const GameContext& context) {}

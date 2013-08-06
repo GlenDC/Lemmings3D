@@ -27,15 +27,12 @@ EditModeScreen::~EditModeScreen(void)
 
 void EditModeScreen::Initialize()
 {
-	BaseModeScreen::Initialize();
 }
 
 void EditModeScreen::Update(const GameContext& context)
 {
-	BaseModeScreen::Update(context);
 }
 
 void EditModeScreen::Draw(const GameContext& context)
 {
-	BaseModeScreen::Draw(context);
 }
