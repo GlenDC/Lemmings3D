@@ -10,6 +10,7 @@
 #include "../Helpers/Rectangle.h"
 #include <vector>
 #include <functional>
+#include <memory>
 //====================================================================
 
 class UIDockInterface;
@@ -17,8 +18,8 @@ class UIDockInterface;
 //====================== UIElement Class ============================
 // Description:
 //		An element which will be placed inside a zone of the userinterface.
-// Last Modification: 20/05/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -75,7 +76,7 @@ public:
 	void SetDimensions(UINT width, UINT height);
 
 protected:
-	UIElement(int x, int y, int width, int height, const tstring & name, UIDockInterface * pParrent);
+	UIElement(const int x, const int y, const int width, const int height, const tstring & name, const UIDockInterface * pParrent);
 	// rectangle getter to parse the real position and dimensions of the element 
 	// taking scaling based on the screenresoltuion into account
 	LemmingsHelpers::Rect GetRealElementZone() const;
@@ -104,7 +105,7 @@ protected:
 	// if true, the element is visible and will be drawn
 	bool m_IsVisible;
 	// docktinerface where the element is added to
-	UIDockInterface * m_pParrentDock;
+	const UIDockInterface * m_pParrentDock;
 	// alpha value of element
 	float m_AlphaValue;
 

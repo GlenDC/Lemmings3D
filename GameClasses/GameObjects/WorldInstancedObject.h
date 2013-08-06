@@ -7,8 +7,8 @@
 //====================== WorldInstancedObject Class =======================
 // Description:
 //		WorldInstancedObject class
-// Last Modification: 05/06/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 

@@ -1,23 +1,25 @@
+//====================== #INCLUDES ===================================
 #include "Debug.h"
+//====================================================================
 
 namespace Debug
 {
 	template <>
-	void Output(const tstring & name, const tstring & value, bool newLine)
+	void Output(const tstring & name, const tstring & value, const bool newLine)
 	{
 		tstring output = name + _T(": ") + value + (newLine ? _T("\n") : _T(""));
 		OutputDebugString(output.c_str());
 	}
 
 	template <>
-	void Output(const tstring & name, const std::string & value, bool newLine)
+	void Output(const tstring & name, const std::string & value, const bool newLine)
 	{
 		std::string output = std::string(name.begin(), name.end()) + ": " + value + (newLine ? "\n" : "");
 		OutputDebugStringA(output.c_str());
 	}
 
 	template <>
-	void Output(const tstring & name, const D3DXVECTOR2 & value, bool newLine)
+	void Output(const tstring & name, const D3DXVECTOR2 & value, const bool newLine)
 	{
 		tstringstream strstr;
 		strstr << name << _T("(");
@@ -27,7 +29,7 @@ namespace Debug
 	}
 
 	template <>
-	void Output(const tstring & name, const D3DXVECTOR3 & value, bool newLine)
+	void Output(const tstring & name, const D3DXVECTOR3 & value, const bool newLine)
 	{
 		tstringstream strstr;
 		strstr << name << _T("(");
@@ -37,7 +39,7 @@ namespace Debug
 	}
 
 	template <>
-	void Output(const tstring & name, const D3DXVECTOR4 & value, bool newLine)
+	void Output(const tstring & name, const D3DXVECTOR4 & value, const bool newLine)
 	{
 		tstringstream strstr;
 		strstr << name << _T("(");
@@ -48,7 +50,7 @@ namespace Debug
 	}
 
 	template <>
-	void Output(const tstring & name, const D3DXQUATERNION & value, bool newLine)
+	void Output(const tstring & name, const D3DXQUATERNION & value, const bool newLine)
 	{
 		tstringstream strstr;
 		strstr << name << _T("(");

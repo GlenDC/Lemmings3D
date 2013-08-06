@@ -1,8 +1,11 @@
+//====================== #INCLUDES ===================================
 #include "TimeManager.h"
+//--------------------------------------------------------------------
 #include "Game.h"
-
 #include "Stopwatch.h"
+//--------------------------------------------------------------------
 #include "../GameScenes/GameScreen.h"
+//====================================================================
 
 TimeManager* TimeManager::m_pInstance = nullptr;
 
@@ -22,8 +25,19 @@ TimeManager::TimeManager(void)
 	m_GameSpeedLevels[6] = 5.0f;
 }
 
+// Destructor, doing nothing
 TimeManager::~TimeManager(void)
 {
+}
+
+TimeManager* TimeManager::GetInstance()
+{
+	if (m_pInstance == nullptr)
+	{
+		m_pInstance = new TimeManager();
+	}
+
+	return m_pInstance;
 }
 
 void TimeManager::Initialize()
@@ -48,6 +62,7 @@ void TimeManager::Update(GameContext& context)
 	}
 }
 
+// Draw nothing
 void TimeManager::Draw(GameContext& context)
 {
 }
@@ -79,12 +94,12 @@ void TimeManager::StartTimer()
 	m_TotalSeconds = 0;
 }
 
-void TimeManager::PauseTimer(bool pause)
+void TimeManager::PauseTimer(const bool pause)
 {
 	m_Paused = pause;
 }
 
-void TimeManager::ResetTimer(bool start)
+void TimeManager::ResetTimer(const bool start)
 {
 	m_TotalSeconds = 0;
 	m_Paused = !start;

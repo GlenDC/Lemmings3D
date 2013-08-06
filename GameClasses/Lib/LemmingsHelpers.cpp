@@ -1,10 +1,14 @@
+//====================== #INCLUDES ===================================
 #include "LemmingsHelpers.h"
-#include <cmath>
+//--------------------------------------------------------------------
 #include "../Managers/ScreenManager.h"
+//--------------------------------------------------------------------
+#include <cmath>
+//====================================================================
 
 namespace LemmingsHelpers
 {
-	UINT GenerateHash(tstring str) 
+	const UINT GenerateHash(const tstring & str) 
 	{
 		UINT hash(0);
 		for(size_t i = 0; i < str.size(); ++i) 
@@ -12,12 +16,13 @@ namespace LemmingsHelpers
 		return hash ^ (hash >> 16);
 	}
 
-	void GetTextureDimensions(ID3D10ShaderResourceView * view, UINT & width, UINT & height)
+	void GetTextureDimensions(const ID3D10ShaderResourceView * view, UINT & width, UINT & height)
 	{
 		ID3D10Resource* resource;
 		D3D10_SHADER_RESOURCE_VIEW_DESC viewDesc;
-		view->GetResource(&resource);
-		view->GetDesc(&viewDesc);
+		ID3D10ShaderResourceView * pCView = const_cast<ID3D10ShaderResourceView*>(view);
+		pCView->GetResource(&resource);
+		pCView->GetDesc(&viewDesc);
 		ASSERT(viewDesc.ViewDimension == D3D10_SRV_DIMENSION_TEXTURE2D,
 			_T("This function only works with a 2D Texture!"));
 		D3D10_TEXTURE2D_DESC desc2D;
@@ -43,14 +48,14 @@ namespace LemmingsHelpers
 		resource->Release();
 	}*/
 
-	D3DXMATRIX MatrixScale(float scaleX, float scaleY, float scaleZ)
+	D3DXMATRIX MatrixScale(const float scaleX, const float scaleY, const float scaleZ)
 	{
 		D3DXMATRIX matrix;
 		D3DXMatrixScaling(&matrix, scaleX, scaleY, scaleZ);
 		return matrix;
 	}
 
-	D3DXMATRIX MatrixTranslation(float tranX, float tranY, float tranZ)
+	D3DXMATRIX MatrixTranslation(const float tranX, const float tranY, const float tranZ)
 	{
 		D3DXMATRIX matrix;
 		D3DXMatrixTranslation(&matrix, tranX, tranY, tranZ);
@@ -63,7 +68,7 @@ namespace LemmingsHelpers
 		return MatrixTranslation(translation.x, translation.y, translation.z);
 	}
 
-	D3DXMATRIX MatrixRotation(float rotX, float rotY, float rotZ)
+	D3DXMATRIX MatrixRotation(const float rotX, const float rotY, const float rotZ)
 	{
 		D3DXMATRIX matrix;
 		D3DXMatrixRotationYawPitchRoll(&matrix, rotX, rotY, rotZ);
@@ -78,7 +83,7 @@ namespace LemmingsHelpers
 	}
 
 	
-	void DrawGrid(float width, float height, float minDepth, float maxDepth)
+	void DrawGrid(const float width, const float height, const float minDepth,const  float maxDepth)
 	{
 		if(ScreenManager::GetInstance()->CanDrawPhysics())
 		{
@@ -179,7 +184,7 @@ namespace LemmingsHelpers
 			pointCoord.z * pointCoord.w
 			);
 	}
-	void SnapPositionX(D3DXVECTOR3 & pos, float snapSize)
+	void SnapPositionX(D3DXVECTOR3 & pos, const float snapSize)
 	{
 		float mod = fmod(pos.x, snapSize);
 		if(mod < snapSize/2)
@@ -188,7 +193,7 @@ namespace LemmingsHelpers
 			pos.x += snapSize - mod;
 	}
 
-	void SnapPositionY(D3DXVECTOR3 & pos, float snapSize)
+	void SnapPositionY(D3DXVECTOR3 & pos, const float snapSize)
 	{
 		float mod = fmod(pos.y, snapSize);
 		if(mod < snapSize/2)
@@ -197,7 +202,7 @@ namespace LemmingsHelpers
 			pos.y += snapSize - mod;
 	}
 
-	void SnapPositionZ(D3DXVECTOR3 & pos, float snapSize)
+	void SnapPositionZ(D3DXVECTOR3 & pos, const float snapSize)
 	{
 		float mod = fmod(pos.z, snapSize);
 		if(mod < snapSize/2)
@@ -206,14 +211,14 @@ namespace LemmingsHelpers
 			pos.z += snapSize - mod;
 	}
 
-	void SnapPositionXYZ(D3DXVECTOR3 & pos, float snapSize)
+	void SnapPositionXYZ(D3DXVECTOR3 & pos, const float snapSize)
 	{
 		SnapPositionX(pos, snapSize);
 		SnapPositionY(pos, snapSize);
 		SnapPositionZ(pos, snapSize);
 	}
 	
-	void SnapPositionXYZInteger(D3DXVECTOR3 & pos, float snapSize)
+	void SnapPositionXYZInteger(D3DXVECTOR3 & pos, const float snapSize)
 	{
 		int mod = (int)pos.x % (int) snapSize;
 		if(mod < (int)snapSize/2.0f)
@@ -289,7 +294,7 @@ namespace LemmingsHelpers
 		return D3DXVec3Length(&length);
 	}
 
-	D3DXVECTOR3 GetCubeClosestPlane(const D3DXVECTOR3 & cubePos, float sizeCube, const D3DXVECTOR3 & checkPos)
+	D3DXVECTOR3 GetCubeClosestPlane(const D3DXVECTOR3 & cubePos, const float sizeCube, const D3DXVECTOR3 & checkPos)
 	{
 		D3DXVECTOR3 closPlanePos(0,0,0);
 		D3DXVECTOR3 checkPositions[] = { D3DXVECTOR3(sizeCube,0,0), 

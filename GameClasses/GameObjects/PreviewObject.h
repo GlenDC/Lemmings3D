@@ -9,8 +9,8 @@
 //====================== PreviewObject Class =======================
 // Description:
 //		PreviewObjects used in editor Mode!
-// Last Modification: 08/06/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 

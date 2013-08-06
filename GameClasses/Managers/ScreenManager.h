@@ -1,7 +1,8 @@
 #pragma once
 
 //====================== #INCLUDES ===================================
-#include "ManagerInterface.h"
+#include "IManager.h"
+#include <memory>
 //====================================================================
 
 //====================== ScreenManager Class =========================
@@ -10,15 +11,15 @@
 //		Reason for making a new class is to allow multiple "scenes"
 //		or in my terms "screens" to be active at the same time.
 //		being active mens that it will be drawn and updated every cpu tick!
-// Last Modification: 04/03/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
-class Game;
 class BaseCursor;
+class Game;
 
-enum class InputControls : int
+enum class InputControls : char
 {
 	MOUSE_LEFT_PRESSED = 0,
 	MOUSE_LEFT_DOWN = 1,
@@ -33,34 +34,26 @@ enum class InputControls : int
 	KB_SHIFT_DOWN = 10
 };
 
-class ScreenManager : public ManagerInterface
+// Ancillary class, implementing the Singleton Design pattern
+class ScreenManager : public IManager
 {
 public:
 	~ScreenManager(void);
 
-	static ScreenManager* GetInstance()
-	{
-		if (m_pInstance == nullptr)
-			m_pInstance = new ScreenManager();
-
-		return m_pInstance;
-	}
+	static ScreenManager* GetInstance();
 
 	void AddScreen(BaseScreen* screen);
 	void RemoveScreen(BaseScreen* screen);
 
-	bool AddActiveScreen(wstring name);
-	bool RemoveActiveScreen(wstring name);
+	bool AddActiveScreen(const tstring & name);
+	bool RemoveActiveScreen(const tstring & name);
 
-	bool SetControlScreen(wstring name);/*
+	bool SetControlScreen(const tstring & name);
 
-	bool AddPhysicsDebugScreen(wstring name);
-	bool RemovePhysicsDebugScreen(wstring name);*/
-
-	virtual void Initialize();
+	void Initialize();
 	void InitializeContent();
-	virtual void Update(GameContext& context);
-	virtual void Draw(GameContext& context);
+	void Update(GameContext& context);
+	void Draw(GameContext& context);
 	void DrawCursor(const GameContext & context);
 
 	void TogglePhysicsDisable() { m_PhysicsDisabled = !m_PhysicsDisabled; }
@@ -73,48 +66,39 @@ public:
 
 	bool CanDrawPhysics() const { return m_EnablePhysicsRendering; }
 
-	void SetPhysicsDrawEnabled(bool enable);
+	void SetPhysicsDrawEnabled(const bool enable);
 
 	void SetGame(Game * game) { m_MainGame = game; }
-
 	InputManager * GetInputManager() { return m_pInputManager; }
-
 	Game * GetGame() const { return m_MainGame; }
 
 private:
+	static const int NUM_SCREENS = 0;
 
 	ScreenManager(void);
 
 	Game* m_MainGame;
 	vector<BaseScreen*> m_Screens;
 	vector<BaseScreen*> m_ActiveScreens;
-/*
-	vector<BaseScreen*> m_sPhysicsDebugScreens;*/
 
-	BaseScreen * m_pControlScreen;
+	BaseScreen* m_pControlScreen;
 
 	static ScreenManager* m_pInstance;
 	
 	bool m_IsInitialized;
-	friend class BaseScreen;
 	bool m_Simulated;
 	bool m_Fetched;
 	bool m_PhysicsDisabled;
 	bool m_EnablePhysicsRendering;
 	bool m_LMBP, m_LMBD, m_RMBP, m_RMBD;
 
-	BaseCursor *m_pDefaultCursor, *m_pCurrentCursor;
+	shared_ptr<BaseCursor> m_pDefaultCursor, m_pCurrentCursor;
 
 	InputManager * m_pInputManager;
 
-private:
 	friend class BaseScreen;
 
-	// -------------------------
-	// Disabling default copy constructor and default 
-	// assignment operator.
-	// -------------------------
+	// Disabling default copy constructor and default assignment operator.
 	ScreenManager(const ScreenManager& t);
 	ScreenManager& operator=(const ScreenManager& t);
 };
-

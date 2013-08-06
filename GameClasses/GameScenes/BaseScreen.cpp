@@ -1,15 +1,16 @@
 //====================== #INCLUDES ===================================
 #include "BaseScreen.h"
-#include "../GameObjects/GameEntity.h"
-#include "Managers/PhysicsManager.h"
-#include "../Managers/ScreenManager.h"
-#include "Helpers/DebugRenderer.h"
+
 #include "Diagnostics/Logger.h"
+#include "Helpers/DebugRenderer.h"
+#include "Managers/PhysicsManager.h"
 #include "Prefabs/FreeCamera.h"
+#include "../GameObjects/GameEntity.h"
+#include "../Managers/ScreenManager.h"
 #include "../Lib/GlobalParameters.h"
 //====================================================================
 
-BaseScreen::BaseScreen(wstring name, tstring windowName, bool physicsEnabled)
+BaseScreen::BaseScreen(const tstring & name, const tstring & windowName, const bool physicsEnabled)
 	: GameScene(name)
 	, m_WindowName(windowName)
 	, m_PhysicsEnabled(physicsEnabled)

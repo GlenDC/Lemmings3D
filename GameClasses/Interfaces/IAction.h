@@ -6,11 +6,12 @@
 //====================== Action Interface ============================
 // Description:
 //		Interface for all actions
-// Last Modification: 01/04/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
+//Policy class
 class IAction
 {
 public:

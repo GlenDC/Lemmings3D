@@ -2,27 +2,29 @@
 
 //====================== #INCLUDES ===================================
 #include "UIElement.h"
+#include <memory>
 //====================================================================
 
 //====================== UIToggleButton Class ==============================
 // Description:
 //		A on/off button. Other examples are checkboxes
-// Last Modification: 20/05/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
 class UIToggleButton : public UIElement
 {
 public:
-	UIToggleButton(int x, int y, tstring name, UIDockInterface * pParrent, tstring asset_file);
+	UIToggleButton(const int x, const int y, const tstring & name, 
+		const UIDockInterface * pParrent, const tstring & asset_file);
 	virtual ~UIToggleButton(); //default destructor
 
 	virtual void Draw(const GameContext &context) const;
 	virtual void Update(const GameContext &context);
 	virtual void Select();
 
-	void SetOnline(bool is_on);
+	void SetOnline(const bool is_on);
 
 protected:
 	ID3D10ShaderResourceView *m_pTexture;

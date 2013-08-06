@@ -12,15 +12,15 @@ class InstancedWaterMaterial;
 //====================== RisingWater Class =======================
 // Description:
 //		RisingWater class represents the water rising in the level!
-// Last Modification: 09/06/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
 class RisingWater
 {
 public:
-	explicit RisingWater (float minDepth, float maxDepth);
+	explicit RisingWater (const float minDepth, const float maxDepth);
 	virtual ~RisingWater();
 
 	void Initialize();
@@ -84,10 +84,8 @@ private:
 	SpriteInfo m_WaterSprite;
 
 	InstancedWaterMaterial* m_pMaterial;
-	// -------------------------
-	// Disabling default copy constructor and default 
-	// assignment operator.
-	// -------------------------
+
+	// Disabling default copy constructor and default assignment operator.
 	RisingWater(const RisingWater& yRef);									
 	RisingWater& operator=(const RisingWater& yRef);
 };

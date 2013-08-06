@@ -4,20 +4,22 @@
 #include "Helpers/stdafx.h"
 #include "Helpers/D3DUtil.h"
 #include "SceneGraph/GameScene.h"
+
 #include "../GameScenes/BaseScreen.h"
+
 #include <vector>
 //====================================================================
 
-//====================== ManagerInterface Class =================================
+//====================== IManager Class =================================
 // Description:
 //		Abstract class to define the interface of all the ManagerClasses
-// Last Modification: 04/03/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
-
-class ManagerInterface
+// Policy class
+class IManager
 {
 public:
 	virtual void Initialize() = 0;

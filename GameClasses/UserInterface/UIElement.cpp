@@ -5,7 +5,7 @@
 
 const int UIElement::MAX_ELEMENT_STATES = 5;
 
-UIElement::UIElement(int x, int y, int width, int height, const tstring & name, UIDockInterface * pParrent)
+UIElement::UIElement(const int x, const int y, const int width, const int height, const tstring & name, const UIDockInterface * pParrent)
 	:m_ElementZone(x, y, width, height)
 	,m_Name(name)
 	,m_pParrentDock(pParrent)

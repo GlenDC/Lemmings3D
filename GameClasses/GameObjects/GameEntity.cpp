@@ -3,8 +3,9 @@
 #include "../Materials/FlatColorMaterial.h"
 #include "../Materials/FlatTextureMaterial.h"
 #include "../Materials/SpikeyMaterial.h"
-#include "OverlordComponents.h"
 #include "../GameScenes/BaseScreen.h"
+//--------------------------------------------------------------------
+#include "OverlordComponents.h"
 //====================================================================
 
 GameEntity::GameEntity(MaterialType material) //Default Constructor
@@ -17,7 +18,7 @@ GameEntity::GameEntity(MaterialType material) //Default Constructor
 {
 }
 
-GameEntity::GameEntity(tstring visualModelPath, MaterialType material) //Default Constructor
+GameEntity::GameEntity(const tstring & visualModelPath, MaterialType material) //Default Constructor
 	:GameObject()
 	,m_pVisualModel(nullptr)
 	,m_pVisualMaterial(nullptr)

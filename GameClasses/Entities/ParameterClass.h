@@ -7,15 +7,15 @@
 // Description:
 //		A stand automatic parameter class.
 //		With a custom XML format it will reconogize the correct variables automaticly
-// Last Modification: 11/03/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
 class ParameterClass
 {
 public:
-	ParameterClass(tstring file);
+	ParameterClass(const tstring & file);
 	~ParameterClass();
 
 	void Refresh();

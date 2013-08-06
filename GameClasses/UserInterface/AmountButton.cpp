@@ -3,7 +3,7 @@
 #include "UIDockInterface.h"
 //====================================================================
 
-AmountButton::AmountButton(int x, int y, const tstring & name, UIDockInterface * pParrent, const tstring & asset_file, int amount, SpriteFont * pFont)
+AmountButton::AmountButton(int x, int y, const tstring & name, const UIDockInterface * pParrent, const tstring & asset_file, int amount, shared_ptr<SpriteFont> pFont)
 	: UIButton(x, y, name, pParrent, asset_file)
 	, m_pFont(pFont)
 	, m_Amount(amount)
@@ -20,12 +20,12 @@ void AmountButton::Draw(const GameContext & context) const
 	LemmingsHelpers::Rect realElementZone(GetScreenZone());
 	tstring text(_T("0"));
 	text = XMLConverter::ConvertToTString<int>(m_Amount / 10);
-	SpriteBatch::DrawTextW(m_pFont, text, 
+	SpriteBatch::DrawTextW(m_pFont.get(), text, 
 		D3DXVECTOR2(realElementZone.X + 5 * m_pParrentDock->m_ScreenScale.x, 
 		realElementZone.Y + 5 * m_pParrentDock->m_ScreenScale.y),
 		D3DXCOLOR(1,0,0,1));
 	text = XMLConverter::ConvertToTString<int>(m_Amount % 10);
-	SpriteBatch::DrawTextW(m_pFont, text, 
+	SpriteBatch::DrawTextW(m_pFont.get(), text, 
 		D3DXVECTOR2(realElementZone.X + 25 * m_pParrentDock->m_ScreenScale.x, 
 		realElementZone.Y + 5 * m_pParrentDock->m_ScreenScale.y),
 		D3DXCOLOR(1,0,0,1));

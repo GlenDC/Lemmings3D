@@ -2,7 +2,7 @@
 #include "ParameterClass.h"
 //====================================================================
 
-ParameterClass::ParameterClass(tstring file)
+ParameterClass::ParameterClass(const tstring & file)
 {
 	//ToDo: Write Constructor
 	m_pParser = new XMLParser(file);

@@ -7,11 +7,11 @@ class ControllerComponent;
 class SkinnedMaterial;
 class ModelComponent;
 
-//====================== LemmingCharacter Class =============================
+//====================== LemmingCharacter Class =====================
 // Description:
 //		Character object (ai)
 // Last Modification: 10/06/2013
-// Copyright Glen De Cauwsemaecker
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -28,8 +28,8 @@ public:
     virtual const D3DXVECTOR3 & GetCUPosition() const;
     virtual float GetCURange() const;
 
-	void AddToInventory(int itemID);
-	bool HasItem(int itemID);
+	void AddToInventory(const int itemID);
+	bool HasItem(const int itemID);
 
 private:
 	static const int CURANGE = 20;

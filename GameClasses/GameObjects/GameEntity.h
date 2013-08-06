@@ -1,4 +1,5 @@
 #pragma once
+
 //====================== #INCLUDES ===================================
 #include "Scenegraph/GameObject.h"
 //====================================================================
@@ -7,8 +8,8 @@
 // Description:
 //		Visual entity used as the base class for all visual objects
 //		in the game or editor.
-// Last Modification: 04/03/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -27,7 +28,7 @@ class GameEntity : public GameObject
 {
 public:
 	GameEntity(MaterialType material = MaterialType::MatFlatColor);
-	GameEntity(tstring visualModelPath, MaterialType material = MaterialType::MatFlatColor);
+	GameEntity(const tstring & visualModelPath, MaterialType material = MaterialType::MatFlatColor);
 	virtual ~GameEntity();
 
 	virtual void Initialize();
@@ -41,10 +42,9 @@ protected:
 	MaterialType m_MaterialName;
 
 private:
+	friend class BaseScreen;
+
 	// Disabling default copy constructor and default assignment operator.
 	GameEntity(const GameEntity& yRef);									
 	GameEntity& operator=(const GameEntity& yRef);
-
-private:
-	friend class BaseScreen;
 };

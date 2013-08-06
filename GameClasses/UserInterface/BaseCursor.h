@@ -13,8 +13,8 @@
 //====================== BaseCursor Class ============================
 // Description:
 //		Basic cursor logic.
-// Last Modification: 22/03/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -34,9 +34,9 @@ public:
 	virtual void Update(const GameContext & context);
 	virtual void Draw(const GameContext & context);
 	
-	void SetState(CursorStates state);
+	void SetState(const CursorStates state);
 	void SetPosition(const D3DXVECTOR2 & pos);
-	bool InMenu() { return m_CursorState == CursorStates::cursor_menu; }
+	bool InMenu() const { return m_CursorState == CursorStates::cursor_menu; }
 
 	D3DXVECTOR2 GetCursorPosition() const { return m_Position; }
 	D3DXVECTOR2 GetPreviousCursorPosition() const { return m_OldCursorPosition; }
@@ -51,4 +51,8 @@ protected:
 	int m_MouseCursorBorderScreen;
 
 	SpriteInfo m_NormalTexture;
+
+private:
+	BaseCursor(const BaseCursor& yRef);									
+	BaseCursor& operator=(const BaseCursor& yRef);
 };

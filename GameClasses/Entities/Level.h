@@ -6,16 +6,15 @@
 #include "Helpers/GeneralStructs.h"
 //====================================================================
 
-//====================== HeightmapParser Class =========================
+//====================== Level Class =========================
 // Description:
-//		Parse heightmaps with this class.
-// Last Modification: 29/05/2013
-// Copyright Glen De Cauwsemaecker
+//		Class representing a level in the Lemmings 3D Game
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
 class XMLParser;
-//class GameEntity;
 class InstancedObject;
 class PhysicsCube;
 
@@ -45,9 +44,9 @@ public:
 	const float & GetMaxDepth() const { return m_MaxDepth; }
 	const D3DXVECTOR3 & Getoffset() const { return m_Offset; }
 
-	void AddEnvironmentCube(const D3DXVECTOR3 & pos, int id);
+	void AddEnvironmentCube(const D3DXVECTOR3 & pos, const int id);
 	bool RemoveEnvironmentCube(const D3DXVECTOR3 & pos);
-	bool PaintEnvironmentCube(const D3DXVECTOR3 & pos, int id, bool editInstance = true);
+	bool PaintEnvironmentCube(const D3DXVECTOR3 & pos, const int id, const bool editInstance = true);
 	void RecheckEnvironment();
 
 	void Save();
@@ -70,10 +69,7 @@ private:
 
 	GameScene * m_pGame;
 
-	// -------------------------
-	// Disabling default copy constructorand default 
-	// assignment operator
-	// -------------------------
+	// Disabling default copy constructorand default assignment operator
 	Level(const Level& t);
 	Level& operator=(const Level& t);
 };

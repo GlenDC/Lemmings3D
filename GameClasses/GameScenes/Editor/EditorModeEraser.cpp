@@ -1,10 +1,12 @@
+//====================== #INCLUDES ===================================
 #include "EditorModeEraser.h"
-#include "../../Entities/EditorBuilder.h"
+//--------------------------------------------------------------------
 #include "../GameScreen.h"
-
+#include "../../Entities/EditorBuilder.h"
 #include "../../Managers/ScreenManager.h"
 #include "../../Lib/GlobalParameters.h"
 #include "../../Lib/LemmingsHelpers.h"
+//====================================================================
 
 EditorModeEraser::EditorModeEraser (EditorBuilder * pEditor)
 	: IEditMode(pEditor)

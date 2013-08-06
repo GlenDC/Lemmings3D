@@ -1,9 +1,14 @@
+//====================== #INCLUDES ===================================
 #include "UIToggleButton.h"
+//--------------------------------------------------------------------
 #include "../Lib/GlobalParameters.h"
-#include "Managers/ContentManager.h"
 #include "../Lib/LemmingsHelpers.h"
+//--------------------------------------------------------------------
+#include "Managers/ContentManager.h"
+//====================================================================
 
-UIToggleButton::UIToggleButton(int x, int y, tstring name, UIDockInterface * pParrent, tstring asset_file)
+UIToggleButton::UIToggleButton(const int x, const int y, const tstring & name, 
+							   const UIDockInterface * pParrent, const tstring & asset_file)
     :UIElement(x, y, 0, 0, name, pParrent)
 {
 	m_pTexture = ContentManager::Load<ID3D10ShaderResourceView>(asset_file);
@@ -48,7 +53,7 @@ void UIToggleButton::Select()
 	UIElement::Select();
 }
 
-void UIToggleButton::SetOnline(bool is_on)
+void UIToggleButton::SetOnline(const bool is_on)
 {
 	m_IsOffline = !is_on;
 }

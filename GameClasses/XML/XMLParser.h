@@ -10,7 +10,7 @@
 //		Parser class used to have some automatisation 
 //		based on the PugiXML Library.
 // Last Modification: 11/03/2013
-// Copyright Glen De Cauwsemaecker
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 

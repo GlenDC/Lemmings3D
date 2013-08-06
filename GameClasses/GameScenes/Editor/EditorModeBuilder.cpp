@@ -1,10 +1,12 @@
+//====================== #INCLUDES ===================================
 #include "EditorModeBuilder.h"
-#include "../../Entities/EditorBuilder.h"
+//--------------------------------------------------------------------
 #include "../GameScreen.h"
-
-#include "../../Managers/ScreenManager.h"
+#include "../../Entities/EditorBuilder.h"
 #include "../../Lib/GlobalParameters.h"
 #include "../../Lib/LemmingsHelpers.h"
+#include "../../Managers/ScreenManager.h"
+//====================================================================
 
 EditorModeBuilder::EditorModeBuilder (EditorBuilder * pEditor)
 	: IEditMode(pEditor)

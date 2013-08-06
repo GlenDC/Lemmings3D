@@ -12,8 +12,8 @@
 //====================== InstancedObject Class =======================
 // Description:
 //		InstancedObject class
-// Last Modification: 30/05/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -38,9 +38,9 @@ public:
 	void Draw(const GameContext & context);
 	void Update(const GameContext & context);
 
-	bool AddInstance(const D3DXVECTOR3 & position, int id);
+	bool AddInstance(const D3DXVECTOR3 & position, const int id);
 	bool RemoveInstance(const D3DXVECTOR3 & position);
-	bool EditInstance(const D3DXVECTOR3 & position, int id);
+	bool EditInstance(const D3DXVECTOR3 & position, const int id);
 
 	void RecheckCubes(std::vector<InstanceType> & vec);
 

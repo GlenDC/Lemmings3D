@@ -1,9 +1,14 @@
+//====================== #INCLUDES ===================================
 #include "UIButton.h"
+//--------------------------------------------------------------------
 #include "../Lib/GlobalParameters.h"
-#include "Managers/ContentManager.h"
 #include "../Lib/LemmingsHelpers.h"
+//--------------------------------------------------------------------
+#include "Managers/ContentManager.h"
+//====================================================================
 
-UIButton::UIButton(int x, int y, const tstring & name, UIDockInterface * pParrent, const tstring & asset_file)
+UIButton::UIButton(const int x, const int y, const tstring & name, 
+				   const UIDockInterface * pParrent, const tstring & asset_file)
     :UIElement(x, y, 0, 0, name, pParrent)
 {
 	m_pTexture = ContentManager::Load<ID3D10ShaderResourceView>(asset_file);

@@ -8,8 +8,8 @@
 //====================== Player Class ==============
 // Description:
 //		Player account: containing preferences of the user.
-// Last Modification: 05/06/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -55,10 +55,7 @@ private:
 	PickComponent *m_pPickComponent;
 	UIDockInterface *m_pSelectionMenu;
 
-	// -------------------------
-	// Disabling default copy constructor and default 
-	// assignment operator.
-	// -------------------------
+	// Disabling default copy constructor and default assignment operator.
 	Player(const Player& t);
 	Player& operator=(const Player& t);
 };

@@ -1,11 +1,10 @@
 //====================== #INCLUDES ===================================
 #include "Stopwatch.h"
+//--------------------------------------------------------------------
 #include <algorithm>
 //====================================================================
 
-//======================== STATICS ===================================
 Stopwatch * Stopwatch::m_pStopwatch = nullptr;
-//====================================================================
 	
 Stopwatch::Stopwatch()	// Default constructor == Private => singleton pattern
 {
@@ -60,7 +59,8 @@ void Stopwatch::Update(GameContext& context)
 	}
 }
 
-bool Stopwatch::CreateTimer(const tstring & name, float targetTime, bool countingDown, bool loop, std::function<void ()> func, bool paused)
+bool Stopwatch::CreateTimer(const tstring & name, const float targetTime, const bool countingDown, const bool loop, 
+							const std::function<void ()> func, const bool paused)
 {
 	for(auto it : m_TempContainer)
 	{
@@ -97,7 +97,7 @@ bool Stopwatch::RemoveTimer(const tstring & name)
 	return false;
 }
 
-void Stopwatch::PauseTimer(const tstring & name, bool paused)
+void Stopwatch::PauseTimer(const tstring & name, const bool paused)
 {
 	for(auto it : m_TimerContainer)
 	{
@@ -109,7 +109,7 @@ void Stopwatch::PauseTimer(const tstring & name, bool paused)
 	}
 }
 
-void Stopwatch::SetCountingDownTimer(const tstring & name, bool countingDown)
+void Stopwatch::SetCountingDownTimer(const tstring & name, const bool countingDown)
 {
 	for(auto it : m_TimerContainer)
 	{
@@ -121,7 +121,7 @@ void Stopwatch::SetCountingDownTimer(const tstring & name, bool countingDown)
 	}
 }
 
-void Stopwatch::SetLoopTimer(const tstring & name, bool looping)
+void Stopwatch::SetLoopTimer(const tstring & name, const bool looping)
 {
 	for(auto it : m_TimerContainer)
 	{
@@ -133,7 +133,7 @@ void Stopwatch::SetLoopTimer(const tstring & name, bool looping)
 	}
 }
 
-void Stopwatch::ResetTimer(const tstring & name, bool paused)
+void Stopwatch::ResetTimer(const tstring & name, const bool paused)
 {
 	for(auto it : m_TimerContainer)
 	{
@@ -145,7 +145,7 @@ void Stopwatch::ResetTimer(const tstring & name, bool paused)
 	}
 }
 
-void Stopwatch::SetTargetTimeTimer(const tstring & name, float targetTime, bool reset, bool paused)
+void Stopwatch::SetTargetTimeTimer(const tstring & name, const float targetTime, const bool reset, const bool paused)
 {
 	for(auto it : m_TimerContainer)
 	{
@@ -157,7 +157,7 @@ void Stopwatch::SetTargetTimeTimer(const tstring & name, float targetTime, bool 
 	}
 }
 
-void Stopwatch::SetFunctionTimer(const tstring & name, std::function<void ()> func)
+void Stopwatch::SetFunctionTimer(const tstring & name, const std::function<void ()> func)
 {
 	for(auto it : m_TimerContainer)
 	{

@@ -1,13 +1,18 @@
+//====================== #INCLUDES ===================================
 #include "RisingWater.h"
+//--------------------------------------------------------------------
 #include "../Materials/InstancedWaterMaterial.h"
 #include "../Lib/GlobalParameters.h"
-#include "Graphics/GraphicsDevice.h"
 #include "../Managers/Stopwatch.h"
-#include "Managers/ContentManager.h"
 #include "../Lib/LemmingsHelpers.h"
+//--------------------------------------------------------------------
+#include "Managers/ContentManager.h"
+#include "Graphics/GraphicsDevice.h"
+//--------------------------------------------------------------------
 #include <cmath>
+//====================================================================
 
-RisingWater::RisingWater (float minDepth, float maxDepth)
+RisingWater::RisingWater (const float minDepth, const float maxDepth)
 	: m_InstanceVec(0)
 	, m_pVertexBuffer(nullptr)
 	, m_pInstanceBuffer(nullptr)

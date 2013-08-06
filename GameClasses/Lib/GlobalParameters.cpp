@@ -1,4 +1,6 @@
+//====================== #INCLUDES ===================================
 #include "GlobalParameters.h"
+//====================================================================
 
 ParameterClass * GlobalParameters::m_pParameters = nullptr;
 

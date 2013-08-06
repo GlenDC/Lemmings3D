@@ -7,8 +7,8 @@
 //====================== (static) GlobalParameter Class ==============
 // Description:
 //		Collects all the global static parameters. (defined in xml)
-// Last Modification: 22/03/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -24,4 +24,8 @@ private:
 	GlobalParameters(){}
 	static ParameterClass * m_pParameters;
 	static void LoadParameters();
+
+	// Disabling default copy constructor and default assignment operator.
+	GlobalParameters(const GlobalParameters& yRef);									
+	GlobalParameters& operator=(const GlobalParameters& yRef);
 };

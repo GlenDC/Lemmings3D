@@ -7,10 +7,10 @@
 #include <memory>
 //====================================================================
 
-class PreviewObject;
-class GameScreen;
-class UIDockInterface;
 class IEditMode;
+class GameScreen;
+class PreviewObject;
+class UIDockInterface;
 class EditorModePainter;
 class EditorModeBuilder;
 class EditorModeEraser;
@@ -18,8 +18,8 @@ class EditorModeEraser;
 //====================== EditorBuilder Class =========================
 // Description:
 //		Building Logic of editor!
-// Last Modification: 30/05/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -35,7 +35,7 @@ public:
 
 	void SetSnapPosition(const GameContext & context, const D3DXVECTOR3 & pos);
 	void CalculatePositionFromEnvironment(const GameContext & context, const std::vector<D3DXVECTOR3> & posVec, 
-		UINT length, int accurary = 5, UINT extraDistance = 350, float distanceScalar = 1.0f);
+		UINT length, const int accurary = 5, const UINT extraDistance = 350, const float distanceScalar = 1.0f);
 
 private:
 	enum class EditorMode : char 
@@ -63,10 +63,7 @@ private:
 	friend class EditorModeBuilder;
 	friend class EditorModeEraser;
 
-	// -------------------------
-	// Disabling default copy constructor and default 
-	// assignment operator.
-	// -------------------------
+	// Disabling default copy constructor and default assignment operator.
 	EditorBuilder(const EditorBuilder& yRef);									
 	EditorBuilder& operator=(const EditorBuilder& yRef);
 };

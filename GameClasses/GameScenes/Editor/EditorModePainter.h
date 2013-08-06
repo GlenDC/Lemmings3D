@@ -9,8 +9,8 @@ class UIDockInterface;
 //====================== EditModePainter Class =======================
 // Description:
 //		Painter Mode class (edit feature)
-// Last Modification: 09/06/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -38,10 +38,7 @@ private:
 
 	UIDockInterface *m_pPaintMenu;
 
-	// -------------------------
-	// Disabling default copy constructor and default 
-	// assignment operator.
-	// -------------------------
+	// Disabling default copy constructor and default assignment operator.
 	EditorModePainter(const EditorModePainter& yRef);									
 	EditorModePainter& operator=(const EditorModePainter& yRef);
 };

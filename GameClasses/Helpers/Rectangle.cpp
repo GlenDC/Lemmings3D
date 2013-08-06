@@ -23,6 +23,4 @@ namespace LemmingsHelpers
 		Height = yRef.Height;
 		return (*this);
 	}
-
-	Rect::~Rect() {}
 }

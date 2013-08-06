@@ -11,8 +11,8 @@
 //====================== InstancedBlockMaterial Class =========================
 // Description:
 //		Material for the Instanced Blocks
-// Last Modification: 30/05/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -35,10 +35,7 @@ private:
 	ID3D10ShaderResourceView * m_pTextureView;
 	ID3D10EffectShaderResourceVariable * m_pShaderTexture;
 
-	// -------------------------
-	// Disabling default copy constructor and default 
-	// assignment operator.
-	// -------------------------
+	// Disabling default copy constructor and default assignment operator.
 	InstancedBlockMaterial(const InstancedBlockMaterial& yRef);									
 	InstancedBlockMaterial& operator=(const InstancedBlockMaterial& yRef);
 };

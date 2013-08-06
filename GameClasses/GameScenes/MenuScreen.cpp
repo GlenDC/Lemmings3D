@@ -1,27 +1,19 @@
-//--------------------------------------------------------------------------------------
-//   _____     _______ ____  _     ___  ____  ____    _____ _   _  ____ ___ _   _ _____ 
-//  / _ \ \   / / ____|  _ \| |   / _ \|  _ \|  _ \  | ____| \ | |/ ___|_ _| \ | | ____|
-// | | | \ \ / /|  _| | |_) | |  | | | | |_) | | | | |  _| |  \| | |  _ | ||  \| |  _|  
-// | |_| |\ V / | |___|  _ <| |__| |_| |  _ <| |_| | | |___| |\  | |_| || || |\  | |___ 
-//  \___/  \_/  |_____|_| \_\_____\___/|_| \_\____/  |_____|_| \_|\____|___|_| \_|_____|
-//
-// Overlord Engine v0.44
-// Copyright Overlord Brecht Kets & Overlord Thomas Goussaert
-// http://www.digitalartsandentertainment.com/
-//--------------------------------------------------------------------------------------
-
+//====================== #INCLUDES ===================================
 #include "MenuScreen.h"
+//--------------------------------------------------------------------
+#include "../Managers/ScreenManager.h"
+#include "../Managers/SpritefontManager.h"
+//--------------------------------------------------------------------
+#include "Graphics/GraphicsDevice.h"
+#include "Helpers/GeneralStructs.h"
+#include "Managers/ContentManager.h"
 #include "OverlordComponents.h"
 #include "Scenegraph/GameObject.h"
-#include "Graphics/GraphicsDevice.h"
-#include "OverlordComponents.h"
-#include "Helpers/GeneralStructs.h"
-#include "../Managers/ScreenManager.h"
-#include "Managers/ContentManager.h"
+//====================================================================
 
 MenuScreen::MenuScreen(void)
-	:BaseScreen(_T("MenuScreen"), _T("Lemmings3D Menu"), false)
-	,m_pSpriteFont(nullptr)
+	: BaseScreen(_T("MenuScreen"), _T("Lemmings3D Menu"), false)
+	, m_pSpriteFont(nullptr)
 {
 }
 
@@ -35,7 +27,7 @@ void MenuScreen::Initialize()
 	InputAction returnToGame(0,Pressed,VK_ESCAPE);
 	ScreenManager::GetInstance()->GetInputManager()->AddInputAction(returnToGame);
 
-	m_pSpriteFont = ContentManager::Load<SpriteFont>(_T("./Resources/ComicSansMS_25.fnt"));
+	m_pSpriteFont = SpritefontManager::GetInstance()->CreateOrGet(_T("ComicSansMS"), 25);
 
 	BaseScreen::Initialize();
 }
@@ -53,7 +45,7 @@ void MenuScreen::Update(const GameContext& context)
 
 void MenuScreen::Draw(const GameContext& context)
 {
-	SpriteBatch::DrawTextW(m_pSpriteFont, _T("PAUSED") , D3DXVECTOR2((float)context.Window->GetBufferWidth()/2.0f - 25, (float)context.Window->GetBufferHeight()/2 - 10));
+	SpriteBatch::DrawTextW(m_pSpriteFont.get(), _T("PAUSED") , D3DXVECTOR2((float)context.Window->GetBufferWidth()/2.0f - 25, (float)context.Window->GetBufferHeight()/2 - 10));
 	BaseScreen::Draw(context);
 }
 

@@ -1,5 +1,7 @@
+//====================== #INCLUDES ===================================
 #include "PreviewMaterial.h"
 #include "Managers/ContentManager.h"
+//====================================================================
 
 PreviewMaterial::PreviewMaterial()
 	: Material(_T("./Resources/Lemmings3D/shaders/PreviewObjectShader.fx"))
@@ -24,8 +26,8 @@ void PreviewMaterial::LoadEffectVariables()
 	// ...
 
 	//Get texture shader resource
-	m_pShaderTexture = GetEffectShaderResource("Texture", m_pEffect);
-	m_pPositionVariable = GetEffectVector("PreviewPosition", m_pEffect);
+	m_pShaderTexture = GetEffectShaderResource(_T("Texture"), m_pEffect);
+	m_pPositionVariable = GetEffectVector(_T("PreviewPosition"), m_pEffect);
 }
 
 void PreviewMaterial::UpdateEffectVariables(ModelComponent* modelComponent)

@@ -6,11 +6,11 @@
 #include <map>
 //====================================================================
 
-//====================== StatusReport Class ==============
+//====================== StatusReport Class ==========================
 // Description:
 //		User settings get auto saved and are linked to a player account
-// Last Modification: 05/06/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -20,7 +20,7 @@ class GameScreen;
 class StatusReport
 {
 public:
-	explicit StatusReport(GameScreen * pGame, bool save_log);
+	explicit StatusReport(GameScreen * pGame, const bool save_log);
 	~StatusReport();
 
 	void Update(const GameContext & context);
@@ -47,10 +47,7 @@ private:
 
 	void LogFile() const;
 
-	// -------------------------
-	// Disabling default copy constructor and default 
-	// assignment operator.
-	// -------------------------
+	// Disabling default copy constructor and default assignment operator.
 	StatusReport(const StatusReport& t);
 	StatusReport& operator=(const StatusReport& t);
 };

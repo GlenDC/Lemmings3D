@@ -1,13 +1,17 @@
+//====================== #INCLUDES ===================================
 #include "Level.h"
+//--------------------------------------------------------------------
+#include "OverlordComponents.h"
+#include "SceneGraph/GameScene.h"
+//--------------------------------------------------------------------
 #include "../Lib/GlobalParameters.h"
 #include "../XML/XMLParser.h"
 #include "../Helpers/HeightmapParser.h"
 #include "../Lib/LemmingsHelpers.h"
 #include "../GameObjects/InstancedObject.h"
-#include "OverlordComponents.h"
 #include "../GameObjects/PhysicsCube.h"
-#include "SceneGraph/GameScene.h"
 #include "../Managers/ScreenManager.h"
+//====================================================================
 
 Level::Level(const tstring & file, GameScene * pScene)
 	: m_LevelXMLFileName(file)
@@ -200,7 +204,7 @@ const std::vector<D3DXVECTOR3> & Level::GetEnvironment() const
 	return m_pInstancedObject->GetPositions();
 }
 
-void Level::AddEnvironmentCube(const D3DXVECTOR3 & pos, int id)
+void Level::AddEnvironmentCube(const D3DXVECTOR3 & pos, const int id)
 {
 	if(m_pInstancedObject->AddInstance(pos, id))
 	{
@@ -227,7 +231,7 @@ bool Level::RemoveEnvironmentCube(const D3DXVECTOR3 & pos)
 	return m_pInstancedObject->RemoveInstance(pos) && removedXML;
 }
 
-bool Level::PaintEnvironmentCube(const D3DXVECTOR3 & pos, int id, bool editInstance)
+bool Level::PaintEnvironmentCube(const D3DXVECTOR3 & pos, const int id, const bool editInstance)
 {
 	bool editXML(false);
 	auto node = m_pLevelParser->GetNode(XML_PARSER_LAYER(LayerTestCategory::xml_test_node, _T("blocks")));

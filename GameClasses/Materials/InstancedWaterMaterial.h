@@ -12,7 +12,7 @@
 // Description:
 //		Material for the Instanced Water
 // Last Modification: 09/06/2013
-// Copyright Glen De Cauwsemaecker
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -26,8 +26,8 @@ public:
 
 	ID3D10ShaderResourceView * GetTexture() const { return m_pTextureView; }
 
-	void SetWaterLevel(float waterLevel);
-	void SetWaterAlpha(float waterAlpha);
+	void SetWaterLevel(const float waterLevel);
+	void SetWaterAlpha(const float waterAlpha);
 
 protected:
 

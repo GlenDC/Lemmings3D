@@ -1,10 +1,14 @@
+//====================== #INCLUDES ===================================
 #include "BaseCursor.h"
+//--------------------------------------------------------------------
 #include "Graphics/GraphicsDevice.h"
 #include "Managers/ContentManager.h"
+//--------------------------------------------------------------------
+#include "../Lib/Debug.h"
 #include "../Lib/GlobalParameters.h"
 #include "../Managers/ScreenManager.h"
-#include "../Lib/Debug.h"
 #include "../Managers/Stopwatch.h"
+//====================================================================
 
 BaseCursor::BaseCursor() // Default constructor
 	:m_Position(0,0)
@@ -117,7 +121,7 @@ void BaseCursor::Draw(const GameContext & context)
 }
 
 
-void BaseCursor::SetState(CursorStates state)
+void BaseCursor::SetState(const CursorStates state)
 {
     m_CursorState = state;
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 //====================== #INCLUDES ===================================
-#include "ManagerInterface.h"
+#include "IManager.h"
 
 #include <vector>
 //====================================================================
@@ -9,38 +9,33 @@
 //====================== TimeManager Class =========================
 // Description:
 //		Manages time of the game and things related to its speed and flow
-// Last Modification: 01/06/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
 class Game;
 class GameScreen;
 
-class TimeManager : public ManagerInterface
+// Ancillary class, implementing the Singleton Design pattern
+class TimeManager : public IManager
 {
 public:
 	~TimeManager(void);
 
-	static TimeManager* GetInstance()
-	{
-		if (m_pInstance == nullptr)
-			m_pInstance = new TimeManager();
+	static TimeManager* GetInstance();
 
-		return m_pInstance;
-	}
-
-	virtual void Initialize();
-	virtual void Update(GameContext& context);
-	virtual void Draw(GameContext& context);
+	void Initialize();
+	void Update(GameContext& context);
+	void Draw(GameContext& context);
 
 	int GetTimeMinutes() const;
 	int GetTimeSeconds() const;
 	int GetTimeTotalSeconds() const;
 
 	void StartTimer();
-	void PauseTimer(bool pause);
-	void ResetTimer(bool start = true);
+	void PauseTimer(const bool pause);
+	void ResetTimer(const bool start = true);
 
 	bool IncreaseGameSpeed();
 	bool DecreaseGameSpeed();

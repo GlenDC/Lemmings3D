@@ -2,20 +2,23 @@
 
 //====================== #INCLUDES ===================================
 #include "UIElement.h"
+#include <memory>
 //====================================================================
 
 //====================== UIButton Class ==============================
 // Description:
 //		Button used in the userinterface
-// Last Modification: 20/05/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
 class UIButton : public UIElement
 {
 public:
-	UIButton(int x, int y, const tstring & name, UIDockInterface * pParrent, const tstring & asset_file);
+	UIButton(const int x, const int y, const tstring & name, 
+		const UIDockInterface * pParrent, 
+		const tstring & asset_file);
 	virtual ~UIButton(); //default destructor
 
 	virtual void Draw(const GameContext &context) const;

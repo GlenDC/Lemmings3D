@@ -14,7 +14,7 @@ Timer::Timer() //Default Constructor
 	//ToDo: Write Constructor
 }
 
-Timer::Timer(float targetTime, bool countingDown, bool loop, std::function<void ()> func, bool paused) 
+Timer::Timer(const float targetTime, const bool countingDown, const bool loop, std::function<void ()> func, const bool paused) 
 	:m_TargetTime(targetTime)
 	,m_CurrentTime(countingDown?targetTime:0)
 	,m_CountingDown(countingDown)
@@ -85,28 +85,28 @@ bool Timer::Update(const GameContext& context)
 	return true;
 }
 
-void Timer::SetPaused(bool paused)
+void Timer::SetPaused(const bool paused)
 {
 	m_Paused = paused;
 }
 
-void Timer::SetCountingDown(bool countingDown)
+void Timer::SetCountingDown(const bool countingDown)
 {
 	m_CountingDown = countingDown;
 }
 
-void Timer::SetLoop(bool looping)
+void Timer::SetLoop(const bool looping)
 {
 	m_Looping = looping;
 }
 
-void Timer::Reset(bool paused)
+void Timer::Reset(const bool paused)
 {
 	m_CurrentTime = m_CountingDown ? m_TargetTime : 0;
 	SetPaused(paused);
 }
 
-void Timer::SetTargetTime(float targetTime, bool reset, bool paused)
+void Timer::SetTargetTime(const float targetTime, const bool reset, const bool paused)
 {
 	m_TargetTime = targetTime;
 	if(reset)	Reset(paused);

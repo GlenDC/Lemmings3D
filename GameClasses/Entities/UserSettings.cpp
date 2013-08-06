@@ -1,5 +1,7 @@
+//====================== #INCLUDES ===================================
 #include "UserSettings.h"
 #include "Player.h"
+//====================================================================
 
 UserSettings::UserSettings(Player * pPlayer)
 	: m_pPlayer(pPlayer)

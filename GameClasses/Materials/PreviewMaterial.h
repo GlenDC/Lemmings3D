@@ -11,8 +11,8 @@
 //====================== PreviewMaterial Class =========================
 // Description:
 //		Material for the preview of objectss
-// Last Modification: 30/05/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -40,10 +40,7 @@ private:
 
 	D3DXVECTOR3 m_PreviewPosition;
 
-	// -------------------------
-	// Disabling default copy constructor and default 
-	// assignment operator.
-	// -------------------------
+	// Disabling default copy constructor and default assignment operator.
 	PreviewMaterial(const PreviewMaterial& yRef);									
 	PreviewMaterial& operator=(const PreviewMaterial& yRef);
 };

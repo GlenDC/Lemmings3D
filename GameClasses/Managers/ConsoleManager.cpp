@@ -1,40 +1,47 @@
+//====================== #INCLUDES ===================================
 #include "ConsoleManager.h"
 #include "Game.h"
+//--------------------------------------------------------------------
 #include <algorithm>
+//====================================================================
 
 ConsoleManager* ConsoleManager::m_pInstance = nullptr;
 
+// private constructor
 ConsoleManager::ConsoleManager(void)
 	: m_IsInitialized(false)
 {
 }
 
+// public destructor
 ConsoleManager::~ConsoleManager(void)
 {
 }
 
+// receive a poiner to the object, 
+// and create it first if the object isn't created yet.
+ConsoleManager* ConsoleManager::GetInstance()
+{
+	if (m_pInstance == nullptr)
+	{
+		m_pInstance = new ConsoleManager();
+	}
+
+	return m_pInstance;
+}
+
+// initialize the console manager only once per session.
 void ConsoleManager::Initialize()
 {
-	m_IsInitialized = true;
-}
-
-void ConsoleManager::Update(GameContext& context)
-{
-	/*tstring input;
-	if(tcin.)
+	if(!m_IsInitialized) 
 	{
-		tcin >> input;
-		OutputDebugString(input.append(_T("\n")).c_str());
-	}*/
+		// initialize nothing
+		m_IsInitialized = true;
+	}
 }
 
-void ConsoleManager::Draw(GameContext& context)
-{
-	//nothing to draw
-}
+// update nothing
+void ConsoleManager::Update(GameContext& context) {}
 
-//template <typename R, typename O>
-//void ConsoleManager::Add_Function_0<R, O>(R (*functionPtr)(O* sourcePtr))
-//{
-//
-//}
+// draw nothing
+void ConsoleManager::Draw(GameContext& context) {}

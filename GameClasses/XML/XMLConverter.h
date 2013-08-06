@@ -7,7 +7,7 @@
 // Description:
 //		Convert classes/types from/to XML format strings
 // Last Modification: 11/03/2013
-// Copyright Glen De Cauwsemaecker
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 

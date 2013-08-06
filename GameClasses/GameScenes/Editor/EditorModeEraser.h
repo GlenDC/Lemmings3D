@@ -7,8 +7,8 @@
 //====================== EditorModeEraser Class =======================
 // Description:
 //		Eraser Mode class (edit feature)
-// Last Modification: 09/06/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -23,10 +23,7 @@ public:
 	virtual void DrawMenu(const GameContext & context) {}
 
 private:
-	// -------------------------
-	// Disabling default copy constructor and default 
-	// assignment operator.
-	// -------------------------
+	// Disabling default copy constructor and default assignment operator.
 	EditorModeEraser(const EditorModeEraser& yRef);									
 	EditorModeEraser& operator=(const EditorModeEraser& yRef);
 };

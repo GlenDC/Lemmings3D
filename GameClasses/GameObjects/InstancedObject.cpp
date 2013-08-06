@@ -1,11 +1,14 @@
+//====================== #INCLUDES ===================================
 #include "InstancedObject.h"
 #include "Graphics/GraphicsDevice.h"
-#include "../Materials/InstancedBlockMaterial.h"
 #include "OverlordComponents.h"
-#include "../Lib/LemmingsHelpers.h"
-#include "../Lib/GlobalParameters.h"
 #include "Managers/ContentManager.h"
 #include "Diagnostics/Logger.h"
+//--------------------------------------------------------------------
+#include "../Lib/LemmingsHelpers.h"
+#include "../Lib/GlobalParameters.h"
+#include "../Materials/InstancedBlockMaterial.h"
+//====================================================================
 
 InstancedObject::InstancedObject(const tstring & file)
 	: m_InstanceVec(0)
@@ -82,7 +85,7 @@ int InstancedObject::GetVertexCount() const
 	return VERTEX_COUNT;
 }
 
-bool InstancedObject::AddInstance(const D3DXVECTOR3 & position, int id)
+bool InstancedObject::AddInstance(const D3DXVECTOR3 & position, const int id)
 {
 #ifdef LEVEL_VALIDATION
 	for(UINT i = 0 ; i < m_InstancePositionVec.size() ; ++i)
@@ -120,7 +123,7 @@ bool InstancedObject::RemoveInstance(const D3DXVECTOR3 & position)
 	return false;
 }
 
-bool InstancedObject::EditInstance(const D3DXVECTOR3 & position, int id)
+bool InstancedObject::EditInstance(const D3DXVECTOR3 & position, const int id)
 {
 	for(UINT i = 0 ; i < m_InstanceVec.size() ; ++i)
 	{
@@ -344,7 +347,7 @@ bool InstancedObject::InitializeBuffers(ID3D10Device* device)
 	ASSERT(SUCCEEDED(result), _T("Couldn't create the Vertex buffer!"));
 
     // Set vertex buffer(s)
-   /* UINT offset = 0;
+	/* UINT offset = 0;
 	UINT stride = sizeof(VertexType) * GetVertexCount();*/
 	//GraphicsDevice::GetInstance()->GetDevice()->IASetVertexBuffers( 0, 1, &m_pVertexBuffer , &stride, &offset );
 

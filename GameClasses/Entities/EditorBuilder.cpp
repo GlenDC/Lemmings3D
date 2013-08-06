@@ -1,8 +1,11 @@
+//====================== #INCLUDES ===================================
 #include "EditorBuilder.h"
-#include "../GameObjects/PreviewObject.h"
-#include "../Lib/GlobalParameters.h"
+//--------------------------------------------------------------------
 #include "Components/CameraComponent.h"
 #include "Components/TransformComponent.h"
+//--------------------------------------------------------------------
+#include "../GameObjects/PreviewObject.h"
+#include "../Lib/GlobalParameters.h"
 #include "../Lib/LemmingsHelpers.h"
 #include "../Managers/ScreenManager.h"
 #include "../GameScenes/GameScreen.h"
@@ -11,6 +14,7 @@
 #include "../GameScenes/Editor/EditorModeBuilder.h"
 #include "../GameScenes/Editor/EditorModeEraser.h"
 #include "../GameScenes/Editor/EditorModePainter.h"
+//====================================================================
 
 EditorBuilder::EditorBuilder(GameScreen * pScreen)
 	: m_pPreviewObject(nullptr)
@@ -82,7 +86,7 @@ void EditorBuilder::SetSnapPosition(const GameContext & context, const D3DXVECTO
 }
 
 void EditorBuilder::CalculatePositionFromEnvironment(const GameContext & context, const std::vector<D3DXVECTOR3> & posVec
-	 , UINT length, int accurary, UINT extraDistance, float distanceScalar)
+	 ,UINT length, const int accurary, const UINT extraDistance, const float distanceScalar)
 {
 	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
 	D3DXVECTOR3 worldPos;

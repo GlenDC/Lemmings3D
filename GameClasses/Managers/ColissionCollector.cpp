@@ -1,19 +1,22 @@
+//====================== #INCLUDES ===================================
 #include "ColissionCollector.h"
 #include "Game.h"
-#include "../Entities/Level.h"
 #include "Stopwatch.h"
+//--------------------------------------------------------------------
+#include "../Entities/Level.h"
+#include "../GameScenes/GameScreen.h"
 #include "../GameObjects/PhysicsCube.h"
 #include "../Interfaces/IColissionUser.h"
 #include "../Lib/GlobalParameters.h"
-#include "../GameScenes/GameScreen.h"
+//====================================================================
 
 ColissionCollector* ColissionCollector::m_pInstance = nullptr;
 
 ColissionCollector::ColissionCollector(void)
 	: m_IsInitialized(false)
+	, m_RefreshAllowed(true)
 	, m_pLevel(nullptr)
 	, m_pGameScene(nullptr)
-	, m_RefreshAllowed(true)
 	, m_CurrentCheckNumber(0)
 	, m_FrontBatch(0)
 {
@@ -23,14 +26,21 @@ ColissionCollector::~ColissionCollector(void)
 {
 }
 
+ColissionCollector* ColissionCollector::GetInstance()
+{
+	if (m_pInstance == nullptr)
+	{
+		m_pInstance = new ColissionCollector();
+	}
+
+	return m_pInstance;
+}
+
 void ColissionCollector::Initialize()
 {
 	if(m_IsInitialized == false)
 	{
 		m_IsInitialized = true;
-		/*Stopwatch::GetInstance()->CreateTimer(_T("RefreshColissionList"), 3.0f, false, true, [&] () {
-			m_RefreshAllowed = true;
-		});*/
 	}
 }
 
@@ -42,10 +52,8 @@ void ColissionCollector::Update(GameContext& context)
 	}
 }
 
-void ColissionCollector::Draw(GameContext& context)
-{
-	//nothing to draw
-}
+// nothing to draw
+void ColissionCollector::Draw(GameContext& context) {}
 
 void ColissionCollector::AddUser(IColissionUser * pUser)
 {

@@ -1,19 +1,8 @@
-//--------------------------------------------------------------------------------------
-//   _____     _______ ____  _     ___  ____  ____    _____ _   _  ____ ___ _   _ _____ 
-//  / _ \ \   / / ____|  _ \| |   / _ \|  _ \|  _ \  | ____| \ | |/ ___|_ _| \ | | ____|
-// | | | \ \ / /|  _| | |_) | |  | | | | |_) | | | | |  _| |  \| | |  _ | ||  \| |  _|  
-// | |_| |\ V / | |___|  _ <| |__| |_| |  _ <| |_| | | |___| |\  | |_| || || |\  | |___ 
-//  \___/  \_/  |_____|_| \_\_____\___/|_| \_\____/  |_____|_| \_|\____|___|_| \_|_____|
-//
-// Overlord Engine v0.44
-// Copyright Overlord Brecht Kets & Overlord Thomas Goussaert
-// http://www.digitalartsandentertainment.com/
-//--------------------------------------------------------------------------------------
-
+//====================== #INCLUDES ===================================
 #include "FlatColorMaterial.h"
 #include "Graphics/GraphicsDevice.h"
 #include "Components/ModelComponent.h"
-
+//====================================================================
 
 FlatColorMaterial::FlatColorMaterial():
 	Material((L"./Resources/PosNormCol.fx")),
@@ -23,7 +12,6 @@ FlatColorMaterial::FlatColorMaterial():
 	m_pColorVariable(0)
 {
 }
-
 
 FlatColorMaterial::~FlatColorMaterial(void)
 {

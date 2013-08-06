@@ -1,5 +1,7 @@
+//====================== #INCLUDES ===================================
 #include "InstancedWaterMaterial.h"
 #include "Managers/ContentManager.h"
+//====================================================================
 
 InstancedWaterMaterial::InstancedWaterMaterial()
 	: Material(_T("./Resources/Lemmings3D/shaders/InstancedWaterShader.fx"))
@@ -36,12 +38,12 @@ void InstancedWaterMaterial::SetTexture(const tstring & path)
 	m_pTextureView = ContentManager::Load<ID3D10ShaderResourceView>(path); 
 }
 
-void InstancedWaterMaterial::SetWaterLevel(float waterLevel)
+void InstancedWaterMaterial::SetWaterLevel(const float waterLevel)
 {
 	m_pWaterLevelVariable->SetFloat(waterLevel);
 }
 
-void InstancedWaterMaterial::SetWaterAlpha(float waterAlpha)
+void InstancedWaterMaterial::SetWaterAlpha(const float waterAlpha)
 {
 	m_pWaterAlphaVariable->SetFloat(waterAlpha);
 }
@@ -52,9 +54,9 @@ void InstancedWaterMaterial::LoadEffectVariables()
 	// ...
 
 	//Get texture shader resource
-	m_pShaderTexture = GetEffectShaderResource("Texture", m_pEffect);
-	m_pWaterLevelVariable = GetEffectScalar("WaterLevel", m_pEffect);
-	m_pWaterAlphaVariable = GetEffectScalar("WaterAlpha", m_pEffect);
+	m_pShaderTexture = GetEffectShaderResource(_T("Texture"), m_pEffect);
+	m_pWaterLevelVariable = GetEffectScalar(_T("WaterLevel"), m_pEffect);
+	m_pWaterAlphaVariable = GetEffectScalar(_T("WaterAlpha"), m_pEffect);
 }
 
 void InstancedWaterMaterial::UpdateEffectVariables(ModelComponent* modelComponent)

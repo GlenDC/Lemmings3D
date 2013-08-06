@@ -1,23 +1,29 @@
+//====================== #INCLUDES ===================================
+#include "ColissionCollector.h"
+#include "Game.h"
 #include "ScreenManager.h"
 #include "Helpers/DebugRenderer.h"
-#include "Game.h"
-#include <algorithm>
+//--------------------------------------------------------------------
 #include "../UserInterface/BaseCursor.h"
 #include "../Lib/GlobalParameters.h"
-#include "ColissionCollector.h"
+//--------------------------------------------------------------------
+#include <algorithm>
+//====================================================================
 
 ScreenManager* ScreenManager::m_pInstance = nullptr;
 
 ScreenManager::ScreenManager(void)
-	: m_MainGame(nullptr),
-	m_pControlScreen(nullptr),
-	m_IsInitialized(false),
-	m_Simulated(false),
-	m_Fetched(false),
-	m_PhysicsDisabled(false),
-	m_EnablePhysicsRendering(true),
-	m_pDefaultCursor(nullptr),
-	m_pCurrentCursor(nullptr)
+	: m_MainGame(nullptr)
+	, m_Screens(NUM_SCREENS)
+	, m_ActiveScreens(NUM_SCREENS)
+	, m_pControlScreen(nullptr)
+	, m_IsInitialized(false)
+	, m_Simulated(false)
+	, m_Fetched(false)
+	, m_PhysicsDisabled(false)
+	, m_EnablePhysicsRendering(true)
+	, m_pDefaultCursor(nullptr)
+	, m_pCurrentCursor(nullptr)
 {
 	m_pInputManager = new InputManager();
 }
@@ -31,9 +37,18 @@ ScreenManager::~ScreenManager(void)
 	}
 	m_Screens.clear();
 	m_ActiveScreens.clear();
-	/*m_sPhysicsDebugScreens.clear();*/
 	m_pControlScreen = nullptr;
 	SafeDelete(m_pInputManager);
+}
+
+ScreenManager* ScreenManager::GetInstance()
+{
+	if (m_pInstance == nullptr)
+	{
+		m_pInstance = new ScreenManager();
+	}
+
+	return m_pInstance;
 }
 
 void ScreenManager::AddScreen(BaseScreen* screen)
@@ -53,7 +68,7 @@ void ScreenManager::RemoveScreen(BaseScreen* screen)
 	delete screen;
 }
 
-bool ScreenManager::AddActiveScreen(wstring name)
+bool ScreenManager::AddActiveScreen(const tstring & name)
 {
 	// Check if the scene is in our vector
 	auto chosenScene = *find_if(m_Screens.begin(), m_Screens.end(), 
@@ -69,7 +84,7 @@ bool ScreenManager::AddActiveScreen(wstring name)
     return chosenScene != nullptr;
 }
 
-bool ScreenManager::RemoveActiveScreen(wstring name)
+bool ScreenManager::RemoveActiveScreen(const tstring & name)
 {
 	bool removed = false;
 	m_ActiveScreens.erase(std::remove_if(m_ActiveScreens.begin(), m_ActiveScreens.end(), 
@@ -80,7 +95,7 @@ bool ScreenManager::RemoveActiveScreen(wstring name)
    return removed;
 }
 
-bool ScreenManager::SetControlScreen(wstring name)
+bool ScreenManager::SetControlScreen(const tstring & name)
 {
 	// Check if the scene is in our vector
 	auto chosenScene = *find_if(m_Screens.begin(), m_Screens.end(), 
@@ -96,36 +111,10 @@ bool ScreenManager::SetControlScreen(wstring name)
 
     return chosenScene != nullptr;
 }
-//
-//bool ScreenManager::AddPhysicsDebugScreen(wstring name)
-//{
-//	// Check if the scene is in our vector
-//	auto chosenScene = *find_if(m_Screens.begin(), m_Screens.end(), 
-//         [&name](BaseScreen* scene) { return scene->GetName() == name; });
-//
-//    if (chosenScene != nullptr)
-//    {
-//		m_sPhysicsDebugScreens.push_back(chosenScene);
-//    }
-//
-//    return chosenScene != nullptr;
-//}
-//
-//bool ScreenManager::RemovePhysicsDebugScreen(wstring name)
-//{
-//	bool removed = false;
-//	BaseScreen * controlScreen = m_pControlScreen;
-//	auto chosenScene = *find_if(m_sPhysicsDebugScreens.begin(), m_sPhysicsDebugScreens.end(), 
-//         [&name, &removed](BaseScreen* scene) { 
-//			 removed = true;
-//			 return scene->GetName() == name; 
-//	});
-//
-//   return removed;
-//}
+
 void ScreenManager::Initialize()
 {
-	for(BaseScreen* baseScreen : m_Screens)
+	for(auto baseScreen : m_Screens)
 	{
 		if(baseScreen &&  !baseScreen->m_IsInitialized)
 		{
@@ -138,7 +127,7 @@ void ScreenManager::Initialize()
 
 void ScreenManager::InitializeContent()
 {
-	m_pDefaultCursor = new BaseCursor();
+	m_pDefaultCursor = shared_ptr<BaseCursor>(new BaseCursor());
 	m_pDefaultCursor->Initialize();
 	m_pCurrentCursor = m_pDefaultCursor;
 	
@@ -150,14 +139,6 @@ void ScreenManager::InitializeContent()
 	m_pInputManager->AddInputAction(InputAction((int)InputControls::KB_ALT_DOWN, Down, VK_MENU));
 	m_pInputManager->AddInputAction(InputAction((int)InputControls::KB_CTRL_DOWN, Down, VK_CONTROL));
 	m_pInputManager->AddInputAction(InputAction((int)InputControls::KB_SHIFT_DOWN, Down, VK_SHIFT));
-
-	/*for(UINT i = 0 ; i < m_Screens.size() ; ++i)
-	{
-		m_Screens[i]->m_pInputManager->AddInputAction(InputAction(0, Pressed, -1, VK_LBUTTON));
-		m_Screens[i]->m_pInputManager->AddInputAction(InputAction(1, Pressed, -2, VK_RBUTTON));
-		m_Screens[i]->m_pInputManager->AddInputAction(InputAction(2, Down, -1, VK_LBUTTON));
-		m_Screens[i]->m_pInputManager->AddInputAction(InputAction(3, Down, -2, VK_RBUTTON));
-	}*/
 }
 
 void ScreenManager::Update(GameContext& context)
@@ -239,7 +220,6 @@ void ScreenManager::DrawCursor(const GameContext & context)
 D3DXVECTOR2 ScreenManager::GetCursorPosition() const
 {
 	return m_pCurrentCursor->GetCursorPosition();
-	//return D3DXVECTOR2(0,0);
 }
 
 bool ScreenManager::LeftMouseButtonPressed() const
@@ -262,7 +242,7 @@ bool ScreenManager::RightMouseButtonDown() const
 	return m_RMBD;
 }
 
-void ScreenManager::SetPhysicsDrawEnabled(bool enable)
+void ScreenManager::SetPhysicsDrawEnabled(const bool enable)
 {
 	m_EnablePhysicsRendering = enable;
 }

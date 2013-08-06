@@ -7,6 +7,8 @@
 #include "Managers/ContentManager.h"
 #include "Scenegraph/GameObject.h"
 #include "../GameObjects/LemmingCharacter.h"
+#include "Helpers/SpriteFont.h"
+#include "../Managers/SpritefontManager.h"
 
 Player::Player(const tstring & name, GameScene *pScene)
 	: m_Name(name)
@@ -28,8 +30,7 @@ Player::Player(const tstring & name, GameScene *pScene)
 
 	m_pSelectionMenu = new UIDockInterface(60, 0, 300, 60, nullptr, nullptr);
 	m_pSelectionMenu->AddImage(0,0,_T("Asel_Avatar"), _T("Selection_Avatar.png"));
-	SpriteFont * pFont35(nullptr);
-	pFont35 = ContentManager::Load<SpriteFont>(_T("./Resources/Lemmings3D/fonts/GameOver_35.fnt"));
+	auto pFont35 = SpritefontManager::GetInstance()->CreateOrGet(_T("GameOver"), 35);
 	m_pSelectionMenu->AddTextField(50,-3,50,35,_T("Asel_Name"), _T("Lemming"), D3DXCOLOR(0.85f, 0.85f, 0.85f, 1.0f),pFont35);
 	m_pSelectionMenu->Initialize();
 }

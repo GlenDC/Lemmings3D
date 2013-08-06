@@ -1,20 +1,18 @@
-//--------------------------------------------------------------------------------------
-//   _____     _______ ____  _     ___  ____  ____    _____ _   _  ____ ___ _   _ _____ 
-//  / _ \ \   / / ____|  _ \| |   / _ \|  _ \|  _ \  | ____| \ | |/ ___|_ _| \ | | ____|
-// | | | \ \ / /|  _| | |_) | |  | | | | |_) | | | | |  _| |  \| | |  _ | ||  \| |  _|  
-// | |_| |\ V / | |___|  _ <| |__| |_| |  _ <| |_| | | |___| |\  | |_| || || |\  | |___ 
-//  \___/  \_/  |_____|_| \_\_____\___/|_| \_\____/  |_____|_| \_|\____|___|_| \_|_____|
-//
-// Overlord Engine v0.44
-// Copyright Overlord Brecht Kets & Overlord Thomas Goussaert
-// http://www.digitalartsandentertainment.com/
-//--------------------------------------------------------------------------------------
-
-#pragma once
+//====================== #INCLUDES ===================================
 #include "BaseScreen.h"
+#include <memory>
+#include "Helpers/SpriteFont.h"
+//====================================================================
+
+//====================== MenuScreen Class =========================
+// Description:
+//		Screen Class for the main menu
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
+// www.glendc.com
+//====================================================================
 
 class ColissionEntity;
-class SpriteFont;
 
 class MenuScreen: public BaseScreen
 {
@@ -30,6 +28,9 @@ public:
 	virtual void Deactivated();
 
 private:
-	SpriteFont * m_pSpriteFont;
-};
+	shared_ptr<SpriteFont> m_pSpriteFont;
 
+	// Disabling default copy constructor and default assignment operator.
+	MenuScreen(const MenuScreen& yRef);									
+	MenuScreen& operator=(const MenuScreen& yRef);
+};

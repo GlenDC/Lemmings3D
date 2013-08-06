@@ -1,17 +1,16 @@
-//--------------------------------------------------------------------------------------
-//   _____     _______ ____  _     ___  ____  ____    _____ _   _  ____ ___ _   _ _____ 
-//  / _ \ \   / / ____|  _ \| |   / _ \|  _ \|  _ \  | ____| \ | |/ ___|_ _| \ | | ____|
-// | | | \ \ / /|  _| | |_) | |  | | | | |_) | | | | |  _| |  \| | |  _ | ||  \| |  _|  
-// | |_| |\ V / | |___|  _ <| |__| |_| |  _ <| |_| | | |___| |\  | |_| || || |\  | |___ 
-//  \___/  \_/  |_____|_| \_\_____\___/|_| \_\____/  |_____|_| \_|\____|___|_| \_|_____|
-//
-// Overlord Engine v0.44
-// Copyright Overlord Brecht Kets & Overlord Thomas Goussaert
-// http://www.digitalartsandentertainment.com/
-//--------------------------------------------------------------------------------------
-
 #pragma once
+
+//====================== #INCLUDES ===================================
 #include "Graphics/Material.h"
+//====================================================================
+
+//====================== SpikeyMaterial Class =========================
+// Description:
+//		Testmaterial, for a spiky lab!
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
+// www.glendc.com
+//====================================================================
 
 class GraphicsDevice;
 class ModelComponent;
@@ -22,8 +21,8 @@ public:
 	SpikeyMaterial(void);
 	virtual ~SpikeyMaterial(void);
 
-	void SetLightDirection(D3DXVECTOR3 lightDirection){m_vecLightDirection = lightDirection;}
-	void SetColor(D3DXCOLOR color){m_Color = color;}
+	void SetLightDirection(const D3DXVECTOR3 & lightDirection){m_vecLightDirection = lightDirection;}
+	void SetColor(const D3DXCOLOR & color){m_Color = color;}
 
 protected:
 	virtual void LoadEffectVariables();

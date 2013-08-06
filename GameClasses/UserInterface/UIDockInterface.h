@@ -4,6 +4,7 @@
 #include "Helpers/stdafx.h"
 #include "Helpers/D3DUtil.h"
 #include "Helpers/GeneralStructs.h"
+#include "Helpers/SpriteFont.h"
 #include "Components/CameraComponent.h"
 #include "Managers/InputManager.h"
 #include "Graphics/SpriteBatch.h"
@@ -29,8 +30,8 @@ class UICounter;
 //		This is a part of the userinterface. Elements are collected within
 //		this interface. Their position is relative to this dock, their
 //		scale is relative to the screen scale and the target resolution.
-// Last Modification: 20/05/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -42,8 +43,8 @@ class UIDockInterface
 public:
     // constructor creating the element list, the pos and dimension 
     // rectangle and setting the variables to a initialization value.
-	UIDockInterface(int x, int y, int width, int height, 
-		SpriteFont * pDefaultFont, UIDockInterface * pParrent = nullptr);
+	UIDockInterface(const int x, const int y, const int width, const int height, 
+		shared_ptr<SpriteFont> pDefaultFont,  const UIDockInterface * pParrent = nullptr);
 
 	~UIDockInterface();
 	
@@ -77,10 +78,10 @@ public:
 		bool disabled = false, bool toggle_on = false);
     // Create a button with a textfield on top of it (child class of a normal button)
 	UIButtonWT * AddButtonWT(int x, int y, const tstring & name, const tstring & asset_file, UINT textX, UINT textY, const tstring & text,
-		const D3DXCOLOR & text_normal, const D3DXCOLOR & text_hover, const D3DXCOLOR & text_click, SpriteFont *pFont, function<void()> select_function, 
+		const D3DXCOLOR & text_normal, const D3DXCOLOR & text_hover, const D3DXCOLOR & text_click, shared_ptr<SpriteFont> pFont, function<void()> select_function, 
 		bool disabled = false, bool toggle_on = false);
     // Create an Amount Buttons
-	AmountButton * AddAmountButton(int x, int y, const tstring & name, const tstring & asset_file, int amount, SpriteFont *pFont, function<void()> select_function, 
+	AmountButton * AddAmountButton(int x, int y, const tstring & name, const tstring & asset_file, int amount, shared_ptr<SpriteFont> pFont, function<void()> select_function, 
 		bool disabled = false, bool toggle_on = false);
     // Create an Amount Buttons with default font
 	AmountButton * AddAmountButton(int x, int y, const tstring & name, const tstring & asset_file, int amount, function<void()> select_function, 
@@ -93,7 +94,7 @@ public:
                             const tstring & text, const D3DXCOLOR & text_color);
     // Create a textfield
     void AddTextField(int x, int y, int width, int height, const tstring & name,
-                            const tstring & text, const D3DXCOLOR & text_color, SpriteFont * pFont);
+                            const tstring & text, const D3DXCOLOR & text_color, shared_ptr<SpriteFont> pFont);
     // Create an image
     void AddImage(int x, int y, const tstring & name, const tstring & asset_file);
     // Slider for menu's that work with a mouse.
@@ -142,7 +143,7 @@ public:
     // Set all elements enabled.
     void EnableAllElements();
     // Set the parrent uidockinterface of this dockinterface
-    void SetParrent(UIDockInterface * parrent);
+    void SetParrent(const UIDockInterface * pParrent);
 	// Set Visible dock
 	void SetVisible(bool visible) { m_Visible = visible; }
 
@@ -176,9 +177,9 @@ protected:
 	bool m_IsInitialized;
     // As a dockinterface can also be a child from another
     // Dockinterface, here this wil lbe taken into account.
-	UIDockInterface * m_pParrent;
+	const UIDockInterface * m_pParrent;
     // Font to be used for this dockInterface
-	SpriteFont * m_pDefaultFont;
+	shared_ptr<SpriteFont> m_pDefaultFont;
 	//if false, compleet dock doesnt get drawn!
 	bool m_Visible;
 

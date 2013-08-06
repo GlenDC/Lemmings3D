@@ -9,8 +9,8 @@
 //====================== EditorCamera Class =========================
 // Description:
 //		Camera for the LevelEditor 
-// Last Modification: 29/05/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -33,12 +33,12 @@ public:
 	int GetMoveSpeed() const { return (int)m_MoveSpeed; }
 	const float & GetRotSpeed() const { return m_RotationSpeed; }
 
-	void AllowCameraControls(bool allow) { m_CanMove = allow; }
+	void AllowCameraControls(const bool allow) { m_CanMove = allow; }
 
 	const float & GetYaw() const { return m_TotalYaw; }
 	const float & GetPitch() const { return m_TotalPitch; }
 
-	void SetInformation(const D3DXVECTOR3 & pos, float yaw, float pitch, float speed, float rotSpeed);
+	void SetInformation(const D3DXVECTOR3 & pos, const float yaw, const float pitch, const float speed, const float rotSpeed);
 
 protected:
 
@@ -52,10 +52,7 @@ private:
 
 	bool m_CanMove;
 
-	// -------------------------
-	// Disabling default copy constructor and default 
-	// assignment operator.
-	// -------------------------
+	// Disabling default copy constructor and default assignment operator.
 	EditorCamera(const EditorCamera& yRef);									
 	EditorCamera& operator=(const EditorCamera& yRef);
 };

@@ -14,8 +14,8 @@ class RigidBodyComponent;
 //====================== PhysicsCube Class =========================
 // Description:
 //		Material for the preview of objectss
-// Last Modification: 08/06/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -24,7 +24,7 @@ class GameScreen;
 class PhysicsCube : public GameObject
 {
 public:
-	explicit PhysicsCube(const D3DXVECTOR3 & pos, float size);
+	explicit PhysicsCube(const D3DXVECTOR3 & pos, const float size);
 	virtual ~PhysicsCube(void);
 
 	virtual void Initialize();
@@ -37,10 +37,7 @@ private:
 	D3DXVECTOR3 m_Position;
 	float m_Size;
 
-	// -------------------------
-	// Disabling default copy constructor and default 
-	// assignment operator.
-	// -------------------------
+	// Disabling default copy constructor and default assignment operator.
 	PhysicsCube(const PhysicsCube& yRef);									
 	PhysicsCube& operator=(const PhysicsCube& yRef);
 };

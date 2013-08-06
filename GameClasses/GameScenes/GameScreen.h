@@ -1,22 +1,35 @@
 #pragma once
+
+//====================== #INCLUDES ===================================
 #include "BaseScreen.h"
 #include "Graphics/SpriteBatch.h"
+#include "Helpers/SpriteFont.h"
+#include "../Entities/Level.h"
 
-class GameEntity;
+#include <memory>
+//====================================================================
+
+//====================== GameScreen Class =========================
+// Description:
+//		Main screen for the game (Lemmings 3D)
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
+// www.glendc.com
+//====================================================================
+
 class ColissionEntity;
-class GameModeScreen;
-class EditorBuilder;
-class Level;
 class EditorCamera;
-class UIDockInterface;
-class SpriteFont;
-class TimeManager;
-class Player;
-class StatusReport;
-class RisingWater;
+class EditorBuilder;
+class GameEntity;
+class GameModeScreen;
 class LemmingCharacter;
+class Player;
+class RisingWater;
+class StatusReport;
+class TimeManager;
+class UIDockInterface;
 
-class GameScreen: public BaseScreen
+class GameScreen : public BaseScreen
 {
 public:
 	GameScreen();
@@ -29,16 +42,16 @@ public:
 	virtual void Activated();
 	virtual void Deactivated();
 
-	void PauseGame(bool paused);
+	void PauseGame(const bool paused);
 
 	bool IsPaused() const;
 
 	void BroadCast(const tstring & status);
 	void ReportStatus(const tstring & status);
 
-	void AddEnvironmentCube(const D3DXVECTOR3 & pos, int id);
+	void AddEnvironmentCube(const D3DXVECTOR3 & pos, const int id);
 	bool RemoveEnvironmentCube(const D3DXVECTOR3 & pos);
-	bool PaintEnvironmentCube(const D3DXVECTOR3 & pos, int id);
+	bool PaintEnvironmentCube(const D3DXVECTOR3 & pos, const int id);
 	void RecheckEnvironment();
 
 private:
@@ -61,17 +74,19 @@ private:
 
 	GameModeScreen *m_pGame;
 	EditorBuilder *m_pBuilder;
-	Level * m_pLevel;
+	shared_ptr<Level> m_pLevel;
 	EditorCamera *m_pCamera;
 
 	UIDockInterface *m_pHeaderMenu;
 	UIDockInterface *m_pGameMenu;
 
-	SpriteFont *m_pDefaultFont;
+	shared_ptr<SpriteFont> m_pDefaultFont;
 
 	Player * m_pPlayer;
 
-	LemmingCharacter * m_pLemmingsCharacter, *m_pLemmingsCharacter1, *m_pLemmingsCharacter2;
+	LemmingCharacter	* m_pLemmingsCharacter, 
+						*m_pLemmingsCharacter1, 
+						*m_pLemmingsCharacter2;
 
 	StatusReport * m_pStatusReport;
 
@@ -90,5 +105,7 @@ private:
 
 	friend class TimeManager;
 
+	// Disabling default copy constructor and default assignment operator.
+	GameScreen(const GameScreen& yRef);									
+	GameScreen& operator=(const GameScreen& yRef);
 };
-

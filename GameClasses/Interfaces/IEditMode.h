@@ -11,11 +11,12 @@ class EditorBuilder;
 //====================== EditMode Interface ============================
 // Description:
 //		Interface for all EditorModes
-// Last Modification: 09/06/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
+// Base Class
 class IEditMode
 {
 public:
@@ -32,10 +33,7 @@ protected:
 	EditorBuilder * m_pEditor;
 
 private:
-	// -------------------------
-	// Disabling default copy constructor and default 
-	// assignment operator.
-	// -------------------------
+	// Disabling default copy constructor and default assignment operator.
 	IEditMode(const IEditMode& yRef);									
 	IEditMode& operator=(const IEditMode& yRef);
 };

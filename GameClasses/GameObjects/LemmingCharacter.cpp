@@ -1,8 +1,12 @@
+//====================== #INCLUDES ===================================
 #include "LemmingCharacter.h"
-#include "../Managers/ColissionCollector.h"
+//--------------------------------------------------------------------
 #include "OverlordComponents.h"
 #include "Managers/PhysicsManager.h"
+//--------------------------------------------------------------------
 #include "../Materials/SkinnedMaterial.h"
+#include "../Managers/ColissionCollector.h"
+//====================================================================
 
 LemmingCharacter::LemmingCharacter(const D3DXVECTOR3 & startPos)
 	: m_Position(startPos)
@@ -80,12 +84,12 @@ float LemmingCharacter::GetCURange() const
 	return (float)CURANGE;
 }
 
-void LemmingCharacter::AddToInventory(int itemID)
+void LemmingCharacter::AddToInventory(const int itemID)
 {
 	m_Inventory.push_back(itemID);
 }
 
-bool LemmingCharacter::HasItem(int itemID)
+bool LemmingCharacter::HasItem(const int itemID)
 {
 	for(UINT i = 0 ; i < m_Inventory.size() ; ++i)
 	{

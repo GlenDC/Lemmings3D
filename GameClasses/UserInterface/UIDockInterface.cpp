@@ -1,14 +1,18 @@
+//====================== #INCLUDES ===================================
 #include "UIDockInterface.h"
+//--------------------------------------------------------------------
 #include "../Lib/GlobalParameters.h"
 #include "../Lib/LemmingsHelpers.h"
-
+//--------------------------------------------------------------------
 #include "UIButtonWT.h"
 #include "UIToggleButton.h"
 #include "UIImage.h"
 #include "UITextField.h"
 #include "AmountButton.h"
+//====================================================================
 
-UIDockInterface::UIDockInterface(int x, int y, int width, int height, SpriteFont *pDefaultFont, UIDockInterface * pParrent)
+UIDockInterface::UIDockInterface(const int x, const int y, const int width, const int height, 
+								 shared_ptr<SpriteFont> pDefaultFont, const UIDockInterface * pParrent)
 	: m_ElementZone(x, y, width, height)
 	, m_TargetScreenSize(1920, 1080)
 	, m_ScreenScale(1,1)
@@ -127,7 +131,7 @@ UIButtonWT * UIDockInterface::AddButtonWT(int x, int y, const tstring & name, co
     return button;
 }
 
-AmountButton * UIDockInterface::AddAmountButton(int x, int y, const tstring & name, const tstring & asset_file, int amount, SpriteFont *pFont, function<void()> select_function, 
+AmountButton * UIDockInterface::AddAmountButton(int x, int y, const tstring & name, const tstring & asset_file, int amount, shared_ptr<SpriteFont> pFont, function<void()> select_function, 
 	bool disabled, bool toggle_on)
 {
 	tstring file(asset_file);
@@ -154,7 +158,7 @@ AmountButton * UIDockInterface::AddAmountButton(int x, int y, const tstring & na
 }
 
 UIButtonWT * UIDockInterface::AddButtonWT(int x, int y, const tstring & name, const tstring & asset_file, UINT textX, UINT textY, const tstring & text,
-		const D3DXCOLOR & text_normal, const D3DXCOLOR & text_hover, const D3DXCOLOR & text_click, SpriteFont *pFont, function<void()> select_function, 
+		const D3DXCOLOR & text_normal, const D3DXCOLOR & text_hover, const D3DXCOLOR & text_click, shared_ptr<SpriteFont> pFont, function<void()> select_function, 
 		bool disabled, bool toggle_on)
 {
 	tstring file(asset_file);
@@ -186,7 +190,7 @@ void UIDockInterface::AddTextField(int x, int y, int width, int height, const ts
 }
 
 void UIDockInterface::AddTextField(int x, int y, int width, int height, const tstring & name,
-                            const tstring & text, const D3DXCOLOR & text_color, SpriteFont * pFont)
+                            const tstring & text, const D3DXCOLOR & text_color, shared_ptr<SpriteFont> pFont)
 {
 	UITextField * text_field = new UITextField(x, y, width, name, this, text, pFont, text_color);
 	m_ElementList.insert(std::pair<UINT, UIElement*>(LemmingsHelpers::GenerateHash(name), text_field));
@@ -374,9 +378,9 @@ void UIDockInterface::EnableAllElements()
 	}
 }
 
-void UIDockInterface::SetParrent(UIDockInterface * parrent)
+void UIDockInterface::SetParrent(const UIDockInterface * pParrent)
 {
-	m_pParrent = parrent;
+	m_pParrent = pParrent;
 }
 
 LemmingsHelpers::Rect UIDockInterface::GetRealElementZone() const

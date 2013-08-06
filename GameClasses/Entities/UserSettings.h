@@ -5,11 +5,11 @@
 #include "ParameterClass.h"
 //====================================================================
 
-//====================== UserSettings Class ==============
+//====================== UserSettings Class ==========================
 // Description:
 //		User settings get auto saved and are linked to a player account
-// Last Modification: 05/06/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
@@ -45,10 +45,7 @@ private:
 	ParameterClass * m_pParameters;
 	Player *m_pPlayer;
 
-	// -------------------------
-	// Disabling default copy constructor and default 
-	// assignment operator.
-	// -------------------------
+	// Disabling default copy constructor and default assignment operator.
 	UserSettings(const UserSettings& t);
 	UserSettings& operator=(const UserSettings& t);
 };

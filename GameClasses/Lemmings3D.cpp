@@ -56,7 +56,7 @@ void Lemmings3D::Initialize()
 	//Lemmings3D
 	ScreenManager::GetInstance()->AddScreen(new GameScreen());
 	ScreenManager::GetInstance()->AddScreen(new MenuScreen());
-	ScreenManager::GetInstance()->AddActiveScreen(L"GameScreen");
+	ScreenManager::GetInstance()->AddActiveScreen(_T("GameScreen"));
 	
 	////Lab Week1
 	//ScreenManager::GetInstance()->AddScreen(new Week1());

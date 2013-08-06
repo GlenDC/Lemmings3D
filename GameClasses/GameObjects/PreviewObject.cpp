@@ -1,10 +1,14 @@
+//====================== #INCLUDES ===================================
 #include "PreviewObject.h"
-#include "Graphics/GraphicsDevice.h"
-#include "../Materials/PreviewMaterial.h"
+//--------------------------------------------------------------------
 #include "OverlordComponents.h"
+#include "Graphics/GraphicsDevice.h"
+#include "Managers/ContentManager.h"
+//--------------------------------------------------------------------
+#include "../Materials/PreviewMaterial.h"
 #include "../Lib/LemmingsHelpers.h"
 #include "../Lib/GlobalParameters.h"
-#include "Managers/ContentManager.h"
+//====================================================================
 
 PreviewObject::PreviewObject(void)
 	: m_pVertexBuffer(nullptr)

@@ -9,11 +9,12 @@
 // Description:
 //		Interface for a user of colissionObjects
 //		Around this Object colission components will be created
-// Last Modification: 09/06/2013
-// Copyright Glen De Cauwsemaecker
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
+// Policy Class
 class IColissionUser
 {
 public:

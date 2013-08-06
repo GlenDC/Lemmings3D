@@ -86,6 +86,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameClasses\Entities\EditorBuilder.cpp" />
+    <ClCompile Include="GameClasses\Entities\HashIdentifier.cpp" />
     <ClCompile Include="GameClasses\Entities\Level.cpp" />
     <ClCompile Include="GameClasses\Entities\ParameterClass.cpp" />
     <ClCompile Include="GameClasses\Entities\Player.cpp" />
@@ -96,7 +97,6 @@
     <ClCompile Include="GameClasses\Entities\Timer.cpp" />
     <ClCompile Include="GameClasses\Entities\UserSettings.cpp" />
     <ClCompile Include="GameClasses\GameObjects\ColissionEntity.cpp" />
-    <ClCompile Include="GameClasses\GameObjects\CubeColission.cpp" />
     <ClCompile Include="GameClasses\GameObjects\EditorCamera.cpp" />
     <ClCompile Include="GameClasses\GameObjects\GameEntity.cpp" />
     <ClCompile Include="GameClasses\GameObjects\InstancedObject.cpp" />
@@ -137,7 +137,8 @@
     <ClCompile Include="GameClasses\Managers\ColissionCollector.cpp" />
     <ClCompile Include="GameClasses\Managers\ConsoleManager.cpp" />
     <ClCompile Include="GameClasses\Managers\ScreenManager.cpp" />
-    <ClCompile Include="GameClasses\Managers\ManagerInterface.cpp" />
+    <ClCompile Include="GameClasses\Managers\IManager.cpp" />
+    <ClCompile Include="GameClasses\Managers\SpritefontManager.cpp" />
     <ClCompile Include="GameClasses\Managers\Stopwatch.cpp" />
     <ClCompile Include="GameClasses\Managers\TimeManager.cpp" />
     <ClCompile Include="GameClasses\Materials\FlatColorMaterial.cpp" />
@@ -161,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameClasses\Entities\EditorBuilder.h" />
+    <ClInclude Include="GameClasses\Entities\HashIdentifier.h" />
     <ClInclude Include="GameClasses\Entities\Level.h" />
     <ClInclude Include="GameClasses\Entities\ParameterClass.h" />
     <ClInclude Include="GameClasses\Entities\Player.h" />
@@ -171,7 +173,6 @@
     <ClInclude Include="GameClasses\Entities\Timer.h" />
     <ClInclude Include="GameClasses\Entities\UserSettings.h" />
     <ClInclude Include="GameClasses\GameObjects\ColissionEntity.h" />
-    <ClInclude Include="GameClasses\GameObjects\CubeColission.h" />
     <ClInclude Include="GameClasses\GameObjects\EditorCamera.h" />
     <ClInclude Include="GameClasses\GameObjects\GameEntity.h" />
     <ClInclude Include="GameClasses\GameObjects\InstancedObject.h" />
@@ -216,7 +217,8 @@
     <ClInclude Include="GameClasses\Managers\ColissionCollector.h" />
     <ClInclude Include="GameClasses\Managers\ConsoleManager.h" />
     <ClInclude Include="GameClasses\Managers\ScreenManager.h" />
-    <ClInclude Include="GameClasses\Managers\ManagerInterface.h" />
+    <ClInclude Include="GameClasses\Managers\IManager.h" />
+    <ClInclude Include="GameClasses\Managers\SpritefontManager.h" />
     <ClInclude Include="GameClasses\Managers\Stopwatch.h" />
     <ClInclude Include="GameClasses\Managers\TimeManager.h" />
     <ClInclude Include="GameClasses\Materials\FlatColorMaterial.h" />

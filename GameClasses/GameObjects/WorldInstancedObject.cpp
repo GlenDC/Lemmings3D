@@ -1,9 +1,14 @@
+//====================== #INCLUDES ===================================
 #include "WorldInstancedObject.h"
+//--------------------------------------------------------------------
 #include "Graphics/GraphicsDevice.h"
-#include <algorithm>
+//--------------------------------------------------------------------
 #include "../Lib/GlobalParameters.h"
 #include "../Lib/LemmingsHelpers.h"
 #include "../Materials/InstancedBlockMaterial.h"
+//--------------------------------------------------------------------
+#include <algorithm>
+//====================================================================
 
 #ifndef device 
 #define device GraphicsDevice::GetInstance()->GetDevice() 

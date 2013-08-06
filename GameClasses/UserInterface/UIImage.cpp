@@ -1,9 +1,13 @@
+//====================== #INCLUDES ===================================
 #include "UIIMage.h"
-#include "../Lib/GlobalParameters.h"
+//--------------------------------------------------------------------
 #include "Managers/ContentManager.h"
+//--------------------------------------------------------------------
+#include "../Lib/GlobalParameters.h"
 #include "../Lib/LemmingsHelpers.h"
+//====================================================================
 
-UIImage::UIImage(int x, int y, tstring name, UIDockInterface * pParrent, tstring asset_file)
+UIImage::UIImage(const int x, const int y, const tstring & name, const UIDockInterface * pParrent, const tstring & asset_file)
     :UIElement(x, y, 0, 0, name, pParrent)
 {
 	m_pTexture = ContentManager::Load<ID3D10ShaderResourceView>(asset_file);

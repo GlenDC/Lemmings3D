@@ -1,12 +1,17 @@
+//====================== #INCLUDES ===================================
 #include "StatusReport.h"
+//--------------------------------------------------------------------
 #include "Helpers/GeneralStructs.h"
+//--------------------------------------------------------------------
 #include "../Lib/GlobalParameters.h"
 #include "../Lib/LemmingsHelpers.h"
 #include "../Managers/Stopwatch.h"
 #include "../GameScenes/GameScreen.h"
+//--------------------------------------------------------------------
 #include <ctime>
+//====================================================================
 
-StatusReport::StatusReport(GameScreen * pScreen, bool save_log)
+StatusReport::StatusReport(GameScreen * pScreen, const bool save_log)
 	: m_StatusQueue()
 	, m_SaveLog(save_log)
 	, m_AllowBroadcast(true)

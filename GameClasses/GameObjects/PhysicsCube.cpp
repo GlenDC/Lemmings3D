@@ -1,9 +1,12 @@
+//====================== #INCLUDES ===================================
 #include "PhysicsCube.h"
+//--------------------------------------------------------------------
 #include "Components/Physics/BoxColliderComponent.h"
 #include "Components/Physics/RigidBodyComponent.h"
 #include "Components/TransformComponent.h"
+//====================================================================
 
-PhysicsCube::PhysicsCube(const D3DXVECTOR3 & pos, float size)
+PhysicsCube::PhysicsCube(const D3DXVECTOR3 & pos, const float size)
 	: GameObject()
 	, m_pCollider(nullptr)
 	, m_pRigidBody(nullptr)

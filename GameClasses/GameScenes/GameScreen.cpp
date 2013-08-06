@@ -1,5 +1,7 @@
+//====================== #INCLUDES ===================================
 #include "GameScreen.h"
 #include "GameModeScreen.h"
+#include "Game.h"
 
 #include "OverlordComponents.h"
 #include "Scenegraph/GameObject.h"
@@ -10,27 +12,28 @@
 #include "Helpers/GeneralStructs.h"
 #include "Managers/ContentManager.h"
 #include "Diagnostics/FPS.h"
-#include "Game.h"
-
-#include "../GameObjects/GameEntity.h"
-#include "../GameObjects/ColissionEntity.h"
-#include "../GameObjects/EditorCamera.h"
-#include "../GameObjects/LemmingCharacter.h"
+//--------------------------------------------------------------------
 #include "../Entities/ParameterClass.h"
 #include "../Entities/Level.h"
 #include "../Entities/Player.h"
 #include "../Entities/StatusReport.h"
 #include "../Entities/EditorBuilder.h"
+#include "../Entities/RisingWater.h"
+#include "../GameObjects/GameEntity.h"
+#include "../GameObjects/ColissionEntity.h"
+#include "../GameObjects/EditorCamera.h"
+#include "../GameObjects/LemmingCharacter.h"
 #include "../Helpers/HeightmapParser.h"
+#include "../Lib/GlobalParameters.h" 
+#include "../Lib/LemmingsHelpers.h"
 #include "../Managers/ScreenManager.h"
 #include "../Managers/TimeManager.h"
 #include "../Managers/Stopwatch.h"
+#include "../Managers/SpritefontManager.h"
 #include "../Managers/ColissionCollector.h"
-#include "../Lib/GlobalParameters.h" 
-#include "../Lib/LemmingsHelpers.h"
 #include "../UserInterface/UIDockInterface.h"
 #include "../XML/XMLConverter.h"
-#include "../Entities/RisingWater.h"
+//====================================================================
 
 GameScreen::GameScreen(void)
 	:BaseScreen(_T("GameScreen"), _T("Play Lemmings3D"), true)
@@ -47,12 +50,15 @@ GameScreen::GameScreen(void)
 	,m_pLemmingsCharacter2(nullptr)
 	,m_pStatusReport(nullptr)
 	,m_AppMode(AppMode::Game)
-	,m_pRisingWater(nullptr)
 	,m_PreviousAppMode(AppMode::Game)
+	,m_pRisingWater(nullptr)
 	,m_RefreshLevelTimer(true)
+	,m_BuildModePosRefresh(false)
 	,m_CameraFOV(70.0f)
 	,m_CameraSpeed(1.0f)
 	,m_CameraZoom(0)
+	,m_pCameraRotationTexture(nullptr)
+	,m_CameraRotationSprite()
 {
 	TimeManager::GetInstance()->SetGameScreen(this);
 }
@@ -63,10 +69,7 @@ GameScreen::~GameScreen(void)
 	SafeDelete(m_pStatusReport);
 	SafeDelete(m_pGame);
 	SafeDelete(m_pBuilder);
-	SafeDelete(m_pLevel);
 	//Unset the camera component of the scene?!
-	SafeDelete(m_pHeaderMenu);
-	SafeDelete(m_pGameMenu);
 	SafeDelete(m_pPlayer);
 
 	TimeManager::GetInstance()->SetGameScreen(nullptr);
@@ -88,7 +91,7 @@ void GameScreen::Initialize()
 	AddSceneObject(m_pCamera);
 	m_pCamera->GetComponent<CameraComponent>()->SetActive();
 
-	m_pDefaultFont = ContentManager::Load<SpriteFont>(_T("./Resources/Lemmings3D/fonts/8BitFont.fnt"));
+	m_pDefaultFont = SpritefontManager::GetInstance()->CreateOrGet(_T("8BitFont"));
 
 	m_pPlayer = new Player(GlobalParameters::GetParameters()->GetParameter<tstring>(_T("DEFAULT_PLAYER")),this);
 
@@ -105,7 +108,7 @@ void GameScreen::Initialize()
 
 	m_pBuilder = new EditorBuilder(this);
 
-	m_pLevel = new Level(_T("TestLevel"), this);
+	m_pLevel = shared_ptr<Level>(new Level(_T("TestLevel"), this));
 	m_pLevel->Initialize();
 
 	m_pRisingWater = new RisingWater(m_pLevel->GetMinDepth(), m_pLevel->GetMaxDepth());
@@ -524,8 +527,7 @@ void GameScreen::AddHeaderMenuElements()
 		});
 	});
 	
-	SpriteFont * pFont35(nullptr);
-	pFont35 = ContentManager::Load<SpriteFont>(_T("./Resources/Lemmings3D/fonts/GameOver_35.fnt"));
+	auto pFont35 = SpritefontManager::GetInstance()->CreateOrGet(_T("GameOver"), 35);
 	m_pHeaderMenu->AddTextField(5,-5,100,30,_T("ATxt_FPS"), _T("60"), D3DXCOLOR(1,1,0,1), pFont35);
 
 	//GameSpeed
@@ -544,13 +546,11 @@ void GameScreen::AddMainMenuElements()
 	m_pGameMenu->AddTextField(850, 130, 200, 30, _T("Main_TextField_Level"), _T("LevelName"), D3DXCOLOR(0.329f,0.251f,0.812f,1));
 
 	//Status Bar
-	SpriteFont * pFont(nullptr);
-	pFont = ContentManager::Load<SpriteFont>(_T("./Resources/Lemmings3D/fonts/GameOver.fnt"));
+	auto pFont = SpritefontManager::GetInstance()->CreateOrGet(_T("GameOver"));
 	m_pGameMenu->AddTextField(5, 120, 200, 30, _T("Main_TextField_Status"), _T("[00:00] TO DO CREATE STATUS SYSTEM!"), D3DXCOLOR(0.184f,0.565f,0.22f,1),pFont);
 
 	//Counter Clock
-	SpriteFont * pFont35(nullptr);
-	pFont35 = ContentManager::Load<SpriteFont>(_T("./Resources/Lemmings3D/fonts/GameOver_35.fnt"));
+	auto pFont35 = SpritefontManager::GetInstance()->CreateOrGet(_T("GameOver"), 35);
 	m_pGameMenu->AddTextField(500, 109, 200, 30, _T("Main_TextField_Clock_Minuts"), _T("55"), D3DXCOLOR(0.85f, 0.85f, 0.85f, 1.0f),pFont35);
 	m_pGameMenu->AddTextField(576, 109, 200, 30, _T("Main_TextField_Clock_Seconds"), _T("55"), D3DXCOLOR(0.85f, 0.85f, 0.85f, 1.0f),pFont35);
 
@@ -591,8 +591,7 @@ void GameScreen::AddMainMenuElements()
 	});
 
 	//Camera information
-	SpriteFont * pBMFont(nullptr);
-	pBMFont = ContentManager::Load<SpriteFont>(_T("./Resources/Lemmings3D/fonts/BitmapFont_8.fnt"));
+	auto pBMFont = SpritefontManager::GetInstance()->CreateOrGet(_T("BitmapFont"), 8);
 	m_pGameMenu->AddTextField(1425,245,350, 35, _T("Main_TextField_Info_Pos"), _T("POS(X=300.0 Y=10.0 Z=500.0)"), D3DXCOLOR(1,1,1,1), pBMFont);
 
 	//Camera User Manipulation

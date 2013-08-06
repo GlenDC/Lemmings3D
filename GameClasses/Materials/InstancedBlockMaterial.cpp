@@ -1,5 +1,7 @@
+//====================== #INCLUDES ===================================
 #include "InstancedBlockMaterial.h"
 #include "Managers/ContentManager.h"
+//====================================================================
 
 InstancedBlockMaterial::InstancedBlockMaterial()
 	: Material(_T("./Resources/Lemmings3D/shaders/InstancedObjectShader.fx"))
@@ -41,7 +43,7 @@ void InstancedBlockMaterial::LoadEffectVariables()
 	// ...
 
 	//Get texture shader resource
-	m_pShaderTexture = GetEffectShaderResource("Texture", m_pEffect);
+	m_pShaderTexture = GetEffectShaderResource(_T("Texture"), m_pEffect);
 }
 
 void InstancedBlockMaterial::UpdateEffectVariables(ModelComponent* modelComponent)

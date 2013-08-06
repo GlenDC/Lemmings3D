@@ -1,11 +1,16 @@
+//====================== #INCLUDES ===================================
 #include "HeightmapParser.h"
-#include "Helpers/BinaryReader.h"
-#include "Diagnostics/Logger.h"
+//--------------------------------------------------------------------
 #include "../Lib/LemmingsHelpers.h"
+//--------------------------------------------------------------------
+#include "Diagnostics/Logger.h"
+#include "Helpers/BinaryReader.h"
+//--------------------------------------------------------------------
 #include <memory>
+//====================================================================
 
-bool HeightmapParser::Read(const tstring & file, UINT width, UINT height, 
-						   float heightDivider, float scale, float texScale)
+bool HeightmapParser::Read(const tstring & file, const UINT width, const UINT height, 
+						   const float heightDivider, const float scale, const float texScale)
 {
 	std::shared_ptr<BinaryReader> binReader(new BinaryReader(file));
 	vector<char> heightMap;
@@ -62,8 +67,8 @@ bool HeightmapParser::Read(const tstring & file, UINT width, UINT height,
 }
 
 
-bool HeightmapParser::Read(const tstring & file, UINT width, UINT height, vector<vector<D3DXVECTOR3>> & vertex2DVec,
-						    D3DXVECTOR2 & depthInfo, float heightDivider, float scale, float texScale)
+bool HeightmapParser::Read(const tstring & file, const UINT width, const UINT height, vector<vector<D3DXVECTOR3>> & vertex2DVec,
+						    D3DXVECTOR2 & depthInfo, const float heightDivider, const float scale, const float texScale) 
 {
 	//std::shared_ptr<BinaryReader> binReader(new BinaryReader(file));
 	vector<char> heightMap;
@@ -110,7 +115,8 @@ bool HeightmapParser::Read(const tstring & file, UINT width, UINT height, vector
     return true;
 }
 
-bool HeightmapParser::LoadHeightMap(const tstring & file, int width, int height, std::vector<char> & heightmapVec)
+bool HeightmapParser::LoadHeightMap(const tstring & file, const int width, 
+									const int height, std::vector<char> & heightmapVec)
 {
 	int size(width*height);
 	//create already sized vector to store height values

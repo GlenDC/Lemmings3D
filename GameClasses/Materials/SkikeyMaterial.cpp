@@ -1,19 +1,9 @@
-//--------------------------------------------------------------------------------------
-//   _____     _______ ____  _     ___  ____  ____    _____ _   _  ____ ___ _   _ _____ 
-//  / _ \ \   / / ____|  _ \| |   / _ \|  _ \|  _ \  | ____| \ | |/ ___|_ _| \ | | ____|
-// | | | \ \ / /|  _| | |_) | |  | | | | |_) | | | | |  _| |  \| | |  _ | ||  \| |  _|  
-// | |_| |\ V / | |___|  _ <| |__| |_| |  _ <| |_| | | |___| |\  | |_| || || |\  | |___ 
-//  \___/  \_/  |_____|_| \_\_____\___/|_| \_\____/  |_____|_| \_|\____|___|_| \_|_____|
-//
-// Overlord Engine v0.44
-// Copyright Overlord Brecht Kets & Overlord Thomas Goussaert
-// http://www.digitalartsandentertainment.com/
-//--------------------------------------------------------------------------------------
-
+//====================== #INCLUDES ===================================
 #include "SpikeyMaterial.h"
 #include "Graphics/GraphicsDevice.h"
 #include "Components/ModelComponent.h"
 #include "Managers/ContentManager.h"
+//====================================================================
 
 SpikeyMaterial::SpikeyMaterial():
 	Material(_T("./Resources/SpikeyShader.fx")),
@@ -31,7 +21,6 @@ SpikeyMaterial::SpikeyMaterial():
 	m_pNegativeVariable(nullptr)
 {
 }
-
 
 SpikeyMaterial::~SpikeyMaterial(void)
 {

@@ -1,6 +1,6 @@
 #pragma once
 //====================== #INCLUDES ===================================
-#include "ManagerInterface.h"
+#include "IManager.h"
 #include "../Entities/Timer.h"
 
 #include <map>
@@ -11,17 +11,18 @@
 //		Management of timers. By an implementation of the singleton
 //		pattern the stopwatch will serve as a global way to create
 //		and manage timers. 
-// Last Modification: 11/03/2013
-// Copyright Glen De Cauwsemaecker
+// TODO: 
+//		Fix stopwatch bug => They stop and get deleted, when they shouldn't
+//		Looping doesn't work correctly.
+// Last Modification: July 2013
+// Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
-
-//====================== Forward Declerations ========================
 class Timer;
-//====================================================================
 
-class Stopwatch : public ManagerInterface
+// Ancillary class, implementing the Singleton Design pattern
+class Stopwatch : public IManager
 {
 public:
 	virtual ~Stopwatch();
@@ -32,27 +33,28 @@ public:
 	virtual void Update(GameContext& context);
 	virtual void Draw(GameContext& context){}
 
-	bool CreateTimer(const tstring & name, float targetTime, bool countingDown, bool loop, std::function<void ()> func, bool paused = false);
+	bool CreateTimer(const tstring & name, const float targetTime, const bool countingDown, 
+		const bool loop, const std::function<void ()> func, const bool paused = false);
 	bool RemoveTimer(const tstring & name);
-	void PauseTimer(const tstring & name, bool paused);
-	void SetCountingDownTimer(const tstring & name, bool countingDown);
-	void SetLoopTimer(const tstring & name, bool looping);
-	void ResetTimer(const tstring & name, bool paused = false);
-	void SetTargetTimeTimer(const tstring & name, float targetTime, bool reset = true, bool paused = false);
-	void SetFunctionTimer(const tstring & name, std::function<void ()> func);
+	void PauseTimer(const tstring & name, const bool paused);
+	void SetCountingDownTimer(const tstring & name, const bool countingDown);
+	void SetLoopTimer(const tstring & name, const bool looping);
+	void ResetTimer(const tstring & name, const bool paused = false);
+	void SetTargetTimeTimer(const tstring & name, const float targetTime, const bool reset = true, const bool paused = false);
+	void SetFunctionTimer(const tstring & name, const std::function<void ()> func);
 
 	int GetTimerMinutes(const tstring & name) const;
 	int GetTimerSeconds(const tstring & name) const;
 	int GetTimerTotalSeconds(const tstring & name) const;
 
 private:
-	static Stopwatch *m_pStopwatch; //SingleTon
+	static Stopwatch *m_pStopwatch; //Singleton
 	std::map<const tstring, Timer> m_TimerContainer;
 	std::map<const tstring, Timer> m_GarbageContainer;
 	std::map<const tstring, Timer> m_TempContainer;
 
-	//private methods
 	Stopwatch();	// singletn pattern 
+
 	// Disabling default copy constructor and default assignment operator.
 	Stopwatch(const Stopwatch& yRef);									
 	Stopwatch& operator=(const Stopwatch& yRef);

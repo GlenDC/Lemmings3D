@@ -1,17 +1,19 @@
+//====================== #INCLUDES ===================================
 #include "EditorModePainter.h"
-#include "../../Entities/EditorBuilder.h"
+//--------------------------------------------------------------------
 #include "../GameScreen.h"
-#include "../../UserInterface/UIDockInterface.h"
-
-#include "../../Managers/ScreenManager.h"
+#include "../../Entities/EditorBuilder.h"
 #include "../../Lib/GlobalParameters.h"
 #include "../../Lib/LemmingsHelpers.h"
+#include "../../Managers/ScreenManager.h"
+#include "../../UserInterface/UIDockInterface.h"
+//====================================================================
 
 EditorModePainter::EditorModePainter (EditorBuilder * pEditor)
 	: IEditMode(pEditor)
 	, m_PaintMode(PaintMode::rock)
 {
-	m_pPaintMenu = new UIDockInterface(0,0,500,500, nullptr,nullptr);
+	m_pPaintMenu = new UIDockInterface(0,0,500,500,nullptr,nullptr);
 	m_pPaintMenu->AddImage(0, 0, _T("BACKGROUND"), _T("BG_EditorSubMenu.png"));
 	m_pPaintMenu->AddButton(5,65,_T("Abtn_paint_recheck"), _T("painter_button_recheck.png"), [&] () 
 	{ 
