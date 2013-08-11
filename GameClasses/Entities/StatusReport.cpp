@@ -7,8 +7,6 @@
 #include "../Lib/LemmingsHelpers.h"
 #include "../Managers/Stopwatch.h"
 #include "../GameScenes/GameScreen.h"
-//--------------------------------------------------------------------
-#include <ctime>
 //====================================================================
 
 StatusReport::StatusReport(GameScreen * pScreen, const bool save_log)
@@ -96,25 +94,12 @@ void StatusReport::ReportStatus(const tstring & status)
 
 void StatusReport::LogFile() const
 {
-	//get current date
-    time_t t = time(0);   // get time now
-    tm now;
-	localtime_s(&now, & t );
-	// parse session date and time
-	tstringstream timeParse;
-	timeParse << now.tm_mday << '-'
-         << (now.tm_mon + 1) << '-'
-		 << (now.tm_year + 1900) << ' '
-		 << now.tm_hour << 'h'
-		 << now.tm_min << 'm'
-		 << now.tm_sec << 's';
-
 	//m_StatusLog
 	tofstream log;
-	log.open (_T("Logs/Lemmings3D Status Log ") + timeParse.str() + _T(".log"), ios::trunc);
+	log.open (_T("Logs/Lemmings3D Status Log ") + LemmingsHelpers::GetFullTimeString() + _T(".log"), ios::trunc);
 	log << _T("==================== Lemmings3D Log File =============================\n");
 	log << _T("===== Developed by Glen De Cauwsemaecker @ www.glendc.com\n");
-	log << _T("===== Log Session: ") << timeParse.str() << std::endl << std::endl;
+	log << _T("===== Log Session: ") << LemmingsHelpers::GetFullTimeString() << std::endl << std::endl;
 	for(auto status : m_StatusLog)
 	{
 		int time = (int)status.first;

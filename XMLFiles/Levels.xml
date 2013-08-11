@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<Parameters>
+	<Parameter name="0" value="Hello Lemmings!">
+		<Parameter name="FILE" value="TestLevel" />
+		<Parameter name="BEST_TIME" value="0" />
+		<Parameter name="BEST_SCORE" value="0" />
+		<Parameter name="TIMES_PLAYED" value="13" />
+		<Parameter name="TIMES_SUCCEED" value="0" />
+		<Parameter name="BTN_IMAGE" value="UI_Level_btn_0.png" />
+	</Parameter>
+	<Parameter name="1" value="Isn't that dangerous?">
+		<Parameter name="FILE" value="TestLevel" />
+		<Parameter name="BEST_TIME" value="0" />
+		<Parameter name="BEST_SCORE" value="0" />
+		<Parameter name="TIMES_PLAYED" value="1" />
+		<Parameter name="TIMES_SUCCEED" value="0" />
+		<Parameter name="BTN_IMAGE" value="UI_Level_btn_1.png" />
+	</Parameter>
+	<Parameter name="2" value="The big adventure...">
+		<Parameter name="FILE" value="TestLevel" />
+		<Parameter name="BEST_TIME" value="0" />
+		<Parameter name="BEST_SCORE" value="0" />
+		<Parameter name="TIMES_PLAYED" value="0" />
+		<Parameter name="TIMES_SUCCEED" value="0" />
+		<Parameter name="BTN_IMAGE" value="UI_Level_btn_2.png" />
+	</Parameter>
+</Parameters>

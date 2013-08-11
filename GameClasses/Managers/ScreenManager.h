@@ -19,7 +19,7 @@
 class BaseCursor;
 class Game;
 
-enum class InputControls : char
+enum class InputControls : int
 {
 	MOUSE_LEFT_PRESSED = 0,
 	MOUSE_LEFT_DOWN = 1,
@@ -31,7 +31,8 @@ enum class InputControls : char
 	KB_F12_PRESSED = 7,
 	KB_ALT_DOWN = 8,
 	KB_CTRL_DOWN = 9,
-	KB_SHIFT_DOWN = 10
+	KB_SHIFT_DOWN = 10,
+	KB_RETURN_PRESSED = 11
 };
 
 // Ancillary class, implementing the Singleton Design pattern
@@ -44,6 +45,7 @@ public:
 
 	void AddScreen(BaseScreen* screen);
 	void RemoveScreen(BaseScreen* screen);
+	void RemoveScreen(const tstring & name);
 
 	bool AddActiveScreen(const tstring & name);
 	bool RemoveActiveScreen(const tstring & name);
@@ -72,6 +74,8 @@ public:
 	InputManager * GetInputManager() { return m_pInputManager; }
 	Game * GetGame() const { return m_MainGame; }
 
+	void QuitGame();
+
 private:
 	static const int NUM_SCREENS = 0;
 
@@ -80,6 +84,7 @@ private:
 	Game* m_MainGame;
 	vector<BaseScreen*> m_Screens;
 	vector<BaseScreen*> m_ActiveScreens;
+	vector<BaseScreen*> m_GarbageScreens;
 
 	BaseScreen* m_pControlScreen;
 
@@ -91,6 +96,8 @@ private:
 	bool m_PhysicsDisabled;
 	bool m_EnablePhysicsRendering;
 	bool m_LMBP, m_LMBD, m_RMBP, m_RMBD;
+
+	double m_TimeCounter;
 
 	shared_ptr<BaseCursor> m_pDefaultCursor, m_pCurrentCursor;
 

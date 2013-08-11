@@ -18,6 +18,7 @@
 
 class AmountButton;
 class UIButton;
+class UILevelButton;
 class UIToggleButton;
 class UIButtonWT;
 class UITextField;
@@ -74,12 +75,11 @@ public:
                                     bool is_on = true);
     // Create a button with a textfield on top of it (child class of a normal button)
 	UIButtonWT * AddButtonWT(int x, int y, const tstring & name, const tstring & asset_file, UINT textX, UINT textY, const tstring & text,
-		const D3DXCOLOR & text_normal, const D3DXCOLOR & text_hover, const D3DXCOLOR & text_click, function<void()> select_function, 
-		bool disabled = false, bool toggle_on = false);
-    // Create a button with a textfield on top of it (child class of a normal button)
-	UIButtonWT * AddButtonWT(int x, int y, const tstring & name, const tstring & asset_file, UINT textX, UINT textY, const tstring & text,
 		const D3DXCOLOR & text_normal, const D3DXCOLOR & text_hover, const D3DXCOLOR & text_click, shared_ptr<SpriteFont> pFont, function<void()> select_function, 
 		bool disabled = false, bool toggle_on = false);
+    // Create a button to start the game (level). 
+	UILevelButton * AddButtonLevel(const int x, const int y, const tstring & name,
+		const tstring & level_name, const tstring & button_image, const UINT level_id, const UINT highscore, const UINT best_time, function<void()> select_function, bool disabled);
     // Create an Amount Buttons
 	AmountButton * AddAmountButton(int x, int y, const tstring & name, const tstring & asset_file, int amount, shared_ptr<SpriteFont> pFont, function<void()> select_function, 
 		bool disabled = false, bool toggle_on = false);
@@ -148,6 +148,8 @@ public:
 	void SetVisible(bool visible) { m_Visible = visible; }
 
 	bool IsInitialized() const { return m_IsInitialized; }
+
+	shared_ptr<SpriteFont> GetDefaultFont() const { return m_pDefaultFont; }
 
 protected:
     // list of elements. It contains all the elements in this UI part

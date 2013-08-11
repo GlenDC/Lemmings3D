@@ -126,6 +126,8 @@
     <ClCompile Include="GameClasses\GameScenes\Labs\Week5.cpp" />
     <ClCompile Include="GameClasses\GameScenes\Labs\week6_picking.cpp" />
     <ClCompile Include="GameClasses\GameScenes\Labs\Weel1.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\LoadingScreen.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\MainMenuScreen.cpp" />
     <ClCompile Include="GameClasses\GameScenes\MenuScreen.cpp" />
     <ClCompile Include="GameClasses\Helpers\HeightmapParser.cpp" />
     <ClCompile Include="GameClasses\Helpers\Rectangle.cpp" />
@@ -136,6 +138,7 @@
     <ClCompile Include="GameClasses\Main.cpp" />
     <ClCompile Include="GameClasses\Managers\ColissionCollector.cpp" />
     <ClCompile Include="GameClasses\Managers\ConsoleManager.cpp" />
+    <ClCompile Include="GameClasses\Managers\ParameterManager.cpp" />
     <ClCompile Include="GameClasses\Managers\ScreenManager.cpp" />
     <ClCompile Include="GameClasses\Managers\IManager.cpp" />
     <ClCompile Include="GameClasses\Managers\SpritefontManager.cpp" />
@@ -155,6 +158,7 @@
     <ClCompile Include="GameClasses\UserInterface\UIDockInterface.cpp" />
     <ClCompile Include="GameClasses\UserInterface\UIElement.cpp" />
     <ClCompile Include="GameClasses\UserInterface\UIImage.cpp" />
+    <ClCompile Include="GameClasses\UserInterface\UILevelButton.cpp" />
     <ClCompile Include="GameClasses\UserInterface\UITextField.cpp" />
     <ClCompile Include="GameClasses\UserInterface\UITogleButton.cpp" />
     <ClCompile Include="GameClasses\XML\XMLConverter.cpp" />
@@ -202,6 +206,8 @@
     <ClInclude Include="GameClasses\GameScenes\Labs\Week4.h" />
     <ClInclude Include="GameClasses\GameScenes\Labs\Week5.h" />
     <ClInclude Include="GameClasses\GameScenes\Labs\Week6.h" />
+    <ClInclude Include="GameClasses\GameScenes\LoadingScreen.h" />
+    <ClInclude Include="GameClasses\GameScenes\MainMenuScreen.h" />
     <ClInclude Include="GameClasses\GameScenes\MenuScreen.h" />
     <ClInclude Include="GameClasses\Helpers\HeightmapParser.h" />
     <ClInclude Include="GameClasses\Helpers\Rectangle.h" />
@@ -216,6 +222,7 @@
     <ClInclude Include="GameClasses\Main.h" />
     <ClInclude Include="GameClasses\Managers\ColissionCollector.h" />
     <ClInclude Include="GameClasses\Managers\ConsoleManager.h" />
+    <ClInclude Include="GameClasses\Managers\ParameterManager.h" />
     <ClInclude Include="GameClasses\Managers\ScreenManager.h" />
     <ClInclude Include="GameClasses\Managers\IManager.h" />
     <ClInclude Include="GameClasses\Managers\SpritefontManager.h" />
@@ -235,6 +242,7 @@
     <ClInclude Include="GameClasses\UserInterface\UIDockInterface.h" />
     <ClInclude Include="GameClasses\UserInterface\UIElement.h" />
     <ClInclude Include="GameClasses\UserInterface\UIImage.h" />
+    <ClInclude Include="GameClasses\UserInterface\UILevelButton.h" />
     <ClInclude Include="GameClasses\UserInterface\UITextField.h" />
     <ClInclude Include="GameClasses\UserInterface\UIToggleButton.h" />
     <ClInclude Include="GameClasses\XML\XMLConverter.h" />

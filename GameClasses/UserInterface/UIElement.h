@@ -54,7 +54,7 @@ public:
 	//set elemant visible or invisible
 	void SetVisible(bool visible) { m_IsVisible = visible; }
 	//set element disabled / enabled
-	void SetDisabled(bool disabled) 
+	virtual void SetDisabled(bool disabled) 
 		{ m_State = disabled ? ElementStates::DISABLED : ElementStates::IDLE; }
 	//toggle on an element;
 	void SetToggleOn(bool toggledOn) { m_State = toggledOn && m_CanToggle ?

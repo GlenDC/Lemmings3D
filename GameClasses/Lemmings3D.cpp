@@ -20,8 +20,7 @@
 #include "Graphics/MeshFilter.h"
 #include "Helpers/BinaryReader.h"
 
-#include "GameScenes\MenuScreen.h"
-#include "GameScenes\GameScreen.h"
+#include "GameScenes\MainMenuScreen.h"
 #include "GameScenes\Labs\Week1.h"	//Lab Week1 (Pong)
 #include "GameScenes\Labs\Week2.h"	//Lab Week2 (Character)
 #include "GameScenes\Labs\Week4.h"	//Lab Week4 (Bones)
@@ -54,10 +53,9 @@ void Lemmings3D::Initialize()
 	ScreenManager::GetInstance()->InitializeContent();
 
 	//Lemmings3D
-	ScreenManager::GetInstance()->AddScreen(new GameScreen());
-	ScreenManager::GetInstance()->AddScreen(new MenuScreen());
-	ScreenManager::GetInstance()->AddActiveScreen(_T("GameScreen"));
-	
+	ScreenManager::GetInstance()->AddScreen(new MainMenuScreen());
+	ScreenManager::GetInstance()->AddActiveScreen(_T("MainMenuScreen"));
+
 	////Lab Week1
 	//ScreenManager::GetInstance()->AddScreen(new Week1());
 	////ScreenManager::GetInstance()->AddActiveScreen(L"Week1");

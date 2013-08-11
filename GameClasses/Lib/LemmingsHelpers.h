@@ -65,4 +65,9 @@ namespace LemmingsHelpers
 	float CalculateVector3Length(const D3DXVECTOR3 & p1, const D3DXVECTOR3 & p2);
 
 	D3DXVECTOR3 GetCubeClosestPlane(const D3DXVECTOR3 & cubePos, const float sizeCube, const D3DXVECTOR3 & checkPos);
+
+	tstring GetTimeStringFromSecondsValue(UINT seconds);
+	tstring GetFullTimeStringFromSecondsValue(UINT seconds);
+
+	tstring GetFullTimeString();
 }

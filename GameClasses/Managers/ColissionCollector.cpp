@@ -92,30 +92,33 @@ void ColissionCollector::RefreshColissionList(const GameContext & context)
 			m_CubeVec[1].resize(0);
 		}
 
-		const vector<D3DXVECTOR3> & vecPos = m_pLevel->GetEnvironment();
-	
-		int newBatch = (int)(vecPos.size() * (context.GameTime.ElapsedSeconds() / 4.0f));
-
-		for(int i = m_CurrentCheckNumber ; i < m_CurrentCheckNumber + newBatch && (UINT)i < vecPos.size() ; ++i)
+		if (m_pLevel)
 		{
-			for(UINT u = 0 ; u < m_UserVec.size() ; ++u)
+			const vector<D3DXVECTOR3> & vecPos = m_pLevel->GetEnvironment();
+	
+			int newBatch = (int)(vecPos.size() * (context.GameTime.ElapsedSeconds() / 4.0f));
+
+			for(int i = m_CurrentCheckNumber ; i < m_CurrentCheckNumber + newBatch && (UINT)i < vecPos.size() ; ++i)
 			{
-				D3DXVECTOR3 lengthVec = vecPos[i] - m_UserVec[u]->GetCUPosition();
-				float length(D3DXVec3Length(&lengthVec));
-				if(length < m_UserVec[u]->GetCURange())
+				for(UINT u = 0 ; u < m_UserVec.size() ; ++u)
 				{
-					PhysicsCube * cube = new PhysicsCube(vecPos[i], size);
-					m_pGameScene->AddSceneObject(cube);
-					cube->Initialize();
-					m_CubeVec[1].push_back(cube);
-					break;
+					D3DXVECTOR3 lengthVec = vecPos[i] - m_UserVec[u]->GetCUPosition();
+					float length(D3DXVec3Length(&lengthVec));
+					if(length < m_UserVec[u]->GetCURange())
+					{
+						PhysicsCube * cube = new PhysicsCube(vecPos[i], size);
+						m_pGameScene->AddSceneObject(cube);
+						cube->Initialize();
+						m_CubeVec[1].push_back(cube);
+						break;
+					}
 				}
 			}
-		}
 
-		m_CurrentCheckNumber += newBatch;
-		if((UINT)m_CurrentCheckNumber > vecPos.size())
-			m_CurrentCheckNumber = 0;
+			m_CurrentCheckNumber += newBatch;
+			if((UINT)m_CurrentCheckNumber > vecPos.size())
+				m_CurrentCheckNumber = 0;
+		}
 		/*m_RefreshAllowed = false;
 	}*/
 }

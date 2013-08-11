@@ -26,6 +26,12 @@ public:
 	virtual void Update(const GameContext& context);
 	virtual void Draw(const GameContext& context);
 
+	virtual void BeginControl() = 0;
+	virtual void EndControl() = 0;
+
+	virtual void Activated() = 0;
+	virtual void Deactivated() = 0;
+
 	const tstring & GetWindowName() const { return m_WindowName; }
 	const bool IsPhysicsEnabled() const { return m_PhysicsEnabled; }
 

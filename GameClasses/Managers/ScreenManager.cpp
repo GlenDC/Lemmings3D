@@ -6,6 +6,8 @@
 //--------------------------------------------------------------------
 #include "../UserInterface/BaseCursor.h"
 #include "../Lib/GlobalParameters.h"
+#include "ParameterManager.h"
+#include "../Lib/LemmingsHelpers.h" 
 //--------------------------------------------------------------------
 #include <algorithm>
 //====================================================================
@@ -16,12 +18,14 @@ ScreenManager::ScreenManager(void)
 	: m_MainGame(nullptr)
 	, m_Screens(NUM_SCREENS)
 	, m_ActiveScreens(NUM_SCREENS)
+	, m_GarbageScreens(NUM_SCREENS)
 	, m_pControlScreen(nullptr)
 	, m_IsInitialized(false)
 	, m_Simulated(false)
 	, m_Fetched(false)
 	, m_PhysicsDisabled(false)
 	, m_EnablePhysicsRendering(true)
+	, m_TimeCounter(0)
 	, m_pDefaultCursor(nullptr)
 	, m_pCurrentCursor(nullptr)
 {
@@ -68,11 +72,24 @@ void ScreenManager::RemoveScreen(BaseScreen* screen)
 	delete screen;
 }
 
+void ScreenManager::RemoveScreen(const tstring & name)
+{
+	auto chosenScene = *find_if(m_Screens.begin(), m_Screens.end(), 
+         [&name](BaseScreen* scene) { return scene->GetName() == name; });
+	if(chosenScene)
+	{
+		RemoveScreen(chosenScene);
+	}
+}
+
+
 bool ScreenManager::AddActiveScreen(const tstring & name)
 {
 	// Check if the scene is in our vector
 	auto chosenScene = *find_if(m_Screens.begin(), m_Screens.end(), 
          [&name](BaseScreen* scene) { return scene->GetName() == name; });
+
+	chosenScene->Activated();
 
     if (chosenScene != nullptr)
     {
@@ -86,13 +103,14 @@ bool ScreenManager::AddActiveScreen(const tstring & name)
 
 bool ScreenManager::RemoveActiveScreen(const tstring & name)
 {
-	bool removed = false;
-	m_ActiveScreens.erase(std::remove_if(m_ActiveScreens.begin(), m_ActiveScreens.end(), 
-		[&name, &removed](const BaseScreen* scene) { 
-			 removed = true; 
-			 return scene->GetName() == name; 
-	}), m_ActiveScreens.end());
-   return removed;
+	auto chosenScene = *find_if(m_Screens.begin(), m_Screens.end(), 
+         [&name](BaseScreen* scene) { return scene->GetName() == name; });
+	if (chosenScene != nullptr)
+    {
+		m_GarbageScreens.push_back(chosenScene);
+		return true;
+	}
+	return false;
 }
 
 bool ScreenManager::SetControlScreen(const tstring & name)
@@ -104,9 +122,9 @@ bool ScreenManager::SetControlScreen(const tstring & name)
     if (chosenScene != nullptr)
     {
 		if(m_pControlScreen != nullptr)
-			m_pControlScreen->Deactivated();
+			m_pControlScreen->EndControl();
 		m_pControlScreen = chosenScene;
-		m_pControlScreen->Activated();
+		m_pControlScreen->BeginControl();
     }
 
     return chosenScene != nullptr;
@@ -143,6 +161,16 @@ void ScreenManager::InitializeContent()
 
 void ScreenManager::Update(GameContext& context)
 {
+	for(auto screen : m_GarbageScreens)
+	{
+		m_ActiveScreens.erase(std::remove_if(m_ActiveScreens.begin(), m_ActiveScreens.end(), 
+			[screen](BaseScreen* scene) { 
+				 scene->Deactivated();
+				 return scene == screen; 
+		}), m_ActiveScreens.end());
+	}
+	m_GarbageScreens.clear();
+
 	ColissionCollector::GetInstance()->RefreshCollection(context);
 
 	if(m_pControlScreen != nullptr)
@@ -153,6 +181,8 @@ void ScreenManager::Update(GameContext& context)
 		context.Input->Update(context);
 		m_pControlScreen->SceneUpdate(context);
 		m_pCurrentCursor->Update(context);
+
+		m_TimeCounter += (double)context.GameTime.ElapsedSeconds();
 
 		m_LMBP = m_pInputManager->IsActionTriggered((int)InputControls::MOUSE_LEFT_PRESSED);
 		m_RMBP = m_pInputManager->IsActionTriggered((int)InputControls::MOUSE_RIGHT_PRESSED);
@@ -245,4 +275,15 @@ bool ScreenManager::RightMouseButtonDown() const
 void ScreenManager::SetPhysicsDrawEnabled(const bool enable)
 {
 	m_EnablePhysicsRendering = enable;
+}
+
+void ScreenManager::QuitGame()
+{
+	ParameterClass & container = ParameterManager::GetInstance()->CreateOrGet(_T("UserStatistics"));
+	container.SetParameter<tstring>(_T("LAST_PLAYED"), LemmingsHelpers::GetFullTimeString());
+	UINT total_time = container.GetParameter<UINT>(_T("TOTAL_TIME"));
+	total_time += (UINT)m_TimeCounter;
+	container.SetParameter<UINT>(_T("TOTAL_TIME"), total_time);
+	container.Save();
+	PostQuitMessage(0); 
 }

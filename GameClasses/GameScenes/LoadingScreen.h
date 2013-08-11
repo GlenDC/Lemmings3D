@@ -4,9 +4,7 @@
 #include "Helpers/SpriteFont.h"
 //====================================================================
 
-class UIDockInterface;
-
-//====================== MenuScreen Class ============================
+//====================== LoadingScreen Class ============================
 // Description:
 //		Screen Class for the main menu
 // Last Modification: August 2013
@@ -14,13 +12,11 @@ class UIDockInterface;
 // www.glendc.com
 //====================================================================
 
-class ColissionEntity;
-
-class MenuScreen: public BaseScreen
+class LoadingScreen: public BaseScreen
 {
 public:
-	MenuScreen(void);
-	virtual ~MenuScreen(void);
+	LoadingScreen(const tstring & previousScreen);
+	virtual ~LoadingScreen(void);
 
 	virtual void Initialize();
 	virtual void Update(const GameContext& context);
@@ -33,10 +29,14 @@ public:
 	virtual void Deactivated();
 
 private:
+	static const unsigned int MAX_DOTS = 3;
+
 	shared_ptr<SpriteFont> m_pSpriteFont;
-	UIDockInterface * m_MainMenuDock;
+	float m_LoadTime;
+	bool m_RemovedPrevious;
+	tstring m_PreviousScreenName;
 
 	// Disabling default copy constructor and default assignment operator.
-	MenuScreen(const MenuScreen& yRef);									
-	MenuScreen& operator=(const MenuScreen& yRef);
+	LoadingScreen(const LoadingScreen& yRef);									
+	LoadingScreen& operator=(const LoadingScreen& yRef);
 };

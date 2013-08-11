@@ -5,6 +5,7 @@
 #include "../Lib/LemmingsHelpers.h"
 //--------------------------------------------------------------------
 #include "UIButtonWT.h"
+#include "UILevelButton.h"
 #include "UIToggleButton.h"
 #include "UIImage.h"
 #include "UITextField.h"
@@ -117,7 +118,7 @@ UIToggleButton * UIDockInterface::AddToggleButton(int x, int y, const tstring & 
 }
 
 UIButtonWT * UIDockInterface::AddButtonWT(int x, int y, const tstring & name, const tstring & asset_file, UINT textX, UINT textY, const tstring & text,
-		const D3DXCOLOR & text_normal, const D3DXCOLOR & text_hover, const D3DXCOLOR & text_click, function<void()> select_function, 
+		const D3DXCOLOR & text_normal, const D3DXCOLOR & text_hover, const D3DXCOLOR & text_click, shared_ptr<SpriteFont> pFont, function<void()> select_function, 
 		bool disabled, bool toggle_on)
 {
 	tstring file(asset_file);
@@ -127,6 +128,17 @@ UIButtonWT * UIDockInterface::AddButtonWT(int x, int y, const tstring & name, co
 	button->SetSelectFunction(select_function);
     button->SetDisabled(disabled);
     button->SetToggleOn(toggle_on);
+	m_ElementList.insert(std::pair<UINT, UIElement*>(LemmingsHelpers::GenerateHash(name), button));
+    return button;
+}
+
+
+UILevelButton * UIDockInterface::AddButtonLevel(const int x, const int y, const tstring & name,
+	const tstring & level_name, const tstring & button_image, const UINT level_id, const UINT highscore, const UINT best_time, function<void()> select_function, bool disabled)
+{
+	UILevelButton * button = new UILevelButton(x, y, name, this, level_name, button_image, level_id, highscore, best_time, select_function);
+    button->SetDisabled(disabled);
+    button->SetToggleOn(false);
 	m_ElementList.insert(std::pair<UINT, UIElement*>(LemmingsHelpers::GenerateHash(name), button));
     return button;
 }
@@ -150,21 +162,6 @@ AmountButton * UIDockInterface::AddAmountButton(int x, int y, const tstring & na
 	tstring file(asset_file);
 	ConvertToResourcePath(file);
 	AmountButton * button = new AmountButton(x, y, name, this, file, amount, m_pDefaultFont);
-	button->SetSelectFunction(select_function);
-    button->SetDisabled(disabled);
-    button->SetToggleOn(toggle_on);
-	m_ElementList.insert(std::pair<UINT, UIElement*>(LemmingsHelpers::GenerateHash(name), button));
-    return button;
-}
-
-UIButtonWT * UIDockInterface::AddButtonWT(int x, int y, const tstring & name, const tstring & asset_file, UINT textX, UINT textY, const tstring & text,
-		const D3DXCOLOR & text_normal, const D3DXCOLOR & text_hover, const D3DXCOLOR & text_click, shared_ptr<SpriteFont> pFont, function<void()> select_function, 
-		bool disabled, bool toggle_on)
-{
-	tstring file(asset_file);
-	ConvertToResourcePath(file);
-    UIButtonWT * button = new UIButtonWT(x, y, name, this, file, textX, textY,
-		text, pFont, text_normal, text_hover, text_click);
 	button->SetSelectFunction(select_function);
     button->SetDisabled(disabled);
     button->SetToggleOn(toggle_on);

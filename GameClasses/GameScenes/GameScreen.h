@@ -39,6 +39,9 @@ public:
 	virtual void Update(const GameContext& context);
 	virtual void Draw(const GameContext& context);
 
+	virtual void BeginControl();
+	virtual void EndControl();
+
 	virtual void Activated();
 	virtual void Deactivated();
 
@@ -84,7 +87,7 @@ private:
 
 	Player * m_pPlayer;
 
-	LemmingCharacter	* m_pLemmingsCharacter, 
+	LemmingCharacter	*m_pLemmingsCharacter, 
 						*m_pLemmingsCharacter1, 
 						*m_pLemmingsCharacter2;
 

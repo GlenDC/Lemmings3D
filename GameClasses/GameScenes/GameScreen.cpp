@@ -2,7 +2,6 @@
 #include "GameScreen.h"
 #include "GameModeScreen.h"
 #include "Game.h"
-
 #include "OverlordComponents.h"
 #include "Scenegraph/GameObject.h"
 #include "Graphics/SpriteBatch.h"
@@ -146,8 +145,8 @@ void GameScreen::Update(const GameContext& context)
 {
 	if(context.Input->IsActionTriggered((int)InputControls::KB_ESCAPE_PRESSED))
 	{
-		//Quit application when pressing escape !
-		QuitGame();
+		ScreenManager::GetInstance()->AddActiveScreen(_T("MenuScreen"));
+		ScreenManager::GetInstance()->SetControlScreen(_T("MenuScreen"));
 	}
 
 	//control if player can control editor camera or not!
@@ -252,15 +251,6 @@ void GameScreen::Draw(const GameContext& context)
 	m_pGame->Draw(context);
 	m_pRisingWater->Draw(context);
 	m_pRisingWater->Draw2D(context);
-	m_pHeaderMenu->Draw(context);
-	m_pGameMenu->Draw(context);
-
-	if(m_AppMode == AppMode::Editor)
-	{
-		m_pBuilder->DrawSubMenu(context);
-	}
-
-    SpriteBatch::Draw(m_CameraRotationSprite);
 
 	m_pLevel->Draw(context);
 
@@ -277,21 +267,40 @@ void GameScreen::Draw(const GameContext& context)
 	//	DebugRenderer::DrawLine(D3DXVECTOR3(10, (float)(-50 + i * 10), 60), D3DXVECTOR3(110, (float)(-50 + i * 10), 60), D3DXCOLOR(1,1,1,0.25f));
 	//}
 
-	ScreenManager::GetInstance()->DrawCursor(context);
+	if(m_AppMode != AppMode::Pause)
+	{
+		m_pHeaderMenu->Draw(context);
+		m_pGameMenu->Draw(context);
+
+		if(m_AppMode == AppMode::Editor)
+		{
+			m_pBuilder->DrawSubMenu(context);
+		}
+
+		SpriteBatch::Draw(m_CameraRotationSprite);
+		ScreenManager::GetInstance()->DrawCursor(context);
+	}
 
 	BaseScreen::Draw(context);
 }
 
+void GameScreen::BeginControl()
+{
+	PauseGame(false);
+}
+
+void GameScreen::EndControl()
+{
+	PauseGame(true);
+}
+
 void GameScreen::Activated()
 {
-
-	BaseScreen::Activated();
 }
 
 void GameScreen::Deactivated()
 {
-
-	BaseScreen::Deactivated();
+	QuitGame();
 }
 
 void GameScreen::PauseGame(bool paused)
@@ -389,6 +398,7 @@ void GameScreen::AddHeaderMenuElements()
 	m_pHeaderMenu->AddButton(1870,5, _T("ABtn_Quit"), _T("Header_Btn_Small_Shutdown.png"), [&] () 
 	{ 
 		QuitGame();
+		ScreenManager::GetInstance()->QuitGame();
 	});
 	//fullscreen / windowed
 	m_pHeaderMenu->AddButton(1820,5, _T("ABtn_FullScreen"), _T("Main_Button_Fullscreen.png"), [&] () 
@@ -559,13 +569,14 @@ void GameScreen::AddMainMenuElements()
 	m_pGameMenu->AddAmountButton(0,bigBtnY,_T("Main_Button_Amount_A"), _T("Main_Btn_Sqrt_Big_A.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
 	m_pGameMenu->AddAmountButton(110,bigBtnY,_T("Main_Button_Amount_B"), _T("Main_Btn_Sqrt_Big_B.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
 	m_pGameMenu->AddAmountButton(220,bigBtnY,_T("Main_Button_Amount_C"), _T("Main_Btn_Sqrt_Big_C.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
-	m_pGameMenu->AddAmountButton(330,bigBtnY,_T("Main_Button_Amount_D"), _T("Main_Btn_Sqrt_Big_D.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
-	m_pGameMenu->AddAmountButton(440,bigBtnY,_T("Main_Button_Amount_E"), _T("Main_Btn_Sqrt_Big_E.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
-	m_pGameMenu->AddAmountButton(550,bigBtnY,_T("Main_Button_Amount_F"), _T("Main_Btn_Sqrt_Big_F.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
-	m_pGameMenu->AddAmountButton(660,bigBtnY,_T("Main_Button_Amount_G"), _T("Main_Btn_Sqrt_Big_G.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
-	m_pGameMenu->AddAmountButton(770,bigBtnY,_T("Main_Button_Amount_H"), _T("Main_Btn_Sqrt_Big_H.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
-	m_pGameMenu->AddAmountButton(880,bigBtnY,_T("Main_Button_Amount_I"), _T("Main_Btn_Sqrt_Big_I.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
-	m_pGameMenu->AddAmountButton(990,bigBtnY,_T("Main_Button_Amount_J"), _T("Main_Btn_Sqrt_Big_J.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
+	// Unused button placeholders...
+	//m_pGameMenu->AddAmountButton(330,bigBtnY,_T("Main_Button_Amount_D"), _T("Main_Btn_Sqrt_Big_D.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
+	//m_pGameMenu->AddAmountButton(440,bigBtnY,_T("Main_Button_Amount_E"), _T("Main_Btn_Sqrt_Big_E.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
+	//m_pGameMenu->AddAmountButton(550,bigBtnY,_T("Main_Button_Amount_F"), _T("Main_Btn_Sqrt_Big_F.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
+	//m_pGameMenu->AddAmountButton(660,bigBtnY,_T("Main_Button_Amount_G"), _T("Main_Btn_Sqrt_Big_G.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
+	//m_pGameMenu->AddAmountButton(770,bigBtnY,_T("Main_Button_Amount_H"), _T("Main_Btn_Sqrt_Big_H.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
+	//m_pGameMenu->AddAmountButton(880,bigBtnY,_T("Main_Button_Amount_I"), _T("Main_Btn_Sqrt_Big_I.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
+	//m_pGameMenu->AddAmountButton(990,bigBtnY,_T("Main_Button_Amount_J"), _T("Main_Btn_Sqrt_Big_J.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
 
 	//Big Rect Buttons
 	m_pGameMenu->AddButton(1102,118,_T("Main_Button_Rect_A"), _T("Main_Btn_Rect_Big_A.png"), [&] () { /* DO NOTHING IN THA BODY */ });
@@ -700,7 +711,6 @@ void GameScreen::StartGame()
 void GameScreen::QuitGame()
 {
 	ReportStatus(_T("Goodbye ") + m_pPlayer->GetName() + _T("!")); 
-	PostQuitMessage(0); 
 }
 
 void GameScreen::SetGameSpeedTxtField()

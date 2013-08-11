@@ -6,7 +6,7 @@
 
 class UIDockInterface;
 
-//====================== MenuScreen Class ============================
+//====================== MainMenuScreen Class =========================
 // Description:
 //		Screen Class for the main menu
 // Last Modification: August 2013
@@ -16,11 +16,11 @@ class UIDockInterface;
 
 class ColissionEntity;
 
-class MenuScreen: public BaseScreen
+class MainMenuScreen: public BaseScreen
 {
 public:
-	MenuScreen(void);
-	virtual ~MenuScreen(void);
+	MainMenuScreen(void);
+	virtual ~MainMenuScreen(void);
 
 	virtual void Initialize();
 	virtual void Update(const GameContext& context);
@@ -34,9 +34,11 @@ public:
 
 private:
 	shared_ptr<SpriteFont> m_pSpriteFont;
-	UIDockInterface * m_MainMenuDock;
+	UIDockInterface * m_pMainMenuDock,
+					* m_pLevelMenuDock,
+					* m_pStatisticsDock;
 
 	// Disabling default copy constructor and default assignment operator.
-	MenuScreen(const MenuScreen& yRef);									
-	MenuScreen& operator=(const MenuScreen& yRef);
+	MainMenuScreen(const MainMenuScreen& yRef);									
+	MainMenuScreen& operator=(const MainMenuScreen& yRef);
 };

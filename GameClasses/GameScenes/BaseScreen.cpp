@@ -34,10 +34,8 @@ void BaseScreen::Update(const GameContext& context)
 	{
 		ScreenManager::GetInstance()->TogglePhysicsDisable();
 	}
-	GameScene::Update(context);
 }
 
 void BaseScreen::Draw(const GameContext& context)
 {
-	GameScene::Draw(context);
 }
