@@ -46,6 +46,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>..\OverlordEngine;PugiXML\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -109,6 +110,7 @@
     <ClCompile Include="GameClasses\GameScenes\Editor\EditorModeBuilder.cpp" />
     <ClCompile Include="GameClasses\GameScenes\Editor\EditorModeEraser.cpp" />
     <ClCompile Include="GameClasses\GameScenes\Editor\EditorModePainter.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\GameLoadingScreen.cpp" />
     <ClCompile Include="GameClasses\GameScenes\GameModeScreen.cpp" />
     <ClCompile Include="GameClasses\GameScenes\GameScreen.cpp" />
     <ClCompile Include="GameClasses\GameScenes\BaseScreen.cpp" />
@@ -159,6 +161,7 @@
     <ClCompile Include="GameClasses\UserInterface\UIElement.cpp" />
     <ClCompile Include="GameClasses\UserInterface\UIImage.cpp" />
     <ClCompile Include="GameClasses\UserInterface\UILevelButton.cpp" />
+    <ClCompile Include="GameClasses\UserInterface\UISpritesheet.cpp" />
     <ClCompile Include="GameClasses\UserInterface\UITextField.cpp" />
     <ClCompile Include="GameClasses\UserInterface\UITogleButton.cpp" />
     <ClCompile Include="GameClasses\XML\XMLConverter.cpp" />
@@ -189,6 +192,7 @@
     <ClInclude Include="GameClasses\GameScenes\Editor\EditorModeBuilder.h" />
     <ClInclude Include="GameClasses\GameScenes\Editor\EditorModeEraser.h" />
     <ClInclude Include="GameClasses\GameScenes\Editor\EditorModePainter.h" />
+    <ClInclude Include="GameClasses\GameScenes\GameLoadingScreen.h" />
     <ClInclude Include="GameClasses\GameScenes\GameModeScreen.h" />
     <ClInclude Include="GameClasses\GameScenes\GameScreen.h" />
     <ClInclude Include="GameClasses\GameScenes\BaseScreen.h" />
@@ -243,6 +247,7 @@
     <ClInclude Include="GameClasses\UserInterface\UIElement.h" />
     <ClInclude Include="GameClasses\UserInterface\UIImage.h" />
     <ClInclude Include="GameClasses\UserInterface\UILevelButton.h" />
+    <ClInclude Include="GameClasses\UserInterface\UISpritesheet.h" />
     <ClInclude Include="GameClasses\UserInterface\UITextField.h" />
     <ClInclude Include="GameClasses\UserInterface\UIToggleButton.h" />
     <ClInclude Include="GameClasses\XML\XMLConverter.h" />

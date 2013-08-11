@@ -7,9 +7,11 @@
 #include "../Entities/ParameterClass.h"
 #include "../Lib/LemmingsHelpers.h"
 #include "../UserInterface/UIDockInterface.h"
-#include "../GameScenes/LoadingScreen.h"
+#include "../GameScenes/GameLoadingScreen.h"
 #include "MenuScreen.h"
 #include "GameScreen.h"
+//--------------------------------------------------------------------
+#include <thread>
 //--------------------------------------------------------------------
 #include "Graphics/GraphicsDevice.h"
 #include "Helpers/GeneralStructs.h"
@@ -36,6 +38,8 @@ MainMenuScreen::~MainMenuScreen(void)
 
 void MainMenuScreen::Initialize()
 {
+	ScreenManager::GetInstance()->SetPhysicsDrawEnabled(false);
+
 	InputAction quitGame((int)InputControls::KB_ESCAPE_PRESSED,Pressed,VK_ESCAPE);
 	ScreenManager::GetInstance()->GetInputManager()->AddInputAction(quitGame);
 	InputAction startGame((int)InputControls::KB_RETURN_PRESSED,Pressed,VK_RETURN);
@@ -59,16 +63,7 @@ void MainMenuScreen::Initialize()
 		container_levels.GetChildParameter<UINT>(_T("0"), _T("BEST_SCORE")),
 		container_levels.GetChildParameter<UINT>(_T("0"), _T("BEST_TIME")), [&] () 
 		{
-			ParameterClass & container = ParameterManager::GetInstance()->CreateOrGet(_T("Levels"));
-			UINT totals_played = container.GetChildParameter<UINT>(_T("0"), _T("TIMES_PLAYED"));
-			++totals_played;
-			container.SetChildParameter<UINT>(_T("0"), _T("TIMES_PLAYED"), totals_played);
-			container.Save();
-			
-			ScreenManager::GetInstance()->AddScreen(new LoadingScreen(_T("MainMenuScreen")));
-			ScreenManager::GetInstance()->RemoveActiveScreen(_T("MainMenuScreen"));
-			ScreenManager::GetInstance()->AddActiveScreen(_T("LoadingScreen"));
-			ScreenManager::GetInstance()->SetControlScreen(_T("LoadingScreen"));
+			ScreenManager::GetInstance()->AddScreen(new GameLoadingScreen(_T("MainMenuScreen"), 0));
 		}, false);
 	UINT level_0_succeeds = container_levels.GetChildParameter<UINT>(_T("0"), _T("TIMES_SUCCEED"));
 	m_pLevelMenuDock->AddButtonLevel(480,200,_T("Btn_Level_1"), 
@@ -77,11 +72,7 @@ void MainMenuScreen::Initialize()
 		container_levels.GetChildParameter<UINT>(_T("1"), _T("BEST_SCORE")),
 		container_levels.GetChildParameter<UINT>(_T("1"), _T("BEST_TIME")), [&] () 
 		{
-			ParameterClass & container = ParameterManager::GetInstance()->CreateOrGet(_T("Levels"));
-			UINT totals_played = container.GetChildParameter<UINT>(_T("1"), _T("TIMES_PLAYED"));
-			++totals_played;
-			container.SetChildParameter<UINT>(_T("1"), _T("TIMES_PLAYED"), totals_played);
-			container.Save();
+			ScreenManager::GetInstance()->AddScreen(new GameLoadingScreen(_T("MainMenuScreen"), 1));
 		}, level_0_succeeds == 0);
 	UINT level_1_succeeds = container_levels.GetChildParameter<UINT>(_T("1"), _T("TIMES_SUCCEED"));
 	m_pLevelMenuDock->AddButtonLevel(880,200,_T("Btn_Level_2"), 
@@ -90,11 +81,7 @@ void MainMenuScreen::Initialize()
 		container_levels.GetChildParameter<UINT>(_T("2"), _T("BEST_SCORE")),
 		container_levels.GetChildParameter<UINT>(_T("2"), _T("BEST_TIME")), [&] () 
 		{
-			ParameterClass & container = ParameterManager::GetInstance()->CreateOrGet(_T("Levels"));
-			UINT totals_played = container.GetChildParameter<UINT>(_T("2"), _T("TIMES_PLAYED"));
-			++totals_played;
-			container.SetChildParameter<UINT>(_T("2"), _T("TIMES_PLAYED"), totals_played);
-			container.Save();
+			ScreenManager::GetInstance()->AddScreen(new GameLoadingScreen(_T("MainMenuScreen"), 2));
 		}, level_1_succeeds == 0);
 
 	m_pLevelMenuDock->Initialize();
@@ -155,14 +142,7 @@ void MainMenuScreen::Initialize()
 
 void MainMenuScreen::Update(const GameContext& context)
 {
-	if(context.Input->IsActionTriggered((int)InputControls::KB_RETURN_PRESSED))
-	{
-		ScreenManager::GetInstance()->RemoveActiveScreen(_T("MainMenuScreen"));
-		ScreenManager::GetInstance()->AddScreen(new GameScreen());
-		ScreenManager::GetInstance()->AddScreen(new MenuScreen());
-		ScreenManager::GetInstance()->AddActiveScreen(_T("GameScreen"));
-	}
-	else if(context.Input->IsActionTriggered((int)InputControls::KB_ESCAPE_PRESSED))
+	if(context.Input->IsActionTriggered((int)InputControls::KB_ESCAPE_PRESSED))
 	{
 		ScreenManager::GetInstance()->QuitGame();
 	}

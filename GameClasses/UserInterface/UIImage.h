@@ -25,6 +25,7 @@ public:
 protected:
 	ID3D10ShaderResourceView *m_pTexture;
 	SpriteInfo m_ImageSprite;
+	D3DXVECTOR2 m_Scale;
 
 private:
 	UIImage(const UIImage& yRef);									

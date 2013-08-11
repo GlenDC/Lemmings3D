@@ -9,6 +9,7 @@
 #include "UIToggleButton.h"
 #include "UIImage.h"
 #include "UITextField.h"
+#include "UISpritesheet.h"
 #include "AmountButton.h"
 //====================================================================
 
@@ -199,6 +200,14 @@ void UIDockInterface::AddImage(int x, int y, const tstring & name, const tstring
 	ConvertToResourcePath(file);
     UIImage * image = new UIImage(x, y, name, this, file);
 	m_ElementList.insert(std::pair<UINT, UIElement*>(LemmingsHelpers::GenerateHash(name), image));
+}
+
+void UIDockInterface::AddSpritesheet(int x, int y, const tstring & name, const tstring & asset_file, UINT frames_x, UINT frames_y, float animation_speed)
+{
+	tstring file(asset_file);
+	ConvertToResourcePath(file);
+	UISpritesheet * spritesheet = new UISpritesheet(x, y, name, this, file, frames_x, frames_y, animation_speed);
+	m_ElementList.insert(std::pair<UINT, UIElement*>(LemmingsHelpers::GenerateHash(name), spritesheet));
 }
 
 //void UIDockInterface::AddSlider(int x, int y, tstring name, tstring asset_background, tstring asset_carrot, int min_carrot,

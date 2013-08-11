@@ -10,7 +10,7 @@
 	<Parameter name="HEIGHTMAP_DIRECTORY" value = "levels/heightmaps/" />
 	<Parameter name="TARGET_SCREEN_RESOLUTION_UI" value = "1920.0;1080.0" />
 	<Parameter name="LEVEL_OFFSET" value = "1;1;1" />
-	<Parameter name="GRID_SIZE" value = "8.0" />
+	<Parameter name="GRID_SIZE" value = "12.0" />
 	<Parameter name="DEFAULT_PLAYER" value="GlenDC" />
 	<Parameter name="LOG_WAIT_TIME" value="0.5" />
 	<Parameter name="MAX_LOG_DELAY_TIME" value="2.0" />

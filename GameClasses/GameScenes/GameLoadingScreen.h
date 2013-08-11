@@ -1,24 +1,24 @@
 //====================== #INCLUDES ===================================
-#include "BaseScreen.h"
 #include <memory>
 #include "Helpers/SpriteFont.h"
+#include "LoadingScreen.h"
+//----------------------------------------------------------------------------
+#include <thread>
 //====================================================================
 
-class UIDockInterface;
-
-//====================== LoadingScreen Class ============================
+//====================== GameLoadingScreen Class ============================
 // Description:
-//		Screen Class for a loading screen
+//		Screen Class for the main menu
 // Last Modification: August 2013
 // Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
-class LoadingScreen: public BaseScreen
+class GameLoadingScreen: public LoadingScreen
 {
 public:
-	LoadingScreen(const tstring & previousScreen);
-	virtual ~LoadingScreen(void);
+	GameLoadingScreen(const tstring & previousScreen, UINT leveL_id);
+	virtual ~GameLoadingScreen(void);
 
 	virtual void Initialize();
 	virtual void Update(const GameContext& context);
@@ -31,17 +31,11 @@ public:
 	virtual void Deactivated();
 
 private:
-	static const unsigned int MAX_DOTS = 3;
-	shared_ptr<SpriteFont> m_pSpriteFont;
-	float m_LoadTime;
-	bool m_RemovedPrevious;
 
-protected:
-	tstring m_PreviousScreenName;
-	UIDockInterface * m_pUIDock;
+	UINT m_LevelID;
+	std::thread m_Thread;
 
-private:
 	// Disabling default copy constructor and default assignment operator.
-	LoadingScreen(const LoadingScreen& yRef);									
-	LoadingScreen& operator=(const LoadingScreen& yRef);
+	GameLoadingScreen(const GameLoadingScreen& yRef);									
+	GameLoadingScreen& operator=(const GameLoadingScreen& yRef);
 };

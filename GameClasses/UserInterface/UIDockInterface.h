@@ -25,6 +25,7 @@ class UITextField;
 class UISlider;
 class UIControllerSlider;
 class UICounter;
+class UISpritesheet;
 
 //====================== UIDockInterface Class ============================
 // Description:
@@ -97,6 +98,8 @@ public:
                             const tstring & text, const D3DXCOLOR & text_color, shared_ptr<SpriteFont> pFont);
     // Create an image
     void AddImage(int x, int y, const tstring & name, const tstring & asset_file);
+    // Create a spritesheet
+    void AddSpritesheet(int x, int y, const tstring & name, const tstring & asset_file, UINT frames_x, UINT frames_y, float animation_speed);
     // Slider for menu's that work with a mouse.
    /* void AddSlider(int x, int y, tstring name, tstring asset_background, tstring asset_carrot, int min_carrot,
                             int max_carrot, int carrot_height_cor, SlideModes slide_mode, function<void(float)> function, bool disabled = false);*/

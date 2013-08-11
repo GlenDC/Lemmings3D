@@ -34,10 +34,11 @@ ScreenManager::ScreenManager(void)
 
 ScreenManager::~ScreenManager(void)
 {
+	auto it = std::unique (m_Screens.begin(), m_Screens.end()); 
+	m_Screens.resize( std::distance(m_Screens.begin(),it) ); 
 	for(UINT i = 0 ; i < m_Screens.size() ; ++i)
 	{
 		SafeDelete(m_Screens[i]);
-		m_Screens[i] = nullptr;
 	}
 	m_Screens.clear();
 	m_ActiveScreens.clear();
@@ -68,8 +69,12 @@ void ScreenManager::AddScreen(BaseScreen* screen)
 
 void ScreenManager::RemoveScreen(BaseScreen* screen)
 {
-	m_Screens.erase(find(m_Screens.begin(), m_Screens.end(), screen));
-	delete screen;
+	auto chosenScene = *find_if(m_Screens.begin(), m_Screens.end(), 
+         [screen](BaseScreen* scene) {return screen == scene; });
+	if (chosenScene != nullptr)
+    {
+		m_GarbageScreens.push_back(chosenScene);
+	}
 }
 
 void ScreenManager::RemoveScreen(const tstring & name)
@@ -107,7 +112,10 @@ bool ScreenManager::RemoveActiveScreen(const tstring & name)
          [&name](BaseScreen* scene) { return scene->GetName() == name; });
 	if (chosenScene != nullptr)
     {
-		m_GarbageScreens.push_back(chosenScene);
+		m_ActiveScreens.erase(std::remove_if(m_ActiveScreens.begin(), m_ActiveScreens.end(), 
+			[&name](BaseScreen* scene) { 
+				 return scene->GetName() == name; 
+		}));
 		return true;
 	}
 	return false;
@@ -163,11 +171,8 @@ void ScreenManager::Update(GameContext& context)
 {
 	for(auto screen : m_GarbageScreens)
 	{
-		m_ActiveScreens.erase(std::remove_if(m_ActiveScreens.begin(), m_ActiveScreens.end(), 
-			[screen](BaseScreen* scene) { 
-				 scene->Deactivated();
-				 return scene == screen; 
-		}), m_ActiveScreens.end());
+		std::remove_if(m_Screens.begin(), m_Screens.end(), 
+         [screen](BaseScreen* scene) { return scene == screen; });
 	}
 	m_GarbageScreens.clear();
 
@@ -212,7 +217,7 @@ void ScreenManager::Draw(GameContext& context)
 		screen->SceneDraw(context);
 	}
 
-	if(m_pControlScreen->IsPhysicsEnabled())
+	if(m_pControlScreen->IsPhysicsEnabled() && m_Simulated)
 	{
 		PhysicsManager::GetInstance()->FetchResults(m_pControlScreen->GetPhysicsScene());
 

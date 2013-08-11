@@ -5,6 +5,8 @@
 #include "../Managers/SpritefontManager.h"
 #include "../UserInterface/UIDockInterface.h"
 #include "../GameScenes/MainMenuScreen.h"
+#include "../GameObjects/GameEntity.h"
+#include "../UserInterface/UIDockInterface.h"
 //--------------------------------------------------------------------
 #include "Graphics/GraphicsDevice.h"
 #include "Helpers/GeneralStructs.h"
@@ -19,6 +21,7 @@ LoadingScreen::LoadingScreen(const tstring & previousScreen)
 	, m_LoadTime(0)
 	, m_RemovedPrevious(false)
 	, m_PreviousScreenName(previousScreen)
+	, m_pUIDock(nullptr)
 {
 }
 
@@ -31,6 +34,10 @@ void LoadingScreen::Initialize()
 {
 	m_pSpriteFont = SpritefontManager::GetInstance()->CreateOrGet(_T("GameOver"), 35);
 
+	m_pUIDock = new UIDockInterface(0, 0, 1400, 720, m_pSpriteFont, nullptr);
+	m_pUIDock->AddSpritesheet(925, 485, _T("spritesheet_running"), _T("Spritesheet_running.png"), 6, 5, 1.0f);
+	m_pUIDock->Initialize();
+
 	BaseScreen::Initialize();
 }
 
@@ -42,6 +49,7 @@ void LoadingScreen::Update(const GameContext& context)
 		m_RemovedPrevious = true;
 		ScreenManager::GetInstance()->RemoveScreen(m_PreviousScreenName);
 	}
+	m_pUIDock->Update(context);
 	BaseScreen::Update(context);
 }
 
@@ -55,7 +63,8 @@ void LoadingScreen::Draw(const GameContext& context)
 	{
 		strstr << _T(".");
 	}
-	SpriteBatch::DrawTextW(m_pSpriteFont.get(), strstr.str(), D3DXVECTOR2(1150, 675), D3DXCOLOR(1,1,1,1));
+	m_pUIDock->Draw(context);
+	//SpriteBatch::DrawTextW(m_pSpriteFont.get(), strstr.str(), D3DXVECTOR2(1150, 675), D3DXCOLOR(1,1,1,1));
 	BaseScreen::Draw(context);
 }
 
