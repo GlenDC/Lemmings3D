@@ -24,6 +24,8 @@ UIImage::UIImage(const int x, const int y, const tstring & name, const UIDockInt
 	m_ImageSprite.OffsetY = 0;
 	m_ImageSprite.OffsetX = 0;
 	m_ImageSprite.Color = D3DXCOLOR(1,1,1,m_AlphaValue);
+
+	CalculateTransformation();
 }
 
 UIImage::~UIImage()
@@ -42,9 +44,14 @@ void UIImage::Draw(const GameContext &context) const
 
 void UIImage::Update(const GameContext &context)
 {
+	CalculateTransformation();
+	UIElement::Update(context);
+}
+
+void UIImage::CalculateTransformation()
+{
 	m_ImageSprite.Color.a = m_AlphaValue;
 	LemmingsHelpers::Rect zone(GetScreenZone());
 	m_ImageSprite.Transform = LemmingsHelpers::MatrixScale(m_Scale.x, m_Scale.y, m_Scale.y);
 	m_ImageSprite.Transform *= LemmingsHelpers::MatrixTranslation(float(zone.X), float(zone.Y), 0.08f);
-	UIElement::Update(context);
 }

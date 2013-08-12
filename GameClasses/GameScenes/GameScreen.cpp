@@ -110,8 +110,8 @@ void GameScreen::Initialize()
 	m_pLevel = shared_ptr<Level>(new Level(_T("TestLevel"), this));
 	m_pLevel->Initialize();
 
-	m_pRisingWater = new RisingWater(m_pLevel->GetMinDepth(), m_pLevel->GetMaxDepth());
-	D3DXVECTOR3 offset = m_pLevel->Getoffset();
+	//m_pRisingWater = new RisingWater(m_pLevel->GetMinDepth(), m_pLevel->GetMaxDepth());
+	/*D3DXVECTOR3 offset = m_pLevel->Getoffset();
 	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
 	for(UINT row = 0 ; row < m_pLevel->GetHeight() ; row += 30)
 	{
@@ -126,7 +126,7 @@ void GameScreen::Initialize()
 			m_pRisingWater->AddInstance(pos);
 		}
 	}
-	m_pRisingWater->Initialize();
+	m_pRisingWater->Initialize();*/
 	
 	//ID3D10ShaderResourceView *m_pCameraRotationTexture;
 	//SpriteInfo m_CameraRotationSprite;
@@ -179,17 +179,17 @@ void GameScreen::Update(const GameContext& context)
 			if(m_BuildModePosRefresh)
 			//if(context.Input->IsActionTriggered((int)InputControls::KB_ALT_DOWN) && m_BuildModePosRefresh)
 			{
-				m_pBuilder->CalculatePositionFromEnvironment(context, m_pLevel->GetEnvironment(), m_pLevel->getSizeXYZ(),2,0,0.2f);
+				//m_pBuilder->CalculatePositionFromEnvironment(context, m_pLevel->GetEnvironment(), m_pLevel->getSizeXYZ(),2,0,0.2f);
 				m_BuildModePosRefresh = false;
 			}
 			m_pBuilder->Update(context);
 		}
 		else
 		{
-	m_pPlayer->Update(context);
+			m_pPlayer->Update(context);
 			m_pGame->Update(context);
 			m_pPlayer->UpdateMenu(context);
-			m_pRisingWater->Update(context);
+			//m_pRisingWater->Update(context);
 			ColissionCollector::GetInstance()->Update(const_cast<GameContext&>(context));
 		}
 		m_pLevel->Update(context);
@@ -249,8 +249,8 @@ void GameScreen::Draw(const GameContext& context)
 		m_pPlayer->DrawMenu(context);
 	}
 	m_pGame->Draw(context);
-	m_pRisingWater->Draw(context);
-	m_pRisingWater->Draw2D(context);
+	//m_pRisingWater->Draw(context);
+	//m_pRisingWater->Draw2D(context);
 
 	m_pLevel->Draw(context);
 
@@ -675,7 +675,7 @@ void GameScreen::StartGame()
 	ColissionCollector::GetInstance()->SetLevel(m_pLevel);
 	ColissionCollector::GetInstance()->SetGameScreen(this);
 
-	Stopwatch::GetInstance()->CreateTimer(_T("SpawnFirstEnemy"), 2.0f, false, false, [&] () { 
+	/*Stopwatch::GetInstance()->CreateTimer(_T("SpawnFirstEnemy"), 2.0f, false, false, [&] () { 
 		m_pLemmingsCharacter = new LemmingCharacter(D3DXVECTOR3(305,340,350));
 		AddSceneObject(m_pLemmingsCharacter);
 		m_pLemmingsCharacter->Initialize();
@@ -687,7 +687,7 @@ void GameScreen::StartGame()
 		m_pLemmingsCharacter2 = new LemmingCharacter(D3DXVECTOR3(325,340,340));
 		AddSceneObject(m_pLemmingsCharacter2);
 		m_pLemmingsCharacter2->Initialize();
-	});
+	});*/
 
 	//Set Camera Settings
 	m_pActiveCamera->SetFieldOfView(LemmingsHelpers::ToRad(m_pPlayer->GetSetting<float>(_T("EDITOR_CAMERA_FOV"))));
