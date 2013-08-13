@@ -2,14 +2,17 @@
 
 //====================== #INCLUDES ===================================
 #include "BaseScreen.h"
+//--------------------------------------------------------------------
 #include "Graphics/SpriteBatch.h"
 #include "Helpers/SpriteFont.h"
+//--------------------------------------------------------------------
 #include "../Entities/Level.h"
-
+#include "../Managers/StateManager.h"
+//--------------------------------------------------------------------
 #include <memory>
 //====================================================================
 
-//====================== GameScreen Class =========================
+//====================== GameScreen Class ============================
 // Description:
 //		Main screen for the game (Lemmings 3D)
 // Last Modification: July 2013
@@ -19,9 +22,7 @@
 
 class ColissionEntity;
 class EditorCamera;
-class EditorBuilder;
 class GameEntity;
-class GameModeScreen;
 class LemmingCharacter;
 class Player;
 class RisingWater;
@@ -52,10 +53,8 @@ public:
 	void BroadCast(const tstring & status);
 	void ReportStatus(const tstring & status);
 
-	void AddEnvironmentCube(const D3DXVECTOR3 & pos, const int id);
-	bool RemoveEnvironmentCube(const D3DXVECTOR3 & pos);
-	bool PaintEnvironmentCube(const D3DXVECTOR3 & pos, const int id);
-	void RecheckEnvironment();
+	shared_ptr<Level> GetLevel() const { return m_pLevel; }
+	Player * GetPlayer() const { return m_pPlayer; }
 
 private:
 	enum class AppMode : byte 
@@ -75,10 +74,7 @@ private:
 	void SetEditorHUD();
 	void SaveAll();
 
-	GameModeScreen *m_pGame;
-	EditorBuilder *m_pBuilder;
 	shared_ptr<Level> m_pLevel;
-	EditorCamera *m_pCamera;
 
 	UIDockInterface *m_pHeaderMenu;
 	UIDockInterface *m_pGameMenu;
@@ -94,6 +90,7 @@ private:
 	StatusReport * m_pStatusReport;
 
 	AppMode m_AppMode, m_PreviousAppMode;
+	StateManager m_StateMachine;
 
 	RisingWater *m_pRisingWater;
 

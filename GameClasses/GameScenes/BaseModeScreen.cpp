@@ -20,13 +20,11 @@
 #include "../XML/XMLConverter.h"
 //====================================================================
 
-// Public constructor
-BaseModeScreen::BaseModeScreen(const GameScreen * parent, const InputManager *inputManager)
-	:m_pParentScreen(parent)
-	,m_pInputManager(inputManager)
+// Protected constructor
+BaseModeScreen::BaseModeScreen(GameScreen * parent, const InputManager *inputManager)
+	: State()
+	, m_pParentScreen(parent)
+	, m_pInputManager(inputManager)
 {
 	m_pDefaultFont = SpritefontManager::GetInstance()->CreateOrGet(_T("ComicSansMs"), 25);
 }
-
-// Public virtual destructor: delete nothing
-BaseModeScreen::~BaseModeScreen(void) {}

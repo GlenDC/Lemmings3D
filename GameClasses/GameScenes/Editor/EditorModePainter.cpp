@@ -17,7 +17,8 @@ EditorModePainter::EditorModePainter (EditorBuilder * pEditor)
 	m_pPaintMenu->AddImage(0, 0, _T("BACKGROUND"), _T("BG_EditorSubMenu.png"));
 	m_pPaintMenu->AddButton(5,65,_T("Abtn_paint_recheck"), _T("painter_button_recheck.png"), [&] () 
 	{ 
-		m_pEditor->m_pGame->RecheckEnvironment();
+		//important todo : make this work again
+		//m_pEditor->m_pGame->RecheckEnvironment();
 	}, false, false);
 	m_pPaintMenu->AddButton(55,65,_T("Abtn_paint_rock"), _T("painter_button_0_rock.png"), [&] () 
 	{ 
@@ -50,7 +51,8 @@ void EditorModePainter::Update(const GameContext & context)
 		int newID = (int)m_PaintMode;
 		float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
 		LemmingsHelpers::SnapPositionXYZ(m_pEditor->m_Position, size);
-		m_pEditor->m_pGame->PaintEnvironmentCube(m_pEditor->m_Position, newID);
+		// important to do make this work again
+		//m_pEditor->m_pGame->PaintEnvironmentCube(m_pEditor->m_Position, newID);
 	}
 }
 

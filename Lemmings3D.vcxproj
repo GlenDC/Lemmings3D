@@ -144,6 +144,7 @@
     <ClCompile Include="GameClasses\Managers\ScreenManager.cpp" />
     <ClCompile Include="GameClasses\Managers\IManager.cpp" />
     <ClCompile Include="GameClasses\Managers\SpritefontManager.cpp" />
+    <ClCompile Include="GameClasses\Managers\StateManager.cpp" />
     <ClCompile Include="GameClasses\Managers\Stopwatch.cpp" />
     <ClCompile Include="GameClasses\Managers\TimeManager.cpp" />
     <ClCompile Include="GameClasses\Materials\FlatColorMaterial.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="GameClasses\Entities\PlayerController.h" />
     <ClInclude Include="GameClasses\Entities\RenderContext.h" />
     <ClInclude Include="GameClasses\Entities\RisingWater.h" />
+    <ClInclude Include="GameClasses\Entities\State.h" />
     <ClInclude Include="GameClasses\Entities\StatusReport.h" />
     <ClInclude Include="GameClasses\Entities\Timer.h" />
     <ClInclude Include="GameClasses\Entities\UserSettings.h" />
@@ -230,6 +232,7 @@
     <ClInclude Include="GameClasses\Managers\ScreenManager.h" />
     <ClInclude Include="GameClasses\Managers\IManager.h" />
     <ClInclude Include="GameClasses\Managers\SpritefontManager.h" />
+    <ClInclude Include="GameClasses\Managers\StateManager.h" />
     <ClInclude Include="GameClasses\Managers\Stopwatch.h" />
     <ClInclude Include="GameClasses\Managers\TimeManager.h" />
     <ClInclude Include="GameClasses\Materials\FlatColorMaterial.h" />

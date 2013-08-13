@@ -51,15 +51,24 @@ public:
 
 	void Save();
 
+	float GetLowerDepth();
+	inline float GetCurrentDepth() const { return m_CurrentDepth; }
+	float GetHigherDepth();
+
 private:
 	void CreateBlocks();
 	void PaintBlocks();
+	inline void IncreaseMinDepth() { m_MinDepth += m_HeigthDifference; CheckCurrentDepth(); } 
+	inline void DecreaseMinDepth() { m_MinDepth -= m_HeigthDifference; CheckCurrentDepth(); } 
+	inline void IncreaseMaxDepth() { m_MaxDepth += m_HeigthDifference; CheckCurrentDepth(); } 
+	inline void DecreaseMaxDepth() { m_MaxDepth -= m_HeigthDifference; CheckCurrentDepth(); } 
+	void CheckCurrentDepth();
 
 	tstring m_LevelXMLFileName;
 	InstancedObject * m_pInstancedObject;
 
 	UINT m_Width, m_Height, m_SizeXZ, m_SizeXYZ;
-	float m_MinDepth, m_MaxDepth;
+	float m_MinDepth, m_MaxDepth, m_CurrentDepth, m_HeigthDifference;
 	tstring m_Name;
 
 	D3DXVECTOR3 m_Offset;

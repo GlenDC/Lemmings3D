@@ -25,7 +25,8 @@ void EditorModeEraser::Update(const GameContext & context)
 	{
 		float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
 		LemmingsHelpers::SnapPositionXYZ(m_pEditor->m_Position, size);
-		m_pEditor->m_pGame->RemoveEnvironmentCube(m_pEditor->m_Position);
+		// important, make this work again
+		//m_pEditor->m_pGame->RemoveEnvironmentCube(m_pEditor->m_Position);
 	}
 }
 

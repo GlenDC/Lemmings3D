@@ -8,7 +8,7 @@
 #include "../Lib/GlobalParameters.h"
 #include "../Lib/LemmingsHelpers.h"
 #include "../Managers/ScreenManager.h"
-#include "../GameScenes/GameScreen.h"
+#include "../GameScenes/BuildModeScreen.h"
 #include "../UserInterface/UIDockInterface.h"
 #include "../Interfaces/IEditMode.h"
 #include "../GameScenes/Editor/EditorModeBuilder.h"
@@ -16,17 +16,17 @@
 #include "../GameScenes/Editor/EditorModePainter.h"
 //====================================================================
 
-EditorBuilder::EditorBuilder(GameScreen * pScreen)
+EditorBuilder::EditorBuilder(BuildModeScreen * pEditor)
 	: m_pPreviewObject(nullptr)
 	, m_Position(0,0,0)
-	, m_pGame(pScreen)
+	, m_pEditor(pEditor)
 	, m_pMainMenu(nullptr)
 	, m_EditorMode(EditorMode::build)
 {
 	m_pPreviewObject = new PreviewObject();
 	m_pPreviewObject->Initialize();
 
-	m_pMainMenu = new UIDockInterface(45,0,400,200, nullptr, nullptr);
+	m_pMainMenu = shared_ptr<UIDockInterface>(new UIDockInterface(45,0,400,200, nullptr, nullptr));
 	m_pMainMenu->AddButton(0,5,_T("Abtn_Mode_Builder"), _T("Header_Editor_Square_Hammer.png"), [&] () 
 	{ 
 		m_pMainMenu->ToggleElement(_T("Abtn_Mode_Builder"));
@@ -52,7 +52,6 @@ EditorBuilder::EditorBuilder(GameScreen * pScreen)
 EditorBuilder::~EditorBuilder(void)
 {
 	delete m_pPreviewObject;
-	delete m_pMainMenu;
 }
 
 void EditorBuilder::Draw(const GameContext & context)
@@ -174,3 +173,8 @@ void EditorBuilder::CalculatePositionFromEnvironment(const GameContext & context
 		curDistance += diameter;
 	} while(curDistance < length && posVec.size() > 0);*/
 //}
+
+void EditorBuilder::CalculatePositionFromEnvironment(const GameContext & context)
+{
+
+}

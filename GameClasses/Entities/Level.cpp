@@ -4,6 +4,8 @@
 #include "OverlordComponents.h"
 #include "SceneGraph/GameScene.h"
 //--------------------------------------------------------------------
+#include <cmath>
+//--------------------------------------------------------------------
 #include "../Lib/GlobalParameters.h"
 #include "../XML/XMLParser.h"
 #include "../Helpers/HeightmapParser.h"
@@ -22,6 +24,8 @@ Level::Level(const tstring & file, GameScene * pScene)
 	, m_SizeXYZ(0)
 	, m_MinDepth(0)
 	, m_MaxDepth(0)
+	, m_CurrentDepth(0)
+	, m_HeigthDifference(0)
 	, m_Name(_T(""))
 	, m_Offset(0,0,0)
 	, m_pLevelParser(nullptr)
@@ -80,9 +84,10 @@ void Level::Initialize()
 
 	vector<vector<D3DXVECTOR3>> positionVec;
 	D3DXVECTOR2 depth;
-	float heightScale = XMLConverter::ConvertTString<float>(GetAttribueValue<tstring>(root, _T("height_scale")));
+	m_HeigthDifference = XMLConverter::ConvertTString<float>(GetAttribueValue<tstring>(root, _T("height_scale")));
 	ASSERT(HeightmapParser::Read(heightmapFile, m_Width, m_Height, positionVec, 
-		depth, size * heightScale, size), _T("an error has occured, while parsing the heightmap!"));
+		depth, size * m_HeigthDifference, size), _T("an error has occured, while parsing the heightmap!"));
+	m_HeigthDifference = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));;
 
 	m_MinDepth = depth.x;
 	m_MaxDepth = depth.y;
@@ -139,6 +144,8 @@ void Level::Initialize()
 	}
 
 	CreateBlocks();
+	m_CurrentDepth = (m_MinDepth + m_MaxDepth) / 2.0f;
+	m_CurrentDepth = fmod(m_CurrentDepth, m_HeigthDifference);
 	PaintBlocks();
 
 	m_pInstancedObject->Initialize();
@@ -154,7 +161,7 @@ void Level::Initialize()
 void Level::Draw(const GameContext & context)
 {
 	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
-#if _DEBUG
+
 	if(ScreenManager::GetInstance()->CanDrawPhysics())
 	{
 		//LemmingsHelpers::DrawGrid((float)m_Width, (float)m_Height, m_MinDepth, m_MaxDepth);
@@ -162,7 +169,6 @@ void Level::Draw(const GameContext & context)
 		DebugRenderer::DrawLine(m_Offset, m_Offset + D3DXVECTOR3(0, m_MaxDepth - m_MinDepth, 0), D3DXCOLOR(0,1,0,1));
 		DebugRenderer::DrawLine(m_Offset, m_Offset + D3DXVECTOR3(0, 0, m_Height * size), D3DXCOLOR(0,0,1,1));
 	}
-#endif
 
 	//Draw the level
 	/*for( UINT r = 0; r < m_Height; r++ )
@@ -291,12 +297,34 @@ void Level::Save()
 	m_pLevelParser->Save();
 }
 
+float Level::GetLowerDepth()
+{
+	m_CurrentDepth -= m_HeigthDifference;
+	CheckCurrentDepth();
+	return m_CurrentDepth;
+}
+
+float Level::GetHigherDepth()
+{
+	m_CurrentDepth += m_HeigthDifference;
+	CheckCurrentDepth();
+	return m_CurrentDepth;
+}
+
 void Level::CreateBlocks()
 {
 	auto node = m_pLevelParser->GetNode(XML_PARSER_LAYER(LayerTestCategory::xml_test_node, _T("blocks")));
 	for(auto node_it : node.children())
 	{
 		D3DXVECTOR3 pos = GetAttribueValue<D3DXVECTOR3>(node_it, _T("pos"));
+		if(pos.y < m_MinDepth) 
+		{
+			m_MinDepth = pos.y;
+		}
+		else if (pos.y > m_MaxDepth)
+		{
+			m_MaxDepth = pos.y;
+		}
 		int id = GetAttribueValue<int>(node_it, _T("id"));
 		m_pInstancedObject->AddInstance(pos, id);
 	}
@@ -311,4 +339,17 @@ void Level::PaintBlocks()
 		int id = GetAttribueValue<int>(node_it, _T("id"));
 		m_pInstancedObject->EditInstance(pos, id);
 	}
+}
+
+void Level::CheckCurrentDepth()
+{
+	if(m_CurrentDepth < m_MinDepth)
+	{
+		m_CurrentDepth = m_MinDepth;
+	}
+	else if(m_CurrentDepth > m_MaxDepth)
+	{
+		m_CurrentDepth = m_MaxDepth;
+	}
+	//recheck physics!
 }

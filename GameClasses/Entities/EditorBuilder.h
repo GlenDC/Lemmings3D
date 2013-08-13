@@ -8,7 +8,7 @@
 //====================================================================
 
 class IEditMode;
-class GameScreen;
+class BuildModeScreen;
 class PreviewObject;
 class UIDockInterface;
 class EditorModePainter;
@@ -26,7 +26,7 @@ class EditorModeEraser;
 class EditorBuilder
 {
 public:
-	explicit EditorBuilder(GameScreen * pGame);
+	explicit EditorBuilder(BuildModeScreen * pEditor);
 	~EditorBuilder(void);
 
 	void Draw(const GameContext & context);
@@ -36,6 +36,7 @@ public:
 	void SetSnapPosition(const GameContext & context, const D3DXVECTOR3 & pos);
 	void CalculatePositionFromEnvironment(const GameContext & context, const std::vector<D3DXVECTOR3> & posVec, 
 		UINT length, const int accurary = 5, const UINT extraDistance = 350, const float distanceScalar = 1.0f);
+	void CalculatePositionFromEnvironment(const GameContext & context);
 
 private:
 	enum class EditorMode : char 
@@ -53,8 +54,8 @@ private:
 	D3DXVECTOR3 m_Position;
 	std::vector<D3DXVECTOR3> m_SearchVec;
 
-	GameScreen *m_pGame;
-	UIDockInterface *m_pMainMenu;
+	BuildModeScreen *m_pEditor;
+	std::shared_ptr<UIDockInterface> m_pMainMenu;
 
 	EditorMode m_EditorMode;
 

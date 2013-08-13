@@ -1,6 +1,8 @@
 //====================== #INCLUDES ===================================
 #include "GameScreen.h"
+//--------------------------------------------------------------------
 #include "GameModeScreen.h"
+#include "EditModeScreen.h"
 #include "Game.h"
 #include "OverlordComponents.h"
 #include "Scenegraph/GameObject.h"
@@ -16,12 +18,12 @@
 #include "../Entities/Level.h"
 #include "../Entities/Player.h"
 #include "../Entities/StatusReport.h"
-#include "../Entities/EditorBuilder.h"
 #include "../Entities/RisingWater.h"
 #include "../GameObjects/GameEntity.h"
 #include "../GameObjects/ColissionEntity.h"
 #include "../GameObjects/EditorCamera.h"
 #include "../GameObjects/LemmingCharacter.h"
+#include "../GameObjects/PhysicsCube.h" 
 #include "../Helpers/HeightmapParser.h"
 #include "../Lib/GlobalParameters.h" 
 #include "../Lib/LemmingsHelpers.h"
@@ -36,10 +38,7 @@
 
 GameScreen::GameScreen(void)
 	:BaseScreen(_T("GameScreen"), _T("Play Lemmings3D"), true)
-	,m_pGame(nullptr)
-	,m_pBuilder(nullptr)
 	,m_pLevel(nullptr)
-	,m_pCamera(nullptr)
 	,m_pHeaderMenu(nullptr)
 	,m_pGameMenu(nullptr)
 	,m_pDefaultFont(nullptr)
@@ -50,6 +49,7 @@ GameScreen::GameScreen(void)
 	,m_pStatusReport(nullptr)
 	,m_AppMode(AppMode::Game)
 	,m_PreviousAppMode(AppMode::Game)
+	,m_StateMachine()
 	,m_pRisingWater(nullptr)
 	,m_RefreshLevelTimer(true)
 	,m_BuildModePosRefresh(false)
@@ -66,8 +66,6 @@ GameScreen::GameScreen(void)
 GameScreen::~GameScreen(void)
 {
 	SafeDelete(m_pStatusReport);
-	SafeDelete(m_pGame);
-	SafeDelete(m_pBuilder);
 	//Unset the camera component of the scene?!
 	SafeDelete(m_pPlayer);
 
@@ -86,10 +84,6 @@ void GameScreen::Initialize()
 
 	m_pStatusReport = new StatusReport(this, GlobalParameters::GetParameters()->GetParameter<bool>(_T("ALLOW_STATUS_LOG")));
 
-	m_pCamera = new EditorCamera();
-	AddSceneObject(m_pCamera);
-	m_pCamera->GetComponent<CameraComponent>()->SetActive();
-
 	m_pDefaultFont = SpritefontManager::GetInstance()->CreateOrGet(_T("8BitFont"));
 
 	m_pPlayer = new Player(GlobalParameters::GetParameters()->GetParameter<tstring>(_T("DEFAULT_PLAYER")),this);
@@ -102,10 +96,13 @@ void GameScreen::Initialize()
 	AddMainMenuElements();
 	m_pGameMenu->Initialize();
 
-	m_pGame = new GameModeScreen(this, ScreenManager::GetInstance()->GetInputManager());
-	m_pGame->Initialize();
+	auto gameMode = new GameModeScreen(this, ScreenManager::GetInstance()->GetInputManager());
+	gameMode->Initialize();
+	m_StateMachine.AddState(_T("game"), gameMode);
 
-	m_pBuilder = new EditorBuilder(this);
+	auto editorMode = new EditModeScreen(this, ScreenManager::GetInstance()->GetInputManager());
+	editorMode->Initialize();
+	m_StateMachine.AddState(_T("editor"), editorMode);
 
 	m_pLevel = shared_ptr<Level>(new Level(_T("TestLevel"), this));
 	m_pLevel->Initialize();
@@ -149,8 +146,8 @@ void GameScreen::Update(const GameContext& context)
 		ScreenManager::GetInstance()->SetControlScreen(_T("MenuScreen"));
 	}
 
-	//control if player can control editor camera or not!
-	bool allowEditorCameraMovement(true);
+	//control if player can control the camera or not!
+	bool allowCameraMovement(true);
 	//if(m_AppMode != AppMode::Editor) allowEditorCameraMovement = false;
 	POINT mousePointPos = context.Input->GetMousePosition();
 	if(context.Input->IsActionTriggered((int)InputControls::MOUSE_LEFT_DOWN))
@@ -158,44 +155,22 @@ void GameScreen::Update(const GameContext& context)
 		D3DXVECTOR2 mousePos((float)mousePointPos.x, (float)mousePointPos.y);
 		if(m_pHeaderMenu->CursorInZone(mousePos) || m_pGameMenu->CursorInZone(mousePos))
 		{
-			allowEditorCameraMovement = false;
+			allowCameraMovement = false;
 		}
 	}
-	m_pCamera->AllowCameraControls(allowEditorCameraMovement);
+	//m_pCamera->AllowCameraControls(allowCameraMovement);
 
 	m_pStatusReport->Update(context);
 	m_pHeaderMenu->Update(context);
 	m_pGameMenu->Update(context);
 
+	m_StateMachine.Update(context);
+
 	if(m_AppMode != AppMode::Pause)
 	{
-		if(m_AppMode == AppMode::Editor)
-		{
-			//D3DXVECTOR3 mouseWorldPos;
-			////LemmingsHelpers::ScreenToWorld(context, D3DXVECTOR2((float)mousePointPos.x, (float)mousePointPos.y), mouseWorldPos);
-			//LemmingsHelpers::GetNearPosition(context, mouseWorldPos);
-			//D3DXVECTOR3 closestBuildPos = m_pLevel->GetSnapPosition(mouseWorldPos);
-			//m_pBuilder->SetSnapPosition(context, closestBuildPos);
-			if(m_BuildModePosRefresh)
-			//if(context.Input->IsActionTriggered((int)InputControls::KB_ALT_DOWN) && m_BuildModePosRefresh)
-			{
-				//m_pBuilder->CalculatePositionFromEnvironment(context, m_pLevel->GetEnvironment(), m_pLevel->getSizeXYZ(),2,0,0.2f);
-				m_BuildModePosRefresh = false;
-			}
-			m_pBuilder->Update(context);
-		}
-		else
-		{
-			m_pPlayer->Update(context);
-			m_pGame->Update(context);
-			m_pPlayer->UpdateMenu(context);
-			//m_pRisingWater->Update(context);
-			ColissionCollector::GetInstance()->Update(const_cast<GameContext&>(context));
-		}
 		m_pLevel->Update(context);
-	BaseScreen::Update(context);
-
 		TimeManager::GetInstance()->Update(const_cast<GameContext&>(context));
+		BaseScreen::Update(context);
 	}
 
 	//Update Timer
@@ -230,27 +205,20 @@ void GameScreen::Update(const GameContext& context)
 		float yaw = LemmingsHelpers::GetYaw(rotation);
 		if(yaw < 0)
 			yaw += (float)D3DX_PI / 2;*/
-		m_CameraRotationSprite.Transform = LemmingsHelpers::MatrixTranslation(-40, -47,0) *
+		/*m_CameraRotationSprite.Transform = LemmingsHelpers::MatrixTranslation(-40, -47,0) *
 										LemmingsHelpers::MatrixRotation(0, 0, m_pCamera->GetYaw()) *
 										LemmingsHelpers::MatrixTranslation(40, 47,0) *
-										LemmingsHelpers::MatrixTranslation(1045,580,0.005f);
+										LemmingsHelpers::MatrixTranslation(1045,580,0.005f);*/
 
 	m_pHeaderMenu->SetTextField(_T("ATxt_FPS"), XMLConverter::ConvertToTString<int>(FPS::GetInstance()->GetFPS()));
 }
 
 void GameScreen::Draw(const GameContext& context)
 {
-	if(m_AppMode == AppMode::Editor)
-	{
-		m_pBuilder->Draw(context);
-	}
-	else if(m_AppMode == AppMode::Game)
-	{
-		m_pPlayer->DrawMenu(context);
-	}
-	m_pGame->Draw(context);
 	//m_pRisingWater->Draw(context);
 	//m_pRisingWater->Draw2D(context);
+
+	m_StateMachine.Draw(context);
 
 	m_pLevel->Draw(context);
 
@@ -272,10 +240,7 @@ void GameScreen::Draw(const GameContext& context)
 		m_pHeaderMenu->Draw(context);
 		m_pGameMenu->Draw(context);
 
-		if(m_AppMode == AppMode::Editor)
-		{
-			m_pBuilder->DrawSubMenu(context);
-		}
+		m_StateMachine.Draw2D(context);
 
 		SpriteBatch::Draw(m_CameraRotationSprite);
 		ScreenManager::GetInstance()->DrawCursor(context);
@@ -348,26 +313,6 @@ void GameScreen::ReportStatus(const tstring & status)
 	m_pStatusReport->ReportStatus(status);
 }
 
-void GameScreen::AddEnvironmentCube(const D3DXVECTOR3 & pos, int id)
-{
-	m_pLevel->AddEnvironmentCube(pos, id);
-}
-
-bool GameScreen::RemoveEnvironmentCube(const D3DXVECTOR3 & pos)
-{
-	return m_pLevel->RemoveEnvironmentCube(pos);
-}
-
-bool GameScreen::PaintEnvironmentCube(const D3DXVECTOR3 & pos, int id)
-{
-	return m_pLevel->PaintEnvironmentCube(pos, id);
-}
-
-void GameScreen::RecheckEnvironment()
-{
-	m_pLevel->RecheckEnvironment();
-}
-
 void GameScreen::SwitchMode(AppMode mode)
 {
 	m_PreviousAppMode = m_AppMode;
@@ -378,11 +323,13 @@ void GameScreen::SwitchMode(AppMode mode)
 		m_pHeaderMenu->SetTextField(_T("NMode_Name"), _T("EDITOR"));
 		SetGameSpeedTxtField();
 		SetEditorHUD();
+		m_StateMachine.SetState(_T("game"));
 		break;
 	case AppMode::Game:
 		m_pHeaderMenu->SetTextField(_T("NMode_Name"), _T("PLAYING"));
 		SetGameSpeedTxtField();
 		SetGameHUD();
+		m_StateMachine.SetState(_T("editor"));
 		break;
 	case AppMode::Pause:
 		m_pHeaderMenu->SetTextField(_T("NMode_Name"), _T("PAUSED"));
@@ -506,7 +453,7 @@ void GameScreen::AddHeaderMenuElements()
 	//Reset Camera Transformation
 	m_pHeaderMenu->AddButton(435,5, _T("ABtn_ResetCamera"), _T("Header_Btn_Rect_ResetCamera.png"), [&] () 
 	{ 
-			m_pCamera->ResetTransformation();
+			//m_pCamera->ResetTransformation();
 			ReportStatus(_T("Editor camera has been reset!"));
 	});
 	m_pHeaderMenu->SetElementVisible(_T("ABtn_ResetCamera"), false);
@@ -610,17 +557,17 @@ void GameScreen::AddMainMenuElements()
 		_T("rspd:") + m_pPlayer->GetSetting<tstring>(_T("EDITOR_CAMERA_ROT_SPEED")), D3DXCOLOR(0.184f,0.565f,0.22f,1), pBMFont);
 	m_pGameMenu->AddButton(1818,40,_T("Main_Btn_Rspeed_n"), _T("Main_Btn_Sqrt_Mini_Minus.png"), [&] ()
 	{
-		m_pCamera->DecreaseRotSpeed();
+		/*m_pCamera->DecreaseRotSpeed();
 		tstring speedString = XMLConverter::ConvertToTString(m_pCamera->GetRotSpeed());
 		m_pGameMenu->SetTextField(_T("Main_TextField_Camera_RotSpeed"), _T("rspd:") + speedString);
-		ReportStatus(_T("Changed camera rot. speed to ") + speedString + _T("."));
+		ReportStatus(_T("Changed camera rot. speed to ") + speedString + _T("."));*/
 	});
 	m_pGameMenu->AddButton(1865,40,_T("Main_Btn_Rspeed_p"), _T("Main_Btn_Sqrt_Mini_Plus.png"), [&] ()
 	{
-		m_pCamera->IncreaseRotSpeed();
+		/*m_pCamera->IncreaseRotSpeed();
 		tstring speedString = XMLConverter::ConvertToTString(m_pCamera->GetRotSpeed());
 		m_pGameMenu->SetTextField(_T("Main_TextField_Camera_RotSpeed"), _T("rspd:") + speedString);
-		ReportStatus(_T("Changed camera rot. speed to ") + speedString + _T("."));
+		ReportStatus(_T("Changed camera rot. speed to ") + speedString + _T("."));*/
 	});
 
 	m_pGameMenu->AddTextField(1820,90,350, 35, _T("Main_TextField_Camera_FOV"), _T("FOV:") + m_pPlayer->GetSetting<tstring>(_T("EDITOR_CAMERA_FOV")), D3DXCOLOR(0.184f,0.565f,0.22f,1), pBMFont);
@@ -650,17 +597,17 @@ void GameScreen::AddMainMenuElements()
 		_T("spd:") + m_pPlayer->GetSetting<tstring>(_T("EDITOR_CAMERA_SPEED")), D3DXCOLOR(0.184f,0.565f,0.22f,1), pBMFont);
 	m_pGameMenu->AddButton(1818,200,_T("Main_Btn_Speed_n"), _T("Main_Btn_Sqrt_Mini_Minus.png"), [&] ()
 	{
-		m_pCamera->DecreaseSpeed();
-		tstring speedString =  XMLConverter::ConvertToTString(m_pCamera->GetMoveSpeed());
+		//m_pCamera->DecreaseSpeed();
+		/*tstring speedString =  XMLConverter::ConvertToTString(m_pCamera->GetMoveSpeed());
 		m_pGameMenu->SetTextField(_T("Main_TextField_Camera_Speed"), _T("spd:") + speedString);
-		ReportStatus(_T("Changed camera mov. speed to ") + speedString + _T("."));
+		ReportStatus(_T("Changed camera mov. speed to ") + speedString + _T("."));*/
 	});
 	m_pGameMenu->AddButton(1865,200,_T("Main_Btn_Speed_p"), _T("Main_Btn_Sqrt_Mini_Plus.png"), [&] ()
 	{
-		m_pCamera->IncreaseSpeed();
-		tstring speedString =  XMLConverter::ConvertToTString(m_pCamera->GetMoveSpeed());
+		//m_pCamera->IncreaseSpeed();
+		/*tstring speedString =  XMLConverter::ConvertToTString(m_pCamera->GetMoveSpeed());
 		m_pGameMenu->SetTextField(_T("Main_TextField_Camera_Speed"), _T("spd:") + XMLConverter::ConvertToTString(m_pCamera->GetMoveSpeed()));
-		ReportStatus(_T("Changed camera mov. speed to ") + speedString + _T("."));
+		ReportStatus(_T("Changed camera mov. speed to ") + speedString + _T("."));*/
 	});
 }
 
@@ -688,14 +635,6 @@ void GameScreen::StartGame()
 		AddSceneObject(m_pLemmingsCharacter2);
 		m_pLemmingsCharacter2->Initialize();
 	});*/
-
-	//Set Camera Settings
-	m_pActiveCamera->SetFieldOfView(LemmingsHelpers::ToRad(m_pPlayer->GetSetting<float>(_T("EDITOR_CAMERA_FOV"))));
-	m_pCamera->SetInformation(m_pPlayer->GetSetting<D3DXVECTOR3>(_T("EDITOR_CAMERA_POS")),
-									m_pPlayer->GetSetting<float>(_T("EDITOR_CAMERA_YAW")),
-									m_pPlayer->GetSetting<float>(_T("EDITOR_CAMERA_PITCH")),
-									m_pPlayer->GetSetting<float>(_T("EDITOR_CAMERA_SPEED")),
-									m_pPlayer->GetSetting<float>(_T("EDITOR_CAMERA_ROT_SPEED")));
 
 	ReportStatus(_T("Welcome in the Lemmings3D World ") + m_pPlayer->GetName() + _T("...")); 
 	Stopwatch::GetInstance()->CreateTimer(_T("GLHF"), 5.0f, false, false, 
@@ -732,7 +671,7 @@ void GameScreen::SetEditorHUD()
 
 void GameScreen::SaveAll()
 {
-	auto transform = m_pCamera->GetComponent<TransformComponent>();
+	/*auto transform = m_pCamera->GetComponent<TransformComponent>();
 	m_pPlayer->SetSetting<D3DXVECTOR3>(_T("EDITOR_CAMERA_POS"), transform->GetWorldPosition());
 	m_pPlayer->SetSetting<float>(_T("EDITOR_CAMERA_YAW"), m_pCamera->GetYaw());
 	m_pPlayer->SetSetting<float>(_T("EDITOR_CAMERA_PITCH"), m_pCamera->GetPitch());
@@ -741,5 +680,5 @@ void GameScreen::SaveAll()
 	m_pPlayer->SetSetting<float>(_T("EDITOR_CAMERA_ROT_SPEED"), m_pCamera->GetRotSpeed());
 	m_pPlayer->Save(); 
 	m_pLevel->Save();
-	ReportStatus(_T("Settings and level Saved for ") + m_pPlayer->GetName() + _T("."));
+	ReportStatus(_T("Settings and level Saved for ") + m_pPlayer->GetName() + _T("."));*/
 }

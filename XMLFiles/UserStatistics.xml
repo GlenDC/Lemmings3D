@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <Parameters>
-	<Parameter name="TOTAL_TIME" value="1378" />
-	<Parameter name="TOTAL_SESSIONS" value="117" />
+	<Parameter name="TOTAL_TIME" value="1854" />
+	<Parameter name="TOTAL_SESSIONS" value="122" />
 	<Parameter name="TOTAL_SUCCEEDS" value="0" />
 	<Parameter name="MOST_PLAYED" value="0" />
-	<Parameter name="LAST_PLAYED" value="12-8-2013 7h46m50s" />
+	<Parameter name="LAST_PLAYED" value="13-8-2013 2h26m47s" />
 </Parameters>
