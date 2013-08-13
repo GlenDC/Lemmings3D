@@ -5,6 +5,8 @@
 //====================================================================
 
 class EditorCamera;
+class LemmingCharacter;
+class RisingWater;
 
 //====================== GameModeScreen Class =========================
 // Description:
@@ -30,6 +32,12 @@ public:
 	
 private:
 	EditorCamera *m_pCamera;
+
+	LemmingCharacter	*m_pLemmingsCharacter, 
+						*m_pLemmingsCharacter1, 
+						*m_pLemmingsCharacter2;
+
+	RisingWater *m_pRisingWater;
 
 	// Disabling default copy constructor and default assignment operator.
 	GameModeScreen(const GameModeScreen& yRef);									

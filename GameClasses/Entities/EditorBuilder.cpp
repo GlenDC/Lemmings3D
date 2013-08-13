@@ -8,7 +8,7 @@
 #include "../Lib/GlobalParameters.h"
 #include "../Lib/LemmingsHelpers.h"
 #include "../Managers/ScreenManager.h"
-#include "../GameScenes/BuildModeScreen.h"
+#include "../GameScenes/EditModeScreen.h"
 #include "../UserInterface/UIDockInterface.h"
 #include "../Interfaces/IEditMode.h"
 #include "../GameScenes/Editor/EditorModeBuilder.h"
@@ -16,7 +16,7 @@
 #include "../GameScenes/Editor/EditorModePainter.h"
 //====================================================================
 
-EditorBuilder::EditorBuilder(BuildModeScreen * pEditor)
+EditorBuilder::EditorBuilder(EditModeScreen * pEditor)
 	: m_pPreviewObject(nullptr)
 	, m_Position(0,0,0)
 	, m_pEditor(pEditor)

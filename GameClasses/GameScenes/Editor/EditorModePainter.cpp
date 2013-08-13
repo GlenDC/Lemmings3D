@@ -3,6 +3,7 @@
 //--------------------------------------------------------------------
 #include "../GameScreen.h"
 #include "../../Entities/EditorBuilder.h"
+#include "../../GameScenes/EditModeScreen.h"
 #include "../../Lib/GlobalParameters.h"
 #include "../../Lib/LemmingsHelpers.h"
 #include "../../Managers/ScreenManager.h"
@@ -51,8 +52,7 @@ void EditorModePainter::Update(const GameContext & context)
 		int newID = (int)m_PaintMode;
 		float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
 		LemmingsHelpers::SnapPositionXYZ(m_pEditor->m_Position, size);
-		// important to do make this work again
-		//m_pEditor->m_pGame->PaintEnvironmentCube(m_pEditor->m_Position, newID);
+		m_pEditor->GetEditScreen()->PaintEnvironmentCube(m_pEditor->m_Position, newID);
 	}
 }
 

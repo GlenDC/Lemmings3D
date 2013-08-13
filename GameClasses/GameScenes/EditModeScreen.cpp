@@ -36,7 +36,7 @@ EditModeScreen::~EditModeScreen(void)
 
 void EditModeScreen::Initialize()
 {
-	m_pBuilder = new EditorBuilder(m_pParentScreen);
+	m_pBuilder = new EditorBuilder(this);
 
 	InputAction editLowerLayer((int)InputControls::KB_O_PRESSED,Pressed,'o');
 	ScreenManager::GetInstance()->GetInputManager()->AddInputAction(editLowerLayer);
@@ -94,6 +94,7 @@ void EditModeScreen::Draw2D(const GameContext& context)
 void EditModeScreen::Activate()
 {
 	m_pCamera->GetComponent<CameraComponent>()->SetActive();
+	m_pParentScreen->SetActiveCamera(m_pCamera);
 }
 
 void EditModeScreen::Deactivate()

@@ -43,9 +43,9 @@ namespace LemmingsHelpers
 
 	float ToRad(const float & degrees);
 
-	float GetPitch(D3DXQUATERNION & quaternion);
-	float GetYaw(D3DXQUATERNION & quaternion);
-	float GetRoll(D3DXQUATERNION & quaternion);
+	float GetPitch(const D3DXQUATERNION & quaternion);
+	float GetYaw(const D3DXQUATERNION & quaternion);
+	float GetRoll(const D3DXQUATERNION & quaternion);
 
 	float fRound(float number, int accuracy = 2);
 

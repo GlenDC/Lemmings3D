@@ -23,9 +23,7 @@
 class ColissionEntity;
 class EditorCamera;
 class GameEntity;
-class LemmingCharacter;
 class Player;
-class RisingWater;
 class StatusReport;
 class TimeManager;
 class UIDockInterface;
@@ -56,6 +54,8 @@ public:
 	shared_ptr<Level> GetLevel() const { return m_pLevel; }
 	Player * GetPlayer() const { return m_pPlayer; }
 
+	void SetActiveCamera(EditorCamera * pCamera) { m_pActiveCameraObject = pCamera; }
+
 private:
 	enum class AppMode : byte 
 	{
@@ -83,19 +83,18 @@ private:
 
 	Player * m_pPlayer;
 
-	LemmingCharacter	*m_pLemmingsCharacter, 
-						*m_pLemmingsCharacter1, 
-						*m_pLemmingsCharacter2;
-
 	StatusReport * m_pStatusReport;
+
+	EditorCamera * m_pActiveCameraObject;
 
 	AppMode m_AppMode, m_PreviousAppMode;
 	StateManager m_StateMachine;
 
-	RisingWater *m_pRisingWater;
 
-	bool m_RefreshLevelTimer;
-	bool m_BuildModePosRefresh;
+	bool	m_RefreshLevelTimer,
+			m_BuildModePosRefresh;
+
+	
 
 	//Camera info
 	float m_CameraFOV, m_CameraZoom, m_CameraSpeed;

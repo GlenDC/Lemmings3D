@@ -18,12 +18,9 @@
 #include "../Entities/Level.h"
 #include "../Entities/Player.h"
 #include "../Entities/StatusReport.h"
-#include "../Entities/RisingWater.h"
 #include "../GameObjects/GameEntity.h"
 #include "../GameObjects/ColissionEntity.h"
 #include "../GameObjects/EditorCamera.h"
-#include "../GameObjects/LemmingCharacter.h"
-#include "../GameObjects/PhysicsCube.h" 
 #include "../Helpers/HeightmapParser.h"
 #include "../Lib/GlobalParameters.h" 
 #include "../Lib/LemmingsHelpers.h"
@@ -43,14 +40,11 @@ GameScreen::GameScreen(void)
 	,m_pGameMenu(nullptr)
 	,m_pDefaultFont(nullptr)
 	,m_pPlayer(nullptr)
-	,m_pLemmingsCharacter(nullptr)
-	,m_pLemmingsCharacter1(nullptr)
-	,m_pLemmingsCharacter2(nullptr)
 	,m_pStatusReport(nullptr)
+	,m_pActiveCameraObject(nullptr)
 	,m_AppMode(AppMode::Game)
 	,m_PreviousAppMode(AppMode::Game)
 	,m_StateMachine()
-	,m_pRisingWater(nullptr)
 	,m_RefreshLevelTimer(true)
 	,m_BuildModePosRefresh(false)
 	,m_CameraFOV(70.0f)
@@ -106,24 +100,6 @@ void GameScreen::Initialize()
 
 	m_pLevel = shared_ptr<Level>(new Level(_T("TestLevel"), this));
 	m_pLevel->Initialize();
-
-	//m_pRisingWater = new RisingWater(m_pLevel->GetMinDepth(), m_pLevel->GetMaxDepth());
-	/*D3DXVECTOR3 offset = m_pLevel->Getoffset();
-	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
-	for(UINT row = 0 ; row < m_pLevel->GetHeight() ; row += 30)
-	{
-		for(UINT col = 0 ; col < m_pLevel->Getwidth() ; col += 30)
-		{
-			D3DXVECTOR3 pos(col * size, 0, row * size);
-			pos += offset;
-			LemmingsHelpers::SnapPositionXYZ(pos, size);
-			pos.x -= 0.25f;
-			pos.z -= 0.25f;
-			pos.y -= 15 * size;
-			m_pRisingWater->AddInstance(pos);
-		}
-	}
-	m_pRisingWater->Initialize();*/
 	
 	//ID3D10ShaderResourceView *m_pCameraRotationTexture;
 	//SpriteInfo m_CameraRotationSprite;
@@ -158,7 +134,11 @@ void GameScreen::Update(const GameContext& context)
 			allowCameraMovement = false;
 		}
 	}
-	//m_pCamera->AllowCameraControls(allowCameraMovement);
+
+	if(m_pActiveCameraObject != nullptr)
+	{
+		m_pActiveCameraObject->AllowCameraControls(allowCameraMovement);
+	}
 
 	m_pStatusReport->Update(context);
 	m_pHeaderMenu->Update(context);
@@ -201,39 +181,23 @@ void GameScreen::Update(const GameContext& context)
 	//}
 
 		//miniMap Sprite!
-		/*D3DXQUATERNION rotation = m_pActiveCamera->GetTransform()->GetWorldRotation();
+		D3DXQUATERNION rotation = m_pActiveCamera->GetTransform()->GetWorldRotation();
 		float yaw = LemmingsHelpers::GetYaw(rotation);
 		if(yaw < 0)
-			yaw += (float)D3DX_PI / 2;*/
-		/*m_CameraRotationSprite.Transform = LemmingsHelpers::MatrixTranslation(-40, -47,0) *
-										LemmingsHelpers::MatrixRotation(0, 0, m_pCamera->GetYaw()) *
+			yaw += (float)D3DX_PI / 2;
+		m_CameraRotationSprite.Transform = LemmingsHelpers::MatrixTranslation(-40, -47,0) *
+										LemmingsHelpers::MatrixRotation(0, 0, m_pActiveCameraObject->GetYaw()) *
 										LemmingsHelpers::MatrixTranslation(40, 47,0) *
-										LemmingsHelpers::MatrixTranslation(1045,580,0.005f);*/
+										LemmingsHelpers::MatrixTranslation(1045,580,0.005f);
 
 	m_pHeaderMenu->SetTextField(_T("ATxt_FPS"), XMLConverter::ConvertToTString<int>(FPS::GetInstance()->GetFPS()));
 }
 
 void GameScreen::Draw(const GameContext& context)
 {
-	//m_pRisingWater->Draw(context);
-	//m_pRisingWater->Draw2D(context);
-
 	m_StateMachine.Draw(context);
 
 	m_pLevel->Draw(context);
-
-	//for(int i = 0 ; i < 11; ++i)
-	//{
-	//	//Horizontal grid
-	//	DebugRenderer::DrawLine(D3DXVECTOR3(10, 0, (float)(10 + i * 10)), D3DXVECTOR3(110, 0, (float)(10 + i * 10)), D3DXCOLOR(1,1,1,1));
-	//	DebugRenderer::DrawLine(D3DXVECTOR3((float)(10 + i * 10), 0, 10), D3DXVECTOR3((float)(10 + i * 10), 0, 110), D3DXCOLOR(1,1,1,1));
-	//	//vertical grid Y
-	//	DebugRenderer::DrawLine(D3DXVECTOR3(60, -50, (float)(10 + i * 10)), D3DXVECTOR3(60, 50, (float)(10 + i * 10)), D3DXCOLOR(1,1,1,0.25f));
-	//	DebugRenderer::DrawLine(D3DXVECTOR3(60, (float)(-50 + i * 10), 10), D3DXVECTOR3(60, (float)(-50 + i * 10), 110), D3DXCOLOR(1,1,1,0.25f));
-	//	//vertical grid X
-	//	DebugRenderer::DrawLine(D3DXVECTOR3((float)(10 + i * 10), -50, 60), D3DXVECTOR3((float)(10 + i * 10), 50, 60), D3DXCOLOR(1,1,1,0.25f));
-	//	DebugRenderer::DrawLine(D3DXVECTOR3(10, (float)(-50 + i * 10), 60), D3DXVECTOR3(110, (float)(-50 + i * 10), 60), D3DXCOLOR(1,1,1,0.25f));
-	//}
 
 	if(m_AppMode != AppMode::Pause)
 	{
@@ -453,7 +417,7 @@ void GameScreen::AddHeaderMenuElements()
 	//Reset Camera Transformation
 	m_pHeaderMenu->AddButton(435,5, _T("ABtn_ResetCamera"), _T("Header_Btn_Rect_ResetCamera.png"), [&] () 
 	{ 
-			//m_pCamera->ResetTransformation();
+			m_pActiveCameraObject->ResetTransformation();
 			ReportStatus(_T("Editor camera has been reset!"));
 	});
 	m_pHeaderMenu->SetElementVisible(_T("ABtn_ResetCamera"), false);
@@ -557,17 +521,17 @@ void GameScreen::AddMainMenuElements()
 		_T("rspd:") + m_pPlayer->GetSetting<tstring>(_T("EDITOR_CAMERA_ROT_SPEED")), D3DXCOLOR(0.184f,0.565f,0.22f,1), pBMFont);
 	m_pGameMenu->AddButton(1818,40,_T("Main_Btn_Rspeed_n"), _T("Main_Btn_Sqrt_Mini_Minus.png"), [&] ()
 	{
-		/*m_pCamera->DecreaseRotSpeed();
-		tstring speedString = XMLConverter::ConvertToTString(m_pCamera->GetRotSpeed());
+		m_pActiveCameraObject->DecreaseRotSpeed();
+		tstring speedString = XMLConverter::ConvertToTString(m_pActiveCameraObject->GetRotSpeed());
 		m_pGameMenu->SetTextField(_T("Main_TextField_Camera_RotSpeed"), _T("rspd:") + speedString);
-		ReportStatus(_T("Changed camera rot. speed to ") + speedString + _T("."));*/
+		ReportStatus(_T("Changed camera rot. speed to ") + speedString + _T("."));
 	});
 	m_pGameMenu->AddButton(1865,40,_T("Main_Btn_Rspeed_p"), _T("Main_Btn_Sqrt_Mini_Plus.png"), [&] ()
 	{
-		/*m_pCamera->IncreaseRotSpeed();
-		tstring speedString = XMLConverter::ConvertToTString(m_pCamera->GetRotSpeed());
+		m_pActiveCameraObject->IncreaseRotSpeed();
+		tstring speedString = XMLConverter::ConvertToTString(m_pActiveCameraObject->GetRotSpeed());
 		m_pGameMenu->SetTextField(_T("Main_TextField_Camera_RotSpeed"), _T("rspd:") + speedString);
-		ReportStatus(_T("Changed camera rot. speed to ") + speedString + _T("."));*/
+		ReportStatus(_T("Changed camera rot. speed to ") + speedString + _T("."));
 	});
 
 	m_pGameMenu->AddTextField(1820,90,350, 35, _T("Main_TextField_Camera_FOV"), _T("FOV:") + m_pPlayer->GetSetting<tstring>(_T("EDITOR_CAMERA_FOV")), D3DXCOLOR(0.184f,0.565f,0.22f,1), pBMFont);

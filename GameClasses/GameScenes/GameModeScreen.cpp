@@ -13,8 +13,10 @@
 #include "../Lib/GlobalParameters.h"
 #include "../Lib/LemmingsHelpers.h"
 #include "../Entities/EditorBuilder.h"
+#include "../Entities/RisingWater.h"
 #include "../GameObjects/GameEntity.h"
 #include "../GameObjects/ColissionEntity.h"
+#include "../GameObjects/LemmingCharacter.h"
 #include "../GameObjects/PhysicsCube.h"
 #include "../GameObjects/EditorCamera.h"
 #include "../Managers/ScreenManager.h"
@@ -25,6 +27,10 @@
 GameModeScreen::GameModeScreen(GameScreen * parent, InputManager *inputManager)
 	: BaseModeScreen(parent, inputManager)
 	, m_pCamera(nullptr)
+	,m_pLemmingsCharacter(nullptr)
+	,m_pLemmingsCharacter1(nullptr)
+	,m_pLemmingsCharacter2(nullptr)
+	,m_pRisingWater(nullptr)
 {
 
 }
@@ -44,6 +50,24 @@ void GameModeScreen::Initialize()
 									m_pParentScreen->GetPlayer()->GetSetting<float>(_T("EDITOR_CAMERA_PITCH")),
 									m_pParentScreen->GetPlayer()->GetSetting<float>(_T("EDITOR_CAMERA_SPEED")),
 									m_pParentScreen->GetPlayer()->GetSetting<float>(_T("EDITOR_CAMERA_ROT_SPEED")));
+
+	//m_pRisingWater = new RisingWater(m_pLevel->GetMinDepth(), m_pLevel->GetMaxDepth());
+	/*D3DXVECTOR3 offset = m_pLevel->Getoffset();
+	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
+	for(UINT row = 0 ; row < m_pLevel->GetHeight() ; row += 30)
+	{
+		for(UINT col = 0 ; col < m_pLevel->Getwidth() ; col += 30)
+		{
+			D3DXVECTOR3 pos(col * size, 0, row * size);
+			pos += offset;
+			LemmingsHelpers::SnapPositionXYZ(pos, size);
+			pos.x -= 0.25f;
+			pos.z -= 0.25f;
+			pos.y -= 15 * size;
+			m_pRisingWater->AddInstance(pos);
+		}
+	}
+	m_pRisingWater->Initialize();*/
 }
 
 void GameModeScreen::Update(const GameContext& context)
@@ -56,16 +80,19 @@ void GameModeScreen::Update(const GameContext& context)
 
 void GameModeScreen::Draw(const GameContext& context)
 {
+	//m_pRisingWater->Draw(context);
 }
 
 void GameModeScreen::Draw2D(const GameContext& context)
 {
 	m_pParentScreen->GetPlayer()->DrawMenu(context);
+	//m_pRisingWater->Draw2D(context);
 }
 
 void GameModeScreen::Activate()
 {
 	m_pCamera->GetComponent<CameraComponent>()->SetActive();
+	m_pParentScreen->SetActiveCamera(m_pCamera);
 }
 
 void GameModeScreen::Deactivate()

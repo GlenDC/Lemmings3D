@@ -3,6 +3,7 @@
 //--------------------------------------------------------------------
 #include "../GameScreen.h"
 #include "../../Entities/EditorBuilder.h"
+#include "../../GameScenes/EditModeScreen.h"
 #include "../../Managers/ScreenManager.h"
 #include "../../Lib/GlobalParameters.h"
 #include "../../Lib/LemmingsHelpers.h"
@@ -25,8 +26,7 @@ void EditorModeEraser::Update(const GameContext & context)
 	{
 		float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
 		LemmingsHelpers::SnapPositionXYZ(m_pEditor->m_Position, size);
-		// important, make this work again
-		//m_pEditor->m_pGame->RemoveEnvironmentCube(m_pEditor->m_Position);
+		m_pEditor->GetEditScreen()->RemoveEnvironmentCube(m_pEditor->m_Position);
 	}
 }
 

@@ -31,12 +31,13 @@ public:
 
 	virtual void Activate();
 	virtual void Deactivate();
-	
-private:
+
 	void AddEnvironmentCube(const D3DXVECTOR3 & pos, const int id);
 	bool RemoveEnvironmentCube(const D3DXVECTOR3 & pos);
 	bool PaintEnvironmentCube(const D3DXVECTOR3 & pos, const int id);
 	void RecheckEnvironment();
+	
+private:
 	void CalculateEditorCollision();
 
 	std::vector<PhysicsCube*> m_EditorCubeVec;
