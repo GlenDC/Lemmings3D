@@ -56,6 +56,10 @@ void EditModeScreen::Initialize()
 
 void EditModeScreen::Update(const GameContext& context)
 {
+	if(context.Input->IsActionTriggered((int)InputControls::KB_ESCAPE_PRESSED))
+	{
+		m_pParentScreen->SetState(_T("menu"));
+	}
 	m_pBuilder->Update(context);
 	m_pCamera->AllowCameraControls(true);
 	
@@ -95,10 +99,12 @@ void EditModeScreen::Activate()
 {
 	m_pCamera->GetComponent<CameraComponent>()->SetActive();
 	m_pParentScreen->SetActiveCamera(m_pCamera);
+	m_pParentScreen->PauseGame(true);
 }
 
 void EditModeScreen::Deactivate()
 {
+	m_pParentScreen->PauseGame(false);
 }
 
 void EditModeScreen::AddEnvironmentCube(const D3DXVECTOR3 & pos, int id)

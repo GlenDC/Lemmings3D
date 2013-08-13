@@ -32,7 +32,10 @@ public:
 	bool RemoveState(const tstring & name);
 	void Clear();
 
-	void SetState(const tstring & name);
+	void SetState(tstring name);
+	void SetPreviousState();
+
+	const tstring & GetCurrentStateName() const { return m_CurrentStateName; }
 
 private:
 	void DeactiveCurrentState();
@@ -40,6 +43,7 @@ private:
 	std::map<UINT, State*> m_States;
 	State * m_pCurrentState;
 	tstring m_CurrentStateName;
+	tstring m_PreviousStateName;
 
 	// Disabling default copy constructor and default assignment operator.
 	StateManager(const StateManager& t);

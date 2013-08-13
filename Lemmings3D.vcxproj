@@ -130,7 +130,7 @@
     <ClCompile Include="GameClasses\GameScenes\Labs\Weel1.cpp" />
     <ClCompile Include="GameClasses\GameScenes\LoadingScreen.cpp" />
     <ClCompile Include="GameClasses\GameScenes\MainMenuScreen.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\MenuScreen.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\MenuModeScreen.cpp" />
     <ClCompile Include="GameClasses\Helpers\HeightmapParser.cpp" />
     <ClCompile Include="GameClasses\Helpers\Rectangle.cpp" />
     <ClCompile Include="GameClasses\Lemmings3D.cpp" />
@@ -214,7 +214,7 @@
     <ClInclude Include="GameClasses\GameScenes\Labs\Week6.h" />
     <ClInclude Include="GameClasses\GameScenes\LoadingScreen.h" />
     <ClInclude Include="GameClasses\GameScenes\MainMenuScreen.h" />
-    <ClInclude Include="GameClasses\GameScenes\MenuScreen.h" />
+    <ClInclude Include="GameClasses\GameScenes\MenuModeScreen.h" />
     <ClInclude Include="GameClasses\Helpers\HeightmapParser.h" />
     <ClInclude Include="GameClasses\Helpers\Rectangle.h" />
     <ClInclude Include="GameClasses\Interfaces\IAction.h" />

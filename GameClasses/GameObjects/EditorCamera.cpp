@@ -82,8 +82,8 @@ void EditorCamera::Update(const GameContext& context)
 		if(m_CanMove)
 		{
 			transform->Rotate(finalQuat);
+			transform->Translate(currPos);
 		}
-		transform->Translate(currPos);
 	}
 
 	GameObject::Update(context);

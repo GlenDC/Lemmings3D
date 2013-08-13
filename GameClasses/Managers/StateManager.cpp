@@ -9,6 +9,7 @@ StateManager::StateManager(void)
 	: m_States()
 	, m_pCurrentState(nullptr)
 	, m_CurrentStateName()
+	, m_PreviousStateName()
 {
 
 }
@@ -52,11 +53,6 @@ void StateManager::AddState(const tstring & name, State * pState)
 {
 	UINT id = LemmingsHelpers::GenerateHash(name);
 	m_States[id] = pState;
-	if(m_States.size() == 1)
-	{
-		m_pCurrentState = pState;
-		m_CurrentStateName = name;
-	}
 }
 
 bool StateManager::RemoveState(const tstring & name)
@@ -86,13 +82,20 @@ void StateManager::Clear()
 	m_pCurrentState = nullptr;
 }
 
-void StateManager::SetState(const tstring & name)
+void StateManager::SetState(tstring name)
 {
 	DeactiveCurrentState();
 	UINT id = LemmingsHelpers::GenerateHash(name);
 	// suggestion ... try catch? 
 	m_pCurrentState = m_States[id];
 	m_pCurrentState->Activate();
+	m_PreviousStateName = m_CurrentStateName;
+	m_CurrentStateName= name;
+}	
+
+void StateManager::SetPreviousState()
+{
+	SetState(m_PreviousStateName);
 }
 
 void StateManager::DeactiveCurrentState()

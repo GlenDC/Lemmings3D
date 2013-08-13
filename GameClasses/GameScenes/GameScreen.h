@@ -53,6 +53,8 @@ public:
 
 	shared_ptr<Level> GetLevel() const { return m_pLevel; }
 	Player * GetPlayer() const { return m_pPlayer; }
+	void SetState(const tstring & name_state);
+	void SetPreviousState();
 
 	void SetActiveCamera(EditorCamera * pCamera) { m_pActiveCameraObject = pCamera; }
 
@@ -90,11 +92,8 @@ private:
 	AppMode m_AppMode, m_PreviousAppMode;
 	StateManager m_StateMachine;
 
-
 	bool	m_RefreshLevelTimer,
 			m_BuildModePosRefresh;
-
-	
 
 	//Camera info
 	float m_CameraFOV, m_CameraZoom, m_CameraSpeed;

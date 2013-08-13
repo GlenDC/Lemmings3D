@@ -72,6 +72,10 @@ void GameModeScreen::Initialize()
 
 void GameModeScreen::Update(const GameContext& context)
 {
+	if(context.Input->IsActionTriggered((int)InputControls::KB_ESCAPE_PRESSED))
+	{
+		m_pParentScreen->SetState(_T("menu"));
+	}
 	m_pParentScreen->GetPlayer()->Update(context);
 	m_pParentScreen->GetPlayer()->UpdateMenu(context);
 	//m_pRisingWater->Update(context);

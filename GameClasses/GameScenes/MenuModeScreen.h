@@ -1,42 +1,40 @@
+#pragma once
+
 //====================== #INCLUDES ===================================
-#include "BaseScreen.h"
-#include <memory>
-#include "Helpers/SpriteFont.h"
+#include "BaseModeScreen.h"
 //====================================================================
 
 class UIDockInterface;
+class SpriteFont;
 
-//====================== MenuScreen Class ============================
+//====================== MenuModeScreen Class =========================
 // Description:
-//		Screen Class for the main menu
+//		Screen State for the game menu logic
 // Last Modification: August 2013
 // Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
-class ColissionEntity;
-
-class MenuScreen: public BaseScreen
+class MenuModeScreen : public BaseModeScreen
 {
 public:
-	MenuScreen(void);
-	virtual ~MenuScreen(void);
+	MenuModeScreen(GameScreen * parent, InputManager * inputManager);
+	virtual ~MenuModeScreen(void);
 
 	virtual void Initialize();
 	virtual void Update(const GameContext& context);
 	virtual void Draw(const GameContext& context);
+	virtual void Draw2D(const GameContext& context);
 
-	virtual void BeginControl();
-	virtual void EndControl();
-
-	virtual void Activated();
-	virtual void Deactivated();
-
+	virtual void Activate();
+	virtual void Deactivate();
+	
 private:
 	shared_ptr<SpriteFont> m_pSpriteFont;
 	UIDockInterface * m_MainMenuDock;
 
 	// Disabling default copy constructor and default assignment operator.
-	MenuScreen(const MenuScreen& yRef);									
-	MenuScreen& operator=(const MenuScreen& yRef);
+	MenuModeScreen(const MenuModeScreen& yRef);									
+	MenuModeScreen& operator=(const MenuModeScreen& yRef);
 };
+

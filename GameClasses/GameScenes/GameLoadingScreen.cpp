@@ -6,7 +6,6 @@
 #include "../Managers/ScreenManager.h"
 #include "../Managers/Stopwatch.h"
 #include "../GameScenes/GameScreen.h"
-#include "../GameScenes/MenuScreen.h"
 //============================================================================
 GameLoadingScreen::GameLoadingScreen(const tstring & previousScreen, UINT leveL_id)
 	: LoadingScreen(previousScreen)
@@ -40,7 +39,6 @@ void GameLoadingScreen::Initialize()
 	m_Thread = std::thread([] () 
 	{
 		ScreenManager::GetInstance()->AddScreen(new GameScreen());
-		ScreenManager::GetInstance()->AddScreen(new MenuScreen());
 		Stopwatch::GetInstance()->CreateTimer(_T("leveL_start_timer"), 1.0f, true, false, []() 
 		{
 			ScreenManager::GetInstance()->AddActiveScreen(_T("GameScreen"));	

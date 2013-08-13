@@ -3,6 +3,7 @@
 //--------------------------------------------------------------------
 #include "GameModeScreen.h"
 #include "EditModeScreen.h"
+#include "MenuModeScreen.h"
 #include "Game.h"
 #include "OverlordComponents.h"
 #include "Scenegraph/GameObject.h"
@@ -98,6 +99,12 @@ void GameScreen::Initialize()
 	editorMode->Initialize();
 	m_StateMachine.AddState(_T("editor"), editorMode);
 
+	auto menuMode = new MenuModeScreen(this, ScreenManager::GetInstance()->GetInputManager());
+	menuMode->Initialize();
+	m_StateMachine.AddState(_T("menu"), menuMode);
+
+	m_StateMachine.SetState(_T("game"));
+
 	m_pLevel = shared_ptr<Level>(new Level(_T("TestLevel"), this));
 	m_pLevel->Initialize();
 	
@@ -116,15 +123,9 @@ void GameScreen::Initialize()
 
 void GameScreen::Update(const GameContext& context)
 {
-	if(context.Input->IsActionTriggered((int)InputControls::KB_ESCAPE_PRESSED))
-	{
-		ScreenManager::GetInstance()->AddActiveScreen(_T("MenuScreen"));
-		ScreenManager::GetInstance()->SetControlScreen(_T("MenuScreen"));
-	}
-
 	//control if player can control the camera or not!
 	bool allowCameraMovement(true);
-	//if(m_AppMode != AppMode::Editor) allowEditorCameraMovement = false;
+	allowCameraMovement = m_StateMachine.GetCurrentStateName() != _T("menu");
 	POINT mousePointPos = context.Input->GetMousePosition();
 	if(context.Input->IsActionTriggered((int)InputControls::MOUSE_LEFT_DOWN))
 	{
@@ -139,6 +140,10 @@ void GameScreen::Update(const GameContext& context)
 	{
 		m_pActiveCameraObject->AllowCameraControls(allowCameraMovement);
 	}
+
+	tstringstream strstr;
+	strstr << m_StateMachine.GetCurrentStateName() << "\n";
+	OutputDebugString(strstr.str().c_str());
 
 	m_pStatusReport->Update(context);
 	m_pHeaderMenu->Update(context);
@@ -199,7 +204,7 @@ void GameScreen::Draw(const GameContext& context)
 
 	m_pLevel->Draw(context);
 
-	if(m_AppMode != AppMode::Pause)
+	if(m_StateMachine.GetCurrentStateName() != _T("menu"))
 	{
 		m_pHeaderMenu->Draw(context);
 		m_pGameMenu->Draw(context);
@@ -207,8 +212,8 @@ void GameScreen::Draw(const GameContext& context)
 		m_StateMachine.Draw2D(context);
 
 		SpriteBatch::Draw(m_CameraRotationSprite);
-		ScreenManager::GetInstance()->DrawCursor(context);
 	}
+	ScreenManager::GetInstance()->DrawCursor(context);
 
 	BaseScreen::Draw(context);
 }
@@ -277,6 +282,16 @@ void GameScreen::ReportStatus(const tstring & status)
 	m_pStatusReport->ReportStatus(status);
 }
 
+void GameScreen::SetState(const tstring & name_state)
+{
+	m_StateMachine.SetState(name_state);
+}
+
+void GameScreen::SetPreviousState()
+{
+	m_StateMachine.SetPreviousState();
+}
+
 void GameScreen::SwitchMode(AppMode mode)
 {
 	m_PreviousAppMode = m_AppMode;
@@ -287,13 +302,13 @@ void GameScreen::SwitchMode(AppMode mode)
 		m_pHeaderMenu->SetTextField(_T("NMode_Name"), _T("EDITOR"));
 		SetGameSpeedTxtField();
 		SetEditorHUD();
-		m_StateMachine.SetState(_T("game"));
+		m_StateMachine.SetState(_T("editor"));
 		break;
 	case AppMode::Game:
 		m_pHeaderMenu->SetTextField(_T("NMode_Name"), _T("PLAYING"));
 		SetGameSpeedTxtField();
 		SetGameHUD();
-		m_StateMachine.SetState(_T("editor"));
+		m_StateMachine.SetState(_T("game"));
 		break;
 	case AppMode::Pause:
 		m_pHeaderMenu->SetTextField(_T("NMode_Name"), _T("PAUSED"));
