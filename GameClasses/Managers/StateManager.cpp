@@ -88,7 +88,10 @@ void StateManager::SetState(tstring name)
 	UINT id = LemmingsHelpers::GenerateHash(name);
 	// suggestion ... try catch? 
 	m_pCurrentState = m_States[id];
-	m_pCurrentState->Activate();
+	if(!m_pCurrentState->IsActive())
+	{
+		m_pCurrentState->Activate();
+	}
 	m_PreviousStateName = m_CurrentStateName;
 	m_CurrentStateName= name;
 }	
@@ -100,7 +103,7 @@ void StateManager::SetPreviousState()
 
 void StateManager::DeactiveCurrentState()
 {
-	if(m_pCurrentState != nullptr)
+	if(m_pCurrentState != nullptr && m_pCurrentState->IsActive())
 	{
 		m_pCurrentState->Deactivate();
 		m_pCurrentState = nullptr;

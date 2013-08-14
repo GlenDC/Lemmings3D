@@ -45,6 +45,11 @@ void MenuModeScreen::Initialize()
 	m_MainMenuDock->AddButton(15, 188, _T("BTN_Quit"), _T("menuscreen_btn_quit.png"), 
 		[&] () 
 		{
+			ScreenManager::GetInstance()->AddActiveScreen(_T("MainMenuScreen"));	
+			ScreenManager::GetInstance()->SetControlScreen(_T("MainMenuScreen"));
+			ScreenManager::GetInstance()->RemoveActiveScreen(_T("GameScreen"));
+			ScreenManager::GetInstance()->RemoveScreen(_T("GameScreen"));
+			ScreenManager::GetInstance()->SetPhysicsDrawEnabled(false);
 		});
 
 	m_MainMenuDock->Initialize();
@@ -71,9 +76,15 @@ void MenuModeScreen::Draw2D(const GameContext& context)
 void MenuModeScreen::Activate()
 {
 	m_pParentScreen->PauseGame(true);
+	ScreenManager::GetInstance()->SetPhysicsDrawEnabled(false);
+
+	BaseModeScreen::Activate();
 }
 
 void MenuModeScreen::Deactivate()
 {
 	m_pParentScreen->PauseGame(false);
+	ScreenManager::GetInstance()->SetPreviousPhysicsDrawEnabled();
+
+	BaseModeScreen::Deactivate();
 }

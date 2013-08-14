@@ -25,6 +25,7 @@ ScreenManager::ScreenManager(void)
 	, m_Fetched(false)
 	, m_PhysicsDisabled(false)
 	, m_EnablePhysicsRendering(true)
+	, m_PreviousEnablePhyicsRendering(true)
 	, m_TimeCounter(0)
 	, m_pDefaultCursor(nullptr)
 	, m_pCurrentCursor(nullptr)
@@ -65,6 +66,8 @@ void ScreenManager::AddScreen(BaseScreen* screen)
 		if (m_IsInitialized && !screen->m_IsInitialized)
 			screen->SceneInitialize();
 	}
+	auto it = std::unique (m_Screens.begin(), m_Screens.end()); 
+	m_Screens.resize( std::distance(m_Screens.begin(),it) ); 
 }
 
 void ScreenManager::RemoveScreen(BaseScreen* screen)
@@ -75,6 +78,8 @@ void ScreenManager::RemoveScreen(BaseScreen* screen)
     {
 		m_GarbageScreens.push_back(chosenScene);
 	}
+	auto it = std::unique (m_Screens.begin(), m_Screens.end()); 
+	m_Screens.resize( std::distance(m_Screens.begin(),it) ); 
 }
 
 void ScreenManager::RemoveScreen(const tstring & name)
@@ -279,7 +284,13 @@ bool ScreenManager::RightMouseButtonDown() const
 
 void ScreenManager::SetPhysicsDrawEnabled(const bool enable)
 {
+	m_PreviousEnablePhyicsRendering = m_EnablePhysicsRendering;
 	m_EnablePhysicsRendering = enable;
+}
+
+void ScreenManager::SetPreviousPhysicsDrawEnabled()
+{ 
+	SetPhysicsDrawEnabled(m_PreviousEnablePhyicsRendering);
 }
 
 void ScreenManager::QuitGame()

@@ -24,11 +24,14 @@ public:
 	virtual void Draw(const GameContext& context) = 0;
 	virtual void Draw2D(const GameContext& context) = 0;
 
-	virtual void Activate() = 0;
-	virtual void Deactivate() = 0;
+	virtual void Activate() { m_Active = true; }
+	virtual void Deactivate() { m_Active = false; }
+
+	bool IsActive() const { return m_Active; }
 
 protected:
-	State() {}
+	State() : m_Active(false) {}
+	bool m_Active;
 
 private:
 	// Disabling default copy constructor and default assignment operator.

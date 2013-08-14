@@ -33,8 +33,8 @@ public:
 	virtual void Draw(const GameContext& context) = 0;
 	virtual void Draw2D(const GameContext& context) = 0;
 
-	virtual void Activate() = 0;
-	virtual void Deactivate() = 0;
+	virtual void Activate() { State::Activate(); }
+	virtual void Deactivate() { State::Deactivate(); }
 
 	void SetMainTitle(const tstring & title);
 

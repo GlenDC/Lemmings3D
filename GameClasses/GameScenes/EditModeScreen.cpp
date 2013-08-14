@@ -100,11 +100,15 @@ void EditModeScreen::Activate()
 	m_pCamera->GetComponent<CameraComponent>()->SetActive();
 	m_pParentScreen->SetActiveCamera(m_pCamera);
 	m_pParentScreen->PauseGame(true);
+
+	BaseModeScreen::Activate();
 }
 
 void EditModeScreen::Deactivate()
 {
 	m_pParentScreen->PauseGame(false);
+
+	BaseModeScreen::Deactivate();
 }
 
 void EditModeScreen::AddEnvironmentCube(const D3DXVECTOR3 & pos, int id)

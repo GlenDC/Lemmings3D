@@ -317,13 +317,11 @@ void GameScreen::SwitchMode(AppMode mode)
 		m_pHeaderMenu->SetTextField(_T("NMode_Name"), _T("EDITOR"));
 		SetGameSpeedTxtField();
 		SetEditorHUD();
-		m_StateMachine.SetState(_T("editor"));
 		break;
 	case AppMode::Game:
 		m_pHeaderMenu->SetTextField(_T("NMode_Name"), _T("PLAYING"));
 		SetGameSpeedTxtField();
 		SetGameHUD();
-		m_StateMachine.SetState(_T("game"));
 		break;
 	case AppMode::Pause:
 		m_pHeaderMenu->SetTextField(_T("NMode_Name"), _T("PAUSED"));

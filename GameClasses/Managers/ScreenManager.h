@@ -71,6 +71,7 @@ public:
 	bool CanDrawPhysics() const { return m_EnablePhysicsRendering; }
 
 	void SetPhysicsDrawEnabled(const bool enable);
+	void SetPreviousPhysicsDrawEnabled();
 
 	void SetGame(Game * game) { m_MainGame = game; }
 	InputManager * GetInputManager() { return m_pInputManager; }
@@ -92,12 +93,16 @@ private:
 
 	static ScreenManager* m_pInstance;
 	
-	bool m_IsInitialized;
-	bool m_Simulated;
-	bool m_Fetched;
-	bool m_PhysicsDisabled;
-	bool m_EnablePhysicsRendering;
-	bool m_LMBP, m_LMBD, m_RMBP, m_RMBD;
+	bool	m_IsInitialized,
+			m_Simulated,
+			m_Fetched,
+			m_PhysicsDisabled,
+			m_EnablePhysicsRendering,
+			m_PreviousEnablePhyicsRendering,
+			m_LMBP,
+			m_LMBD,
+			m_RMBP,
+			m_RMBD;
 
 	double m_TimeCounter;
 

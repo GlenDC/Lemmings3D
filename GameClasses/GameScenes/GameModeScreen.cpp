@@ -98,9 +98,13 @@ void GameModeScreen::Activate()
 	m_pCamera->GetComponent<CameraComponent>()->SetActive();
 	m_pParentScreen->SetActiveCamera(m_pCamera);
 	m_pParentScreen->SetGameUIDisabled(false);
+
+	BaseModeScreen::Activate();
 }
 
 void GameModeScreen::Deactivate()
 {
 	m_pParentScreen->SetGameUIDisabled(true);
+
+	BaseModeScreen::Deactivate();
 }
