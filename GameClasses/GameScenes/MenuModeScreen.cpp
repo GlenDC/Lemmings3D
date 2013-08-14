@@ -7,6 +7,7 @@
 #include "OverlordComponents.h"
 //--------------------------------------------------------------------
 #include "GameScreen.h"
+#include "../GameScenes/MainMenuScreen.h"
 #include "../Entities/ParameterClass.h"
 #include "../Lib/GlobalParameters.h"
 #include "../Lib/LemmingsHelpers.h"
@@ -45,6 +46,7 @@ void MenuModeScreen::Initialize()
 	m_MainMenuDock->AddButton(15, 188, _T("BTN_Quit"), _T("menuscreen_btn_quit.png"), 
 		[&] () 
 		{
+			ScreenManager::GetInstance()->AddScreen(new MainMenuScreen());
 			ScreenManager::GetInstance()->AddActiveScreen(_T("MainMenuScreen"));	
 			ScreenManager::GetInstance()->SetControlScreen(_T("MainMenuScreen"));
 			ScreenManager::GetInstance()->RemoveActiveScreen(_T("GameScreen"));
