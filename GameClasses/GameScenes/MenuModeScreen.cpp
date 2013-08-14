@@ -38,8 +38,7 @@ void MenuModeScreen::Initialize()
 	m_MainMenuDock->AddButton(15, 15, _T("BTN_Continue"), _T("menuscreen_btn_continue.png"), 
 		[&] () 
 		{
-			ScreenManager::GetInstance()->SetControlScreen(_T("GameScreen"));
-			ScreenManager::GetInstance()->RemoveActiveScreen(_T("MenuScreen"));
+			m_pParentScreen->SetPreviousState();
 		} );
 	m_MainMenuDock->AddButton(15, 102, _T("BTN_Options"), _T("menuscreen_btn_options.png"), 
 		[&] () { } );

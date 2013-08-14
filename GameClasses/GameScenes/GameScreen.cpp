@@ -250,7 +250,10 @@ void GameScreen::PauseGame(bool paused)
 			m_pHeaderMenu->SetElementDisabled(_T("ABtn_Play"), false);
 			m_pHeaderMenu->SetElementDisabled(_T("ABtn_Pause"), true);
 		});
-		SwitchMode(AppMode::Pause);
+		if(!IsPaused())
+		{
+			SwitchMode(AppMode::Pause);
+		}
 	}
 	else
 	{
@@ -263,7 +266,10 @@ void GameScreen::PauseGame(bool paused)
 			m_pHeaderMenu->SetElementDisabled(_T("ABtn_Play"), true);
 			m_pHeaderMenu->SetElementDisabled(_T("ABtn_Pause"), false);
 		});
-		SwitchMode(m_PreviousAppMode);
+		if(IsPaused())
+		{
+			SwitchMode(m_PreviousAppMode);
+		}
 	}
 }
 
@@ -290,6 +296,15 @@ void GameScreen::SetState(const tstring & name_state)
 void GameScreen::SetPreviousState()
 {
 	m_StateMachine.SetPreviousState();
+}
+
+void GameScreen::SetGameUIDisabled(bool disabled)
+{
+	m_pGameMenu->SetElementDisabled(_T("Header_Btn_Small_Pause"), disabled);
+	m_pGameMenu->SetElementDisabled(_T("Header_Btn_Small_Play"), disabled);
+	m_pGameMenu->SetElementDisabled(_T("Main_Button_Rect_C"), disabled);
+	m_pGameMenu->SetElementDisabled(_T("Main_Button_Rect_F"), disabled);
+	m_pGameMenu->SetElementDisabled(_T("Main_Button_Rect_I"), disabled);
 }
 
 void GameScreen::SwitchMode(AppMode mode)
@@ -577,16 +592,16 @@ void GameScreen::AddMainMenuElements()
 	m_pGameMenu->AddButton(1818,200,_T("Main_Btn_Speed_n"), _T("Main_Btn_Sqrt_Mini_Minus.png"), [&] ()
 	{
 		//m_pCamera->DecreaseSpeed();
-		/*tstring speedString =  XMLConverter::ConvertToTString(m_pCamera->GetMoveSpeed());
+		tstring speedString =  XMLConverter::ConvertToTString(m_pActiveCameraObject->GetMoveSpeed());
 		m_pGameMenu->SetTextField(_T("Main_TextField_Camera_Speed"), _T("spd:") + speedString);
-		ReportStatus(_T("Changed camera mov. speed to ") + speedString + _T("."));*/
+		ReportStatus(_T("Changed camera mov. speed to ") + speedString + _T("."));
 	});
 	m_pGameMenu->AddButton(1865,200,_T("Main_Btn_Speed_p"), _T("Main_Btn_Sqrt_Mini_Plus.png"), [&] ()
 	{
 		//m_pCamera->IncreaseSpeed();
-		/*tstring speedString =  XMLConverter::ConvertToTString(m_pCamera->GetMoveSpeed());
-		m_pGameMenu->SetTextField(_T("Main_TextField_Camera_Speed"), _T("spd:") + XMLConverter::ConvertToTString(m_pCamera->GetMoveSpeed()));
-		ReportStatus(_T("Changed camera mov. speed to ") + speedString + _T("."));*/
+		tstring speedString =  XMLConverter::ConvertToTString(m_pActiveCameraObject->GetMoveSpeed());
+		m_pGameMenu->SetTextField(_T("Main_TextField_Camera_Speed"), _T("spd:") + XMLConverter::ConvertToTString(m_pActiveCameraObject->GetMoveSpeed()));
+		ReportStatus(_T("Changed camera mov. speed to ") + speedString + _T("."));
 	});
 }
 

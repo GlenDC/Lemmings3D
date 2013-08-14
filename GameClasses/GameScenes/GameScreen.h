@@ -55,6 +55,7 @@ public:
 	Player * GetPlayer() const { return m_pPlayer; }
 	void SetState(const tstring & name_state);
 	void SetPreviousState();
+	void SetGameUIDisabled(bool disabled);
 
 	void SetActiveCamera(EditorCamera * pCamera) { m_pActiveCameraObject = pCamera; }
 
