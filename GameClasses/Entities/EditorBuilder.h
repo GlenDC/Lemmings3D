@@ -14,6 +14,7 @@ class UIDockInterface;
 class EditorModePainter;
 class EditorModeBuilder;
 class EditorModeEraser;
+class GameEntity;
 
 //====================== EditorBuilder Class =========================
 // Description:
@@ -40,6 +41,8 @@ public:
 
 	EditModeScreen * GetEditScreen() const { return m_pEditor; }
 
+	void SetSettings();
+
 private:
 	enum class EditorMode : char 
 	{
@@ -53,6 +56,7 @@ private:
 	IEditMode * m_pModeArr[EDITOR_MODE_COUNTER];
 
 	PreviewObject * m_pPreviewObject;
+	GameEntity * m_pLocalFloor;
 	D3DXVECTOR3 m_Position;
 	std::vector<D3DXVECTOR3> m_SearchVec;
 

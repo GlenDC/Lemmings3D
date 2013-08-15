@@ -10,6 +10,7 @@
 #include "../Lib/LemmingsHelpers.h" 
 //--------------------------------------------------------------------
 #include <algorithm>
+#include <future>
 //====================================================================
 
 ScreenManager* ScreenManager::m_pInstance = nullptr;
@@ -225,7 +226,6 @@ void ScreenManager::Draw(GameContext& context)
 	if(m_pControlScreen->IsPhysicsEnabled() && m_Simulated)
 	{
 		PhysicsManager::GetInstance()->FetchResults(m_pControlScreen->GetPhysicsScene());
-
 		if(m_EnablePhysicsRendering && !m_PhysicsDisabled)
 		{
 			//TODO: Create physics debug renderer.
@@ -245,7 +245,7 @@ void ScreenManager::Draw(GameContext& context)
 
 				DebugRenderer::DrawLine(start,end,color);
 			}
-			}
+		}
 		m_Simulated = false;
 		m_Fetched = true;
 	}

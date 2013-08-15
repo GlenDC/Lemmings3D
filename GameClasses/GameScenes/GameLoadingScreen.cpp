@@ -36,9 +36,12 @@ void GameLoadingScreen::Initialize()
 	ScreenManager::GetInstance()->AddActiveScreen(m_name);
 	ScreenManager::GetInstance()->SetControlScreen(m_name);
 	// start a thread for the creation of the level
-	m_Thread = std::thread([] () 
+
+	m_Thread = std::thread([&] () 
 	{
-		ScreenManager::GetInstance()->AddScreen(new GameScreen());
+		tstringstream strstr;
+		strstr << _T("level") << m_LevelID;
+		ScreenManager::GetInstance()->AddScreen(new GameScreen(strstr.str()));
 		Stopwatch::GetInstance()->CreateTimer(_T("leveL_start_timer"), 1.0f, true, false, []() 
 		{
 			ScreenManager::GetInstance()->AddActiveScreen(_T("GameScreen"));	

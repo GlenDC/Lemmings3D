@@ -28,6 +28,7 @@ Level::Level(const tstring & file, GameScene * pScene)
 	, m_HeigthDifference(0)
 	, m_Name(_T(""))
 	, m_Offset(0,0,0)
+	, m_Center(0,0,0)
 	, m_pLevelParser(nullptr)
 	, m_pPhysicsCubeVec(0)
 	, m_pGame(pScene)
@@ -106,6 +107,10 @@ void Level::Initialize()
 		m_MinDepth = m_Offset.y;
 		m_Offset.y += difference;
 	}
+
+	float minDepth(999999), maxDepth(0);
+	float minX(999999), maxX(0), minZ(9999999), maxZ(0);
+
 	for(vector<D3DXVECTOR3> vec : positionVec)
 	{
 		for(D3DXVECTOR3 pos : vec)
@@ -114,6 +119,30 @@ void Level::Initialize()
 			pos += m_Offset;
 			if(pos.y < m_Offset.y)
 				pos.y += m_MaxDepth;
+			if(pos.y < minDepth)
+			{
+				minDepth = pos.y;
+			}
+			else if(pos.y > maxDepth)
+			{
+				maxDepth = pos.y;
+			}
+			if(pos.x < minX)
+			{
+				minX = pos.x;
+			}
+			else if(pos.x > maxX)
+			{
+				maxX = pos.x;
+			}
+			if(pos.z < minZ)
+			{
+				minZ = pos.z;
+			}
+			else if(pos.z > maxZ)
+			{
+				maxZ = pos.z;
+			}
 			//snap to grid defined by grid_size
 			LemmingsHelpers::SnapPositionXYZ(pos, size);
 			//add cube to world instance!
@@ -143,9 +172,13 @@ void Level::Initialize()
 		}
 	}
 
+	m_MinDepth = minDepth;
+	m_MaxDepth = maxDepth;
+
 	CreateBlocks();
 	m_CurrentDepth = (m_MinDepth + m_MaxDepth) / 2.0f;
-	m_CurrentDepth = fmod(m_CurrentDepth, m_HeigthDifference);
+	m_Center = D3DXVECTOR3((minX + maxX) / 2.0f, m_CurrentDepth, (minZ + maxZ) / 2.0f);
+	m_CurrentDepth -= fmod(m_CurrentDepth, m_HeigthDifference);
 	PaintBlocks();
 
 	m_pInstancedObject->Initialize();
@@ -345,11 +378,10 @@ void Level::CheckCurrentDepth()
 {
 	if(m_CurrentDepth < m_MinDepth)
 	{
-		m_CurrentDepth = m_MinDepth;
+		m_CurrentDepth += m_HeigthDifference;
 	}
 	else if(m_CurrentDepth > m_MaxDepth)
 	{
-		m_CurrentDepth = m_MaxDepth;
+		m_CurrentDepth -= m_HeigthDifference;
 	}
-	//recheck physics!
 }

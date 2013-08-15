@@ -118,7 +118,7 @@ float4 TexturePixelShader(PixelInputType input) : SV_Target
 	
 	float3 finalColor = lerp(textureColor, diffColor, 0.05f);
 
-    return float4(finalColor,1);
+    return float4(finalColor,1.0f);
 }
 
 

@@ -21,17 +21,22 @@ enum MaterialType
 {
 	MatFlatColor,
 	MatFlatTexture,
-	MatSpikey
+	MatSpikey,
+	MatCustom
 };
 
 class GameEntity : public GameObject
 {
 public:
+	GameEntity(Material * material);
 	GameEntity(MaterialType material = MaterialType::MatFlatColor);
 	GameEntity(const tstring & visualModelPath, MaterialType material = MaterialType::MatFlatColor);
+	GameEntity(const tstring & visualModelPath, Material * material);
 	virtual ~GameEntity();
 
 	virtual void Initialize();
+	void SetMaterial(Material * material);
+	Material * GetMaterial() const { return m_pVisualMaterial; }
 
 protected:
 	ModelComponent* m_pVisualModel;

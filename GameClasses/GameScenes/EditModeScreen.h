@@ -17,6 +17,7 @@ class EditorCamera;
 class ColissionEntity;
 class EditorBuilder;
 class PhysicsCube;
+class Level;
 
 class EditModeScreen : public BaseModeScreen
 {
@@ -36,9 +37,14 @@ public:
 	bool RemoveEnvironmentCube(const D3DXVECTOR3 & pos);
 	bool PaintEnvironmentCube(const D3DXVECTOR3 & pos, const int id);
 	void RecheckEnvironment();
+
+	std::shared_ptr<Level> GetCurrentLevel() const;
 	
 private:
 	void CalculateEditorCollision();
+	void ClearCollectionList();
+	void CreateAndAddPhysicsCube(const D3DXVECTOR3 & pos, float size);
+	void RemovePhysicsCube(const D3DXVECTOR3 & pos);
 
 	std::vector<PhysicsCube*> m_EditorCubeVec;
 	EditorBuilder *m_pBuilder;

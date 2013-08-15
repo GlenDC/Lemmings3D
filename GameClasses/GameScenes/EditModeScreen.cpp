@@ -19,6 +19,8 @@
 #include "../GameObjects/EditorCamera.h"
 #include "../Managers/ScreenManager.h"
 #include "../Managers/Stopwatch.h"
+//--------------------------------------------------------------------
+#include <cmath>
 //====================================================================
 
 EditModeScreen::EditModeScreen(GameScreen * parent, InputManager *inputManager)
@@ -38,10 +40,10 @@ void EditModeScreen::Initialize()
 {
 	m_pBuilder = new EditorBuilder(this);
 
-	InputAction editLowerLayer((int)InputControls::KB_O_PRESSED,Pressed,'o');
+	InputAction editLowerLayer((int)InputControls::KB_O_PRESSED,Pressed,'O');
 	ScreenManager::GetInstance()->GetInputManager()->AddInputAction(editLowerLayer);
 
-	InputAction editHigherLayer((int)InputControls::KB_P_PRESSED,Pressed,'p');
+	InputAction editHigherLayer((int)InputControls::KB_P_PRESSED,Pressed,'P');
 	ScreenManager::GetInstance()->GetInputManager()->AddInputAction(editHigherLayer);
 
 	m_pCamera = new EditorCamera();
@@ -66,23 +68,20 @@ void EditModeScreen::Update(const GameContext& context)
 	if(context.Input->IsActionTriggered((int)InputControls::KB_O_PRESSED))
 	{
 		m_pParentScreen->GetLevel()->GetLowerDepth();
+		CalculateEditorCollision();
 	}
 	else if(context.Input->IsActionTriggered((int)InputControls::KB_P_PRESSED))
 	{
 		m_pParentScreen->GetLevel()->GetHigherDepth();
+		CalculateEditorCollision();
 	}
 
-	//D3DXVECTOR3 mouseWorldPos;
-	////LemmingsHelpers::ScreenToWorld(context, D3DXVECTOR2((float)mousePointPos.x, (float)mousePointPos.y), mouseWorldPos);
-	//LemmingsHelpers::GetNearPosition(context, mouseWorldPos);
-	//D3DXVECTOR3 closestBuildPos = m_pLevel->GetSnapPosition(mouseWorldPos);
-	//m_pBuilder->SetSnapPosition(context, closestBuildPos);
-	//if(m_BuildModePosRefresh)
-	//if(context.Input->IsActionTriggered((int)InputControls::KB_ALT_DOWN) && m_BuildModePosRefresh)
-	//{
-		//m_pBuilder->CalculatePositionFromEnvironment(context, m_pLevel->GetEnvironment(), m_pLevel->getSizeXYZ(),2,0,0.2f);
-		//m_BuildModePosRefresh = false;
-	//}
+	auto object = m_pParentScreen->GetPlayer()->GetPickComponent()->Pick(context, context.Input->GetMousePosition(), D3DXVECTOR2(1280,720));
+	if(object != nullptr)
+	{
+		auto position = object->GetComponent<TransformComponent>()->GetWorldPosition();
+		m_pBuilder->SetSnapPosition(context, position);
+	}
 }
 
 void EditModeScreen::Draw(const GameContext& context)
@@ -101,6 +100,9 @@ void EditModeScreen::Activate()
 	m_pParentScreen->SetActiveCamera(m_pCamera);
 	m_pParentScreen->PauseGame(true);
 
+	CalculateEditorCollision();
+	m_pBuilder->SetSettings();
+
 	BaseModeScreen::Activate();
 }
 
@@ -113,12 +115,26 @@ void EditModeScreen::Deactivate()
 
 void EditModeScreen::AddEnvironmentCube(const D3DXVECTOR3 & pos, int id)
 {
-	m_pParentScreen->GetLevel()->AddEnvironmentCube(pos, id);
+	auto environment = m_pParentScreen->GetLevel()->GetEnvironment();
+	auto it_found = std::find_if(environment.begin(), environment.end(), [&pos] (const D3DXVECTOR3 & test_pos)
+	{
+		return test_pos == pos;
+	});
+	if(it_found == environment.end())
+	{
+		m_pParentScreen->GetLevel()->AddEnvironmentCube(pos, id);
+		float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
+		if(pos.y == m_pParentScreen->GetLevel()->GetCurrentDepth())
+		{
+			CreateAndAddPhysicsCube(pos, size);
+		}
+	}
 }
 
 bool EditModeScreen::RemoveEnvironmentCube(const D3DXVECTOR3 & pos)
 {
 	return m_pParentScreen->GetLevel()->RemoveEnvironmentCube(pos);
+	RemovePhysicsCube(pos);
 }
 
 bool EditModeScreen::PaintEnvironmentCube(const D3DXVECTOR3 & pos, int id)
@@ -131,24 +147,49 @@ void EditModeScreen::RecheckEnvironment()
 	m_pParentScreen->GetLevel()->RecheckEnvironment();
 }
 
+std::shared_ptr<Level> EditModeScreen::GetCurrentLevel() const
+{
+	return m_pParentScreen->GetLevel();
+}
+
 void EditModeScreen::CalculateEditorCollision()
 {
+	ClearCollectionList();
 	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
 	const auto & vec = m_pParentScreen->GetLevel()->GetEnvironment();
-	// clear old list
+	// fill new list
+	for(const auto & pos : vec)
+	{
+		if(pos.y == m_pParentScreen->GetLevel()->GetCurrentDepth())
+		{
+			CreateAndAddPhysicsCube(pos, size);
+		}
+	}
+}
+
+void EditModeScreen::ClearCollectionList()
+{
 	for(UINT i = 0 ; i < m_EditorCubeVec.size() ; ++i)
 	{
 		m_pParentScreen->RemoveSceneObject(m_EditorCubeVec[i]);
 	}
-	// fill new list
-	for(const auto & pos : vec)
+	m_EditorCubeVec.clear();
+}
+
+void EditModeScreen::CreateAndAddPhysicsCube(const D3DXVECTOR3 & pos, float size)
+{
+	PhysicsCube * cube = new PhysicsCube(pos, size);
+	m_pParentScreen->AddSceneObject(cube);
+	cube->Initialize();
+	m_EditorCubeVec.push_back(cube);
+}
+
+void EditModeScreen::RemovePhysicsCube(const D3DXVECTOR3 & pos)
+{
+	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
+	std::remove_if(m_EditorCubeVec.begin(), m_EditorCubeVec.end(), [&size, &pos] ( PhysicsCube * cube )
 	{
-		if(pos.z == m_pParentScreen->GetLevel()->GetCurrentDepth())
-		{
-			PhysicsCube * cube = new PhysicsCube(pos, size);
-			m_pParentScreen->AddSceneObject(cube);
-			cube->Initialize();
-			m_EditorCubeVec.push_back(cube);
-		}
-	}
+		D3DXVECTOR3 pos = cube->GetComponent<TransformComponent>()->GetWorldPosition() - pos;
+		return D3DXVec3Length(&pos) < size;
+	});
 }

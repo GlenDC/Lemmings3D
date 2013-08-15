@@ -147,6 +147,7 @@
     <ClCompile Include="GameClasses\Managers\StateManager.cpp" />
     <ClCompile Include="GameClasses\Managers\Stopwatch.cpp" />
     <ClCompile Include="GameClasses\Managers\TimeManager.cpp" />
+    <ClCompile Include="GameClasses\Materials\TileMaterial.cpp" />
     <ClCompile Include="GameClasses\Materials\FlatColorMaterial.cpp" />
     <ClCompile Include="GameClasses\Materials\FlatTextureMaterial.cpp" />
     <ClCompile Include="GameClasses\Materials\InstancedBlockMaterial.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="GameClasses\Managers\StateManager.h" />
     <ClInclude Include="GameClasses\Managers\Stopwatch.h" />
     <ClInclude Include="GameClasses\Managers\TimeManager.h" />
+    <ClInclude Include="GameClasses\Materials\TileMaterial.h" />
     <ClInclude Include="GameClasses\Materials\FlatColorMaterial.h" />
     <ClInclude Include="GameClasses\Materials\FlatTextureMaterial.h" />
     <ClInclude Include="GameClasses\Materials\InstancedBlockMaterial.h" />

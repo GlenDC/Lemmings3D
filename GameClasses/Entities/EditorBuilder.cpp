@@ -5,19 +5,23 @@
 #include "Components/TransformComponent.h"
 //--------------------------------------------------------------------
 #include "../GameObjects/PreviewObject.h"
+#include "../GameObjects/GameEntity.h"
 #include "../Lib/GlobalParameters.h"
 #include "../Lib/LemmingsHelpers.h"
 #include "../Managers/ScreenManager.h"
 #include "../GameScenes/EditModeScreen.h"
 #include "../UserInterface/UIDockInterface.h"
 #include "../Interfaces/IEditMode.h"
+#include "../Materials/TileMaterial.h"
 #include "../GameScenes/Editor/EditorModeBuilder.h"
 #include "../GameScenes/Editor/EditorModeEraser.h"
 #include "../GameScenes/Editor/EditorModePainter.h"
+#include "../Entities/Level.h"
 //====================================================================
 
 EditorBuilder::EditorBuilder(EditModeScreen * pEditor)
 	: m_pPreviewObject(nullptr)
+	, m_pLocalFloor(nullptr)
 	, m_Position(0,0,0)
 	, m_pEditor(pEditor)
 	, m_pMainMenu(nullptr)
@@ -25,6 +29,12 @@ EditorBuilder::EditorBuilder(EditModeScreen * pEditor)
 {
 	m_pPreviewObject = new PreviewObject();
 	m_pPreviewObject->Initialize();
+
+	TileMaterial * material = new TileMaterial(D3DXVECTOR2(1,1));
+	material->SetDiffuse(_T("tex_blueprints.png"));
+
+	m_pLocalFloor = new GameEntity(_T("./Resources/Lemmings3D/models/unit_plane.ovm"), material);
+	m_pLocalFloor->Initialize();
 
 	m_pMainMenu = shared_ptr<UIDockInterface>(new UIDockInterface(45,0,400,200, nullptr, nullptr));
 	m_pMainMenu->AddButton(0,5,_T("Abtn_Mode_Builder"), _T("Header_Editor_Square_Hammer.png"), [&] () 
@@ -52,11 +62,13 @@ EditorBuilder::EditorBuilder(EditModeScreen * pEditor)
 EditorBuilder::~EditorBuilder(void)
 {
 	delete m_pPreviewObject;
+	delete m_pLocalFloor;
 }
 
 void EditorBuilder::Draw(const GameContext & context)
 {
 	m_pPreviewObject->Draw(context);
+	m_pLocalFloor->Draw(context);
 	m_pMainMenu->Draw(context);
 	m_pModeArr[(UINT)m_EditorMode]->Draw(context);
 }
@@ -69,16 +81,27 @@ void EditorBuilder::DrawSubMenu(const GameContext & context)
 void EditorBuilder::Update(const GameContext & context)
 {
 	m_pPreviewObject->Update(context);
+	m_pLocalFloor->Update(context);
 	m_pMainMenu->Update(context);
 	m_pModeArr[(UINT)m_EditorMode]->Update(context);
+
+	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
+	D3DXVECTOR3 center = m_pEditor->GetCurrentLevel()->GetCenter();
+	LemmingsHelpers::SnapPositionXYZ(center, size/2.0f);
+	center.y = m_pEditor->GetCurrentLevel()->GetCurrentDepth() - size / 2.0f + 1.0f;
+	m_pLocalFloor->GetComponent<TransformComponent>()->Translate(center);
 }
 
 void EditorBuilder::SetSnapPosition(const GameContext & context, const D3DXVECTOR3 & pos)
 {
 	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
-	D3DXVECTOR3 camDir = context.Camera->GetTransform()->GetWorldPosition() - pos;
-	D3DXVec3Normalize(&camDir, &camDir);
-	D3DXVECTOR3 snapPosition = pos + camDir * size;
+	D3DXVECTOR3 snapPosition = pos;
+	if(m_EditorMode == EditorMode::build)
+	{
+		D3DXVECTOR3 camDir = context.Camera->GetTransform()->GetWorldPosition() - pos;
+		D3DXVec3Normalize(&camDir, &camDir);
+		snapPosition += camDir * size;
+	}
 	LemmingsHelpers::SnapPositionXYZ(snapPosition, size);
 	m_Position = snapPosition;
 	m_pPreviewObject->SetPosition(snapPosition);
@@ -173,6 +196,22 @@ void EditorBuilder::CalculatePositionFromEnvironment(const GameContext & context
 		curDistance += diameter;
 	} while(curDistance < length && posVec.size() > 0);*/
 //}
+
+void EditorBuilder::SetSettings()
+{
+	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
+	auto transform = m_pLocalFloor->GetComponent<TransformComponent>();
+	D3DXVECTOR3 scale(float(m_pEditor->GetCurrentLevel()->Getwidth()), 1.0f, float(m_pEditor->GetCurrentLevel()->GetHeight()));
+	scale *= size;
+	transform->Scale(scale);
+
+	dynamic_cast<TileMaterial*>(m_pLocalFloor->GetMaterial())->SetUVTile(
+		D3DXVECTOR2(
+			float(m_pEditor->GetCurrentLevel()->Getwidth()),
+			float(m_pEditor->GetCurrentLevel()->GetHeight())
+			)
+		);
+}
 
 void EditorBuilder::CalculatePositionFromEnvironment(const GameContext & context)
 {

@@ -43,6 +43,7 @@ public:
 	const float & GetMinDepth() const { return m_MinDepth; }
 	const float & GetMaxDepth() const { return m_MaxDepth; }
 	const D3DXVECTOR3 & Getoffset() const { return m_Offset; }
+	const D3DXVECTOR3 & GetCenter() const { return m_Center; }
 
 	void AddEnvironmentCube(const D3DXVECTOR3 & pos, const int id);
 	bool RemoveEnvironmentCube(const D3DXVECTOR3 & pos);
@@ -71,7 +72,8 @@ private:
 	float m_MinDepth, m_MaxDepth, m_CurrentDepth, m_HeigthDifference;
 	tstring m_Name;
 
-	D3DXVECTOR3 m_Offset;
+	D3DXVECTOR3 m_Offset,
+				m_Center;
 
 	XMLParser * m_pLevelParser;
 	std::vector<PhysicsCube*> m_pPhysicsCubeVec;

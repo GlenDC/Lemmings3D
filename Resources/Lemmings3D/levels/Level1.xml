@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<Level name="harsh world" width="32" height="32" heightmap="TestLandscape.raw" height_scale="0.055">
+	<blocks>
+	</blocks>
+	<painted>
+	</painted>
+</Level>

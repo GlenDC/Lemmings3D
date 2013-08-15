@@ -31,7 +31,7 @@ class UIDockInterface;
 class GameScreen : public BaseScreen
 {
 public:
-	GameScreen();
+	explicit GameScreen(const tstring & level_file);
 	virtual ~GameScreen(void);
 
 	virtual void Initialize();
@@ -101,6 +101,8 @@ private:
 	
 	ID3D10ShaderResourceView *m_pCameraRotationTexture;
 	SpriteInfo m_CameraRotationSprite;
+
+	tstring m_LevelFile;
 
 	friend class TimeManager;
 

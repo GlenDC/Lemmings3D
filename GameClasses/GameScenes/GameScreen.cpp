@@ -34,7 +34,7 @@
 #include "../XML/XMLConverter.h"
 //====================================================================
 
-GameScreen::GameScreen(void)
+GameScreen::GameScreen(const tstring & level_file)
 	:BaseScreen(_T("GameScreen"), _T("Play Lemmings3D"), true)
 	,m_pLevel(nullptr)
 	,m_pHeaderMenu(nullptr)
@@ -53,6 +53,7 @@ GameScreen::GameScreen(void)
 	,m_CameraZoom(0)
 	,m_pCameraRotationTexture(nullptr)
 	,m_CameraRotationSprite()
+	,m_LevelFile(level_file)
 {
 	TimeManager::GetInstance()->SetGameScreen(this);
 }
@@ -105,7 +106,7 @@ void GameScreen::Initialize()
 
 	m_StateMachine.SetState(_T("game"));
 
-	m_pLevel = shared_ptr<Level>(new Level(_T("TestLevel"), this));
+	m_pLevel = shared_ptr<Level>(new Level(m_LevelFile, this));
 	m_pLevel->Initialize();
 	
 	//ID3D10ShaderResourceView *m_pCameraRotationTexture;
@@ -140,10 +141,6 @@ void GameScreen::Update(const GameContext& context)
 	{
 		m_pActiveCameraObject->AllowCameraControls(allowCameraMovement);
 	}
-
-	tstringstream strstr;
-	strstr << m_StateMachine.GetCurrentStateName() << "\n";
-	OutputDebugString(strstr.str().c_str());
 
 	m_pStatusReport->Update(context);
 	m_pHeaderMenu->Update(context);
@@ -460,6 +457,7 @@ void GameScreen::AddHeaderMenuElements()
 			m_pHeaderMenu->SetElementDisabled(_T("ABtn_ModeGoToGame"), true);
 			m_pHeaderMenu->SetElementVisible(_T("ABtn_ModeGoToEditor"), true);
 			m_pHeaderMenu->SetElementDisabled(_T("ABtn_ModeGoToEditor"), false);
+			SetState(_T("game"));
 			SwitchMode(AppMode::Game);
 		});
 	});
@@ -472,6 +470,7 @@ void GameScreen::AddHeaderMenuElements()
 			m_pHeaderMenu->SetElementDisabled(_T("ABtn_ModeGoToGame"), false);
 			m_pHeaderMenu->SetElementVisible(_T("ABtn_ModeGoToEditor"), false);
 			m_pHeaderMenu->SetElementDisabled(_T("ABtn_ModeGoToEditor"), true);
+			SetState(_T("editor"));
 			SwitchMode(AppMode::Editor);
 		});
 	});
@@ -633,8 +632,6 @@ void GameScreen::StartGame()
 		[&] () {
 			ReportStatus(_T("Good Luck and Have Fun!"));
 	});
-
-
 	
 	Stopwatch::GetInstance()->CreateTimer(_T("EditorRefreshPositionTimer"), 0.5f, false, true, [&] () { m_BuildModePosRefresh = true; });
 }

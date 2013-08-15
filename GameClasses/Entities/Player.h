@@ -46,6 +46,8 @@ public:
 
 	void Save();
 
+	PickComponent * GetPickComponent() const { return m_pPickComponent; }
+
 private:
 	tstring m_Name;
 	UserSettings * m_pSettings;
