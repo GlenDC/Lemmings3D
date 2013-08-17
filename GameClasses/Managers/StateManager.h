@@ -36,6 +36,7 @@ public:
 	void SetPreviousState();
 
 	const tstring & GetCurrentStateName() const { return m_CurrentStateName; }
+	State * GetCurrentState() const { return m_pCurrentState; }
 
 private:
 	void DeactiveCurrentState();

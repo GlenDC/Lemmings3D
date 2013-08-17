@@ -20,10 +20,20 @@ class ColissionEntity : public GameEntity
 private:
 
 public:
-	ColissionEntity();
+	explicit ColissionEntity(Material * material);
+	ColissionEntity(MaterialType material = MaterialType::MatFlatColor);
+	ColissionEntity(const tstring & visualModelPath, MaterialType material = MaterialType::MatFlatColor);
+	ColissionEntity(const tstring & visualModelPath, Material * material);
+
 	virtual ~ColissionEntity();
 	
 	virtual void Initialize();
+
+	virtual void Enable();
+	virtual void Disable();
+
+	void SetIsStatic(bool is_static);
+	bool IsStatic() const;
 
 	//Set the material settings. otherwise the default physics material will be used.
 	void SetPhysicsMaterial(float restituation = 1.0f, NxCombineMode restituationCombineMode = NX_CM_MAX,
@@ -43,6 +53,7 @@ protected:
 	PhysicsMaterial * m_pPhysicsMaterial;
 	RigidBodyComponent *m_pRigidBody;
 	std::vector<BaseColliderComponent*> m_ColliderComponents;
+	bool m_IsStatic;
 
 private:
 

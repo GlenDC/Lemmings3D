@@ -36,6 +36,8 @@ public:
 	virtual void Activate() { State::Activate(); }
 	virtual void Deactivate() { State::Deactivate(); }
 
+	virtual void Save() = 0;
+
 	void SetMainTitle(const tstring & title);
 
 protected:

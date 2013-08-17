@@ -15,7 +15,6 @@ XMLParser::XMLParser(const tstring & file_name, bool useDefaultDirectory)
 
 XMLParser::~XMLParser() //Default Destructor
 {
-	//ToDo: Write Destructor
 }
 
 void XMLParser::SetDirectory(const tstring & path)

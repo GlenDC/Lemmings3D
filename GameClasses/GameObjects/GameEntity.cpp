@@ -15,6 +15,7 @@ GameEntity::GameEntity(Material * material)
 	,m_pScreen(nullptr)
 	,m_VisualResourcePath(_T("./Resources/Sphere.ovm"))
 	,m_MaterialName(MaterialType::MatCustom)
+	,m_IsVisible(true)
 {
 
 }
@@ -26,6 +27,7 @@ GameEntity::GameEntity(MaterialType material)
 	,m_pScreen(nullptr)
 	,m_VisualResourcePath(_T("./Resources/Sphere.ovm"))
 	,m_MaterialName(material)
+	,m_IsVisible(true)
 {
 }
 
@@ -36,6 +38,7 @@ GameEntity::GameEntity(const tstring & visualModelPath, MaterialType material)
 	,m_pScreen(nullptr)
 	,m_VisualResourcePath(visualModelPath)
 	,m_MaterialName(material)
+	,m_IsVisible(true)
 {
 }
 
@@ -46,6 +49,7 @@ GameEntity::GameEntity(const tstring & visualModelPath, Material * material)
 	,m_pScreen(nullptr)
 	,m_VisualResourcePath(visualModelPath)
 	,m_MaterialName(MaterialType::MatCustom)
+	,m_IsVisible(true)
 {
 }
 
@@ -78,6 +82,14 @@ void GameEntity::Initialize()
 	GameObject::Initialize();
 }
 
+void GameEntity::Draw(const GameContext & context)
+{
+	if(m_IsVisible)
+	{
+		GameObject::Draw(context);
+	}
+}
+
 void GameEntity::SetMaterial(Material * material)
 {
 	m_pVisualMaterial = material;
@@ -85,4 +97,70 @@ void GameEntity::SetMaterial(Material * material)
 	{
 		m_pVisualModel->SetMaterial(material);
 	}
+}
+
+TransformComponent * GameEntity::GetTransform() const
+{
+	return GetComponent<TransformComponent>();
+}
+
+void GameEntity::Translate(float x, float y, float z)
+{
+	auto transform = GetTransform();
+	transform->Translate(x, y, z);
+}
+
+void GameEntity::Translate(const D3DXVECTOR3 & vector)
+{
+	auto transform = GetTransform();
+	transform->Translate(vector);
+}
+
+void GameEntity::Scale(float x, float y, float z)
+{
+	auto transform = GetTransform();
+	transform->Scale(x, y, z);
+}
+
+void GameEntity::Scale(const D3DXVECTOR3 & vector)
+{
+	auto transform = GetTransform();
+	transform->Scale(vector);
+}
+
+void GameEntity::Rotate(float x, float y, float z)
+{
+	auto transform = GetTransform();
+	transform->Rotate(x, y, z);
+}
+
+void GameEntity::Rotate(const D3DXVECTOR3 & vector)
+{
+	Rotate(vector.x, vector.y, vector.z);
+}
+
+void GameEntity::Rotate(const D3DXQUATERNION & rotation)
+{
+	auto transform = GetTransform();
+	transform->Rotate(rotation);
+}
+
+const D3DXVECTOR3 & GameEntity::GetTranslation() const
+{
+	return GetTransform()->GetWorldPosition();
+}
+
+const D3DXVECTOR3 & GameEntity::GetScale() const
+{
+	return GetTransform()->GetWorldScale();
+}
+
+const D3DXQUATERNION & GameEntity::GetRotation() const
+{
+	return GetTransform()->GetWorldRotation();
+}
+	
+const D3DXMATRIX & GameEntity::GetWorldMatrix() const
+{
+	return GetTransform()->GetWorldMatrix();
 }

@@ -42,7 +42,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>PugiXML\src;..\OverlordEngine;$(IncludePath)</IncludePath>
+    <IncludePath>PugiXML\src;..\OverlordEngine;C:\Program Files (x86)\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files (x86)\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -86,6 +87,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FMOD\FModSound.cpp" />
+    <ClCompile Include="FMOD\FModSystem.cpp" />
     <ClCompile Include="GameClasses\Entities\EditorBuilder.cpp" />
     <ClCompile Include="GameClasses\Entities\HashIdentifier.cpp" />
     <ClCompile Include="GameClasses\Entities\Level.cpp" />
@@ -110,24 +113,11 @@
     <ClCompile Include="GameClasses\GameScenes\Editor\EditorModeBuilder.cpp" />
     <ClCompile Include="GameClasses\GameScenes\Editor\EditorModeEraser.cpp" />
     <ClCompile Include="GameClasses\GameScenes\Editor\EditorModePainter.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Editor\EditorModePlacer.cpp" />
     <ClCompile Include="GameClasses\GameScenes\GameLoadingScreen.cpp" />
     <ClCompile Include="GameClasses\GameScenes\GameModeScreen.cpp" />
     <ClCompile Include="GameClasses\GameScenes\GameScreen.cpp" />
     <ClCompile Include="GameClasses\GameScenes\BaseScreen.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\Ball.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\Bone.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\Character.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\Door.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\House.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\Key.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\Peddle.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\Labs\Classes\Wall.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\Labs\Week6.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\Labs\Week2.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\Labs\Week4.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\Labs\Week5.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\Labs\week6_picking.cpp" />
-    <ClCompile Include="GameClasses\GameScenes\Labs\Weel1.cpp" />
     <ClCompile Include="GameClasses\GameScenes\LoadingScreen.cpp" />
     <ClCompile Include="GameClasses\GameScenes\MainMenuScreen.cpp" />
     <ClCompile Include="GameClasses\GameScenes\MenuModeScreen.cpp" />
@@ -138,6 +128,7 @@
     <ClCompile Include="GameClasses\Lib\Debug.cpp" />
     <ClCompile Include="GameClasses\Lib\LemmingsHelpers.cpp" />
     <ClCompile Include="GameClasses\Main.cpp" />
+    <ClCompile Include="GameClasses\Managers\AudioManager.cpp" />
     <ClCompile Include="GameClasses\Managers\ColissionCollector.cpp" />
     <ClCompile Include="GameClasses\Managers\ConsoleManager.cpp" />
     <ClCompile Include="GameClasses\Managers\ParameterManager.cpp" />
@@ -147,6 +138,7 @@
     <ClCompile Include="GameClasses\Managers\StateManager.cpp" />
     <ClCompile Include="GameClasses\Managers\Stopwatch.cpp" />
     <ClCompile Include="GameClasses\Managers\TimeManager.cpp" />
+    <ClCompile Include="GameClasses\Materials\BaseModelMaterial.cpp" />
     <ClCompile Include="GameClasses\Materials\TileMaterial.cpp" />
     <ClCompile Include="GameClasses\Materials\FlatColorMaterial.cpp" />
     <ClCompile Include="GameClasses\Materials\FlatTextureMaterial.cpp" />
@@ -170,6 +162,15 @@
     <ClCompile Include="GameClasses\XML\XMLParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FMOD\FModSound.h" />
+    <ClInclude Include="FMOD\FModSystem.h" />
+    <ClInclude Include="FMOD\inc\fmod.h" />
+    <ClInclude Include="FMOD\inc\fmod.hpp" />
+    <ClInclude Include="FMOD\inc\fmod_codec.h" />
+    <ClInclude Include="FMOD\inc\fmod_dsp.h" />
+    <ClInclude Include="FMOD\inc\fmod_errors.h" />
+    <ClInclude Include="FMOD\inc\fmod_memoryinfo.h" />
+    <ClInclude Include="FMOD\inc\fmod_output.h" />
     <ClInclude Include="GameClasses\Entities\EditorBuilder.h" />
     <ClInclude Include="GameClasses\Entities\HashIdentifier.h" />
     <ClInclude Include="GameClasses\Entities\Level.h" />
@@ -195,24 +196,11 @@
     <ClInclude Include="GameClasses\GameScenes\Editor\EditorModeBuilder.h" />
     <ClInclude Include="GameClasses\GameScenes\Editor\EditorModeEraser.h" />
     <ClInclude Include="GameClasses\GameScenes\Editor\EditorModePainter.h" />
+    <ClInclude Include="GameClasses\GameScenes\Editor\EditorModePlacer.h" />
     <ClInclude Include="GameClasses\GameScenes\GameLoadingScreen.h" />
     <ClInclude Include="GameClasses\GameScenes\GameModeScreen.h" />
     <ClInclude Include="GameClasses\GameScenes\GameScreen.h" />
     <ClInclude Include="GameClasses\GameScenes\BaseScreen.h" />
-    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\Ball.h" />
-    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\Bone.h" />
-    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\Character.h" />
-    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\Door.h" />
-    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\House.h" />
-    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\Key.h" />
-    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\Peddle.h" />
-    <ClInclude Include="GameClasses\GameScenes\Labs\Classes\Wall.h" />
-    <ClInclude Include="GameClasses\GameScenes\Labs\week6_picking.h" />
-    <ClInclude Include="GameClasses\GameScenes\Labs\Week1.h" />
-    <ClInclude Include="GameClasses\GameScenes\Labs\Week2.h" />
-    <ClInclude Include="GameClasses\GameScenes\Labs\Week4.h" />
-    <ClInclude Include="GameClasses\GameScenes\Labs\Week5.h" />
-    <ClInclude Include="GameClasses\GameScenes\Labs\Week6.h" />
     <ClInclude Include="GameClasses\GameScenes\LoadingScreen.h" />
     <ClInclude Include="GameClasses\GameScenes\MainMenuScreen.h" />
     <ClInclude Include="GameClasses\GameScenes\MenuModeScreen.h" />
@@ -227,6 +215,7 @@
     <ClInclude Include="GameClasses\Lib\Debug.h" />
     <ClInclude Include="GameClasses\Lib\LemmingsHelpers.h" />
     <ClInclude Include="GameClasses\Main.h" />
+    <ClInclude Include="GameClasses\Managers\AudioManager.h" />
     <ClInclude Include="GameClasses\Managers\ColissionCollector.h" />
     <ClInclude Include="GameClasses\Managers\ConsoleManager.h" />
     <ClInclude Include="GameClasses\Managers\ParameterManager.h" />
@@ -236,6 +225,7 @@
     <ClInclude Include="GameClasses\Managers\StateManager.h" />
     <ClInclude Include="GameClasses\Managers\Stopwatch.h" />
     <ClInclude Include="GameClasses\Managers\TimeManager.h" />
+    <ClInclude Include="GameClasses\Materials\BaseModelMaterial.h" />
     <ClInclude Include="GameClasses\Materials\TileMaterial.h" />
     <ClInclude Include="GameClasses\Materials\FlatColorMaterial.h" />
     <ClInclude Include="GameClasses\Materials\FlatTextureMaterial.h" />

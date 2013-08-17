@@ -82,7 +82,7 @@ void ColissionCollector::RefreshColissionList(const GameContext & context)
 		{
 			for(UINT i = 0 ; i < m_CubeVec[0].size() ; ++i)
 			{
-				m_pGameScene->RemoveSceneObject(m_CubeVec[0][i]);
+				m_pGameScene->RemoveObject(m_CubeVec[0][i]);
 			}
 			m_CubeVec[0].resize(0);
 			for(UINT i = 0 ; i < m_CubeVec[1].size() ; ++i)

@@ -59,6 +59,8 @@ public:
 
 	void SetActiveCamera(EditorCamera * pCamera) { m_pActiveCameraObject = pCamera; }
 
+	float GetCameraFOV() const { return m_CameraFOV; }
+
 private:
 	enum class AppMode : byte 
 	{

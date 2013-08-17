@@ -108,3 +108,8 @@ void GameModeScreen::Deactivate()
 
 	BaseModeScreen::Deactivate();
 }
+
+void GameModeScreen::Save()
+{
+
+}

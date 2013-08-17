@@ -7,17 +7,57 @@
 #include "../GameScenes/BaseScreen.h"
 //====================================================================
 
-ColissionEntity::ColissionEntity() //Default Constructor
-	:GameEntity()
-	,m_pPhysicsMaterial(nullptr)
-	,m_pRigidBody(nullptr)
+ColissionEntity::ColissionEntity(Material * material)
+	: GameEntity(material)
+	, m_pPhysicsMaterial(nullptr)
+	, m_pRigidBody(nullptr)
+	, m_ColliderComponents(0)
+	, m_IsStatic(false)
 {
-	//Mothing to allocate ==> Initialize() !
+
+}
+
+ColissionEntity::ColissionEntity(MaterialType material)
+	: GameEntity(material)
+	, m_pPhysicsMaterial(nullptr)
+	, m_pRigidBody(nullptr)
+	, m_ColliderComponents(0)
+	, m_IsStatic(false)
+{
+
+}
+
+ColissionEntity::ColissionEntity(const tstring & visualModelPath, MaterialType material)
+	: GameEntity(visualModelPath, material)
+	, m_pPhysicsMaterial(nullptr)
+	, m_pRigidBody(nullptr)
+	, m_ColliderComponents(0)
+	, m_IsStatic(false)
+{
+
+}
+
+ColissionEntity::ColissionEntity(const tstring & visualModelPath, Material * material)
+	: GameEntity(visualModelPath, material)
+	, m_pPhysicsMaterial(nullptr)
+	, m_pRigidBody(nullptr)
+	, m_ColliderComponents(0)
+	, m_IsStatic(false)
+{
+
 }
 
 ColissionEntity::~ColissionEntity() //Default Destructor
 {
 	SafeDelete(m_pPhysicsMaterial);
+	if(!m_IsEnabled)
+	{
+		for( UINT i = 0 ; i < m_ColliderComponents.size() ; ++i )
+		{
+			SafeDelete(m_ColliderComponents[i]);
+		}
+	}
+	m_ColliderComponents.clear();
 }
 
 void ColissionEntity::Initialize()
@@ -33,15 +73,66 @@ void ColissionEntity::Initialize()
 		auto boxCollider = new BoxColliderComponent();
 		m_ColliderComponents.push_back(boxCollider);
 		boxCollider->SetPhysicsMaterial(m_pPhysicsMaterial);
-		AddComponent(boxCollider);	
+		if(m_IsEnabled)
+		{
+			AddComponent(boxCollider);	
+		}
 	}
-	else
+	else if(m_IsEnabled)
 	{
 		for(auto it : m_ColliderComponents)
+		{
 			AddComponent(it);
+		}
 	}
 
 	GameEntity::Initialize();
+}
+
+void ColissionEntity::Enable()
+{
+	if(!m_IsEnabled)
+	{
+		for( UINT i = 0 ; i < m_ColliderComponents.size() ; ++i )
+		{
+			AddComponent(m_ColliderComponents[i]);
+		}
+		Initialize();
+	}
+	GameEntity::Enable();
+}
+
+void ColissionEntity::Disable()
+{
+	if(!m_IsEnabled)
+	{
+		for( UINT i = 0 ; i < m_ColliderComponents.size() ; ++i )
+		{
+			RemoveComponent(m_ColliderComponents[i]);
+		}
+	}
+	GameEntity::Disable();
+}
+
+void ColissionEntity::SetIsStatic(bool is_static)
+{
+	m_IsStatic = is_static;
+	m_pRigidBody->SetStatic(is_static);
+	if(m_IsStatic)
+	{
+		m_pRigidBody->AddConstraints(Constraints::DISABLE_GRAVITY | Constraints::FREEZE_POS_X | Constraints::FREEZE_POS_Y |
+			Constraints::FREEZE_POS_Z | Constraints::FREEZE_ROT_X | Constraints::FREEZE_ROT_Y | Constraints::FREEZE_ROT_Z);
+	}
+	else
+	{
+		m_pRigidBody->RemoveConstraints(Constraints::DISABLE_GRAVITY | Constraints::FREEZE_POS_X | Constraints::FREEZE_POS_Y |
+			Constraints::FREEZE_POS_Z | Constraints::FREEZE_ROT_X | Constraints::FREEZE_ROT_Y | Constraints::FREEZE_ROT_Z);
+	}
+}
+
+bool ColissionEntity::IsStatic() const
+{
+	return m_IsStatic;
 }
 
 void ColissionEntity::SetPhysicsMaterial(float restituation, NxCombineMode restituationCombineMode,

@@ -18,8 +18,7 @@ EditorModePainter::EditorModePainter (EditorBuilder * pEditor)
 	m_pPaintMenu->AddImage(0, 0, _T("BACKGROUND"), _T("BG_EditorSubMenu.png"));
 	m_pPaintMenu->AddButton(5,65,_T("Abtn_paint_recheck"), _T("painter_button_recheck.png"), [&] () 
 	{ 
-		//important todo : make this work again
-		//m_pEditor->m_pGame->RecheckEnvironment();
+		m_pEditor->GetEditScreen()->RecheckEnvironment();
 	}, false, false);
 	m_pPaintMenu->AddButton(55,65,_T("Abtn_paint_rock"), _T("painter_button_0_rock.png"), [&] () 
 	{ 

@@ -5,6 +5,7 @@
 #include "../Managers/ParameterManager.h"
 #include "../Managers/ScreenManager.h"
 #include "../Managers/Stopwatch.h"
+#include "../Managers/AudioManager.h"
 #include "../GameScenes/GameScreen.h"
 //============================================================================
 GameLoadingScreen::GameLoadingScreen(const tstring & previousScreen, UINT leveL_id)
@@ -39,6 +40,7 @@ void GameLoadingScreen::Initialize()
 
 	m_Thread = std::thread([&] () 
 	{
+		AudioManager::GetInstance()->PlaySong(container.GetChildParameter<tstring>(strstr.str(), _T("SOUND_TRACK")));
 		tstringstream strstr;
 		strstr << _T("level") << m_LevelID;
 		ScreenManager::GetInstance()->AddScreen(new GameScreen(strstr.str()));

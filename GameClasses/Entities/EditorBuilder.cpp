@@ -4,6 +4,7 @@
 #include "Components/CameraComponent.h"
 #include "Components/TransformComponent.h"
 //--------------------------------------------------------------------
+#include "OverlordComponents.h"
 #include "../GameObjects/PreviewObject.h"
 #include "../GameObjects/GameEntity.h"
 #include "../Lib/GlobalParameters.h"
@@ -16,6 +17,7 @@
 #include "../GameScenes/Editor/EditorModeBuilder.h"
 #include "../GameScenes/Editor/EditorModeEraser.h"
 #include "../GameScenes/Editor/EditorModePainter.h"
+#include "../GameScenes/Editor/EditorModePlacer.h"
 #include "../Entities/Level.h"
 //====================================================================
 
@@ -35,6 +37,7 @@ EditorBuilder::EditorBuilder(EditModeScreen * pEditor)
 
 	m_pLocalFloor = new GameEntity(_T("./Resources/Lemmings3D/models/unit_plane.ovm"), material);
 	m_pLocalFloor->Initialize();
+	m_pLocalFloor->GetComponent<ModelComponent>()->SetCullingEnabled(false);
 
 	m_pMainMenu = shared_ptr<UIDockInterface>(new UIDockInterface(45,0,400,200, nullptr, nullptr));
 	m_pMainMenu->AddButton(0,5,_T("Abtn_Mode_Builder"), _T("Header_Editor_Square_Hammer.png"), [&] () 
@@ -42,12 +45,17 @@ EditorBuilder::EditorBuilder(EditModeScreen * pEditor)
 		m_pMainMenu->ToggleElement(_T("Abtn_Mode_Builder"));
 		m_EditorMode = EditorMode::build;
 	}, false, true);
-	m_pMainMenu->AddButton(50,5,_T("Abtn_Mode_Eraser"), _T("Header_Editor_Square_Erase.png"), [&] () 
+	m_pMainMenu->AddButton(50,5,_T("Abtn_Mode_Placer"), _T("Header_Editor_Square_Placer.png"), [&] () 
+	{ 
+		m_pMainMenu->ToggleElement(_T("Abtn_Mode_Placer"));
+		m_EditorMode = EditorMode::placing;
+	}, false, false);
+	m_pMainMenu->AddButton(100,5,_T("Abtn_Mode_Eraser"), _T("Header_Editor_Square_Erase.png"), [&] () 
 	{ 
 		m_pMainMenu->ToggleElement(_T("Abtn_Mode_Eraser"));
 		m_EditorMode = EditorMode::erase;
 	}, false, false);
-	m_pMainMenu->AddButton(100,5,_T("Abtn_Mode_Painter"), _T("Header_Editor_Square_Painter.png"), [&] () 
+	m_pMainMenu->AddButton(150,5,_T("Abtn_Mode_Painter"), _T("Header_Editor_Square_Painter.png"), [&] () 
 	{ 
 		m_pMainMenu->ToggleElement(_T("Abtn_Mode_Painter"));
 		m_EditorMode = EditorMode::paint;
@@ -55,8 +63,9 @@ EditorBuilder::EditorBuilder(EditModeScreen * pEditor)
 	m_pMainMenu->Initialize();
 
 	m_pModeArr[0] = new EditorModeBuilder(this);
-	m_pModeArr[1] = new EditorModeEraser(this);
-	m_pModeArr[2] = new EditorModePainter(this);
+	m_pModeArr[1] = new EditorModePlacer(this);
+	m_pModeArr[2] = new EditorModeEraser(this);
+	m_pModeArr[3] = new EditorModePainter(this);
 }
 
 EditorBuilder::~EditorBuilder(void)

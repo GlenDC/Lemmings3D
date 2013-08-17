@@ -4,6 +4,7 @@
 #include "../Managers/ScreenManager.h"
 #include "../Managers/SpritefontManager.h"
 #include "../Managers/ParameterManager.h"
+#include "../Managers/AudioManager.h"
 #include "../Entities/ParameterClass.h"
 #include "../Lib/LemmingsHelpers.h"
 #include "../UserInterface/UIDockInterface.h"
@@ -135,6 +136,8 @@ void MainMenuScreen::Initialize()
 	container.SetParameter<UINT>(_T("TOTAL_SESSIONS"), sessions);
 	container.Save();
 	container_levels.Save();
+
+	AudioManager::GetInstance()->PlaySong(_T("Main"));
 
 	BaseScreen::Initialize();
 }

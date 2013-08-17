@@ -13,13 +13,14 @@ class PreviewObject;
 class UIDockInterface;
 class EditorModePainter;
 class EditorModeBuilder;
+class EditorModePlacer;
 class EditorModeEraser;
 class GameEntity;
 
 //====================== EditorBuilder Class =========================
 // Description:
-//		Building Logic of editor!
-// Last Modification: July 2013
+//		Core Logic of editor!
+// Last Modification: August 2013
 // Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
@@ -47,11 +48,12 @@ private:
 	enum class EditorMode : char 
 	{
 		build = 0,
-		erase = 1,
-		paint = 2
+		placing = 1,
+		erase = 2,
+		paint = 3
 	};
 
-	static const int EDITOR_MODE_COUNTER = 3;
+	static const int EDITOR_MODE_COUNTER = 4;
 
 	IEditMode * m_pModeArr[EDITOR_MODE_COUNTER];
 
@@ -67,6 +69,7 @@ private:
 
 	friend class IEditMode;
 	friend class EditorModePainter;
+	friend class EditorModePlacer;
 	friend class EditorModeBuilder;
 	friend class EditorModeEraser;
 

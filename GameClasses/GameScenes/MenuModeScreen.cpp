@@ -90,3 +90,8 @@ void MenuModeScreen::Deactivate()
 
 	BaseModeScreen::Deactivate();
 }
+
+void MenuModeScreen::Save()
+{
+
+}

@@ -1,7 +1,23 @@
 <?xml version="1.0"?>
 <Level name="Hello Lemmings" width="32" height="32" heightmap="TestLandscape.raw" height_scale="0.055">
 	<blocks>
+		<block pos="144;168;324" id="1" />
+		<block pos="132;168;324" id="1" />
+		<block pos="120;168;336" id="1" />
+		<block pos="120;168;324" id="1" />
+		<block pos="108;168;336" id="1" />
+		<block pos="108;168;324" id="1" />
+		<block pos="96;168;324" id="1" />
+		<block pos="96;156;324" id="0" />
 	</blocks>
 	<painted>
+		<paint pos="96;168;336" id="1" />
+		<paint pos="120;168;348" id="1" />
+		<paint pos="132;168;336" id="1" />
+		<paint pos="156;168;324" id="1" />
 	</painted>
+	<objects>
+		<object id="0" pos="96;174;336" rot="(0,0,0,1)" />
+		<object id="0" pos="96;174;324" rot="(0,0,0,1)" />
+	</objects>
 </Level>

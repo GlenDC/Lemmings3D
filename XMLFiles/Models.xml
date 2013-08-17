@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<Parameters>
+	<Parameter name="COUNT" value="1" />
+	<Parameter name="0" value="Header_Editor_Square_Placer_HelloObject.png">
+		<Parameter name="MODEL" value="HelloObject.ovm" />
+		<Parameter name="CONVEX" value="HelloObject_ConvexMesh.ovp" />
+		<Parameter name="TRIANGLE" value="HelloObject_TriangleMesh.ovp" />
+		<Parameter name="TEXTURE" value="CharacterTexture.png" />
+	</Parameter>
+</Parameters>

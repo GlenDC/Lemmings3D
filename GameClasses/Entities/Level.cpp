@@ -12,7 +12,10 @@
 #include "../Lib/LemmingsHelpers.h"
 #include "../GameObjects/InstancedObject.h"
 #include "../GameObjects/PhysicsCube.h"
+#include "../GameObjects/ColissionEntity.h"
 #include "../Managers/ScreenManager.h"
+#include "../Managers/ParameterManager.h"
+#include "../Materials/BaseModelMaterial.h"
 //====================================================================
 
 Level::Level(const tstring & file, GameScene * pScene)
@@ -31,6 +34,7 @@ Level::Level(const tstring & file, GameScene * pScene)
 	, m_Center(0,0,0)
 	, m_pLevelParser(nullptr)
 	, m_pPhysicsCubeVec(0)
+	, m_ColissionEntities(0)
 	, m_pGame(pScene)
 {
 
@@ -54,10 +58,16 @@ Level::~Level(void)
 	delete m_pInstancedObject;
 	for(UINT i = 0 ; i < m_pPhysicsCubeVec.size() ; ++i)
 	{
-		m_pGame->RemoveSceneObject(m_pPhysicsCubeVec[i]);
+		m_pGame->RemoveObject(m_pPhysicsCubeVec[i]);
 		delete m_pPhysicsCubeVec[i];
 	}
 	m_pPhysicsCubeVec.clear();
+	for(UINT i = 0 ; i < m_ColissionEntities.size() ; ++i)
+	{
+		m_pGame->RemoveObject(m_ColissionEntities[i]);
+		delete m_ColissionEntities[i];
+	}
+	m_ColissionEntities.clear();
 }
 
 void Level::Initialize()
@@ -158,7 +168,7 @@ void Level::Initialize()
 				m_pInstancedObject->AddInstance(pos, newInstanceID);
 				//PhysicsCube Creation
 				/*PhysicsCube * cube = new PhysicsCube(pos, size);
-				m_pGame->AddSceneObject(cube);
+				m_pGame->AddObject(cube);
 				m_pPhysicsCubeVec.push_back(cube);*/
 				pos.y -= size;
 				++counter;
@@ -180,6 +190,7 @@ void Level::Initialize()
 	m_Center = D3DXVECTOR3((minX + maxX) / 2.0f, m_CurrentDepth, (minZ + maxZ) / 2.0f);
 	m_CurrentDepth -= fmod(m_CurrentDepth, m_HeigthDifference);
 	PaintBlocks();
+	CreateObjects();
 
 	m_pInstancedObject->Initialize();
 
@@ -212,6 +223,11 @@ void Level::Draw(const GameContext & context)
 		}
 	}*/
 	m_pInstancedObject->Draw(context);
+
+	for( auto pEntity : m_ColissionEntities )
+	{
+		pEntity->Draw(context);
+	}
 }
 
 void Level::Update(const GameContext & context)
@@ -226,6 +242,11 @@ void Level::Update(const GameContext & context)
 		}
 	}*/
 	m_pInstancedObject->Update(context);
+
+	for( auto pEntity : m_ColissionEntities )
+	{
+		pEntity->Update(context);
+	}
 }
 
 const D3DXVECTOR3 & Level::GetSnapPosition(const D3DXVECTOR3 & pos) const
@@ -374,6 +395,20 @@ void Level::PaintBlocks()
 	}
 }
 
+void Level::CreateObjects()
+{
+	auto node = m_pLevelParser->GetNode(XML_PARSER_LAYER(LayerTestCategory::xml_test_node, _T("objects")));
+	for(auto node_it : node.children())
+	{
+		D3DXVECTOR3 pos = GetAttribueValue<D3DXVECTOR3>(node_it, _T("pos"));
+		D3DXQUATERNION rot = GetAttribueValue<D3DXQUATERNION>(node_it, _T("rot"));
+		int id = GetAttribueValue<int>(node_it, _T("id"));
+		auto pEntity = CreateColissionEntity(id, pos);
+		pEntity->Rotate(rot);
+		AddColissionEntity(pEntity);
+	}
+}
+
 void Level::CheckCurrentDepth()
 {
 	if(m_CurrentDepth < m_MinDepth)
@@ -384,4 +419,152 @@ void Level::CheckCurrentDepth()
 	{
 		m_CurrentDepth -= m_HeigthDifference;
 	}
+}
+
+ColissionEntity * Level::CreateColissionEntity(UINT model_id, const D3DXVECTOR3 & pos)
+{
+	auto & modelParameters = ParameterManager::GetInstance()->CreateOrGet(_T("Models"));
+	tstring name = XMLConverter::ConvertToTString(model_id);
+	//Create previewObject
+	tstringstream strstr;
+	strstr << _T("./Resources/Lemmings3D/models/") << modelParameters.GetChildParameter<tstring>(name, _T("MODEL"));
+	tstring model_path = strstr.str();
+	strstr.str(_T(""));
+	strstr << _T("./Resources/Lemmings3D/textures/") << modelParameters.GetChildParameter<tstring>(name, _T("TEXTURE"));
+	tstring texture_path = strstr.str();
+	strstr.str(_T(""));
+	strstr << _T("./Resources/Lemmings3D/models/") << modelParameters.GetChildParameter<tstring>(name, _T("CONVEX"));
+		
+	auto material = new BaseModelMaterial();
+	material->SetDiffuse(texture_path);
+	material->SetAlpha(1.0f);
+
+	ColissionEntity * pEntity = new ColissionEntity(model_path, material);
+	pEntity->AddMeshCollider(strstr.str(), true, false);
+	
+	m_pGame->AddSceneObject(pEntity);
+	pEntity->SetIsStatic(true);
+	pEntity->Initialize();
+
+	pEntity->Translate(pos);
+
+	return pEntity;
+}
+
+bool Level::AddColissionEntity(ColissionEntity * pEntity)
+{
+	auto it = std::find(m_ColissionEntities.begin(), m_ColissionEntities.end(), pEntity);
+	if(it == m_ColissionEntities.end())
+	{
+		m_ColissionEntities.push_back(pEntity);
+		return true;
+	}
+	return false;
+}
+
+bool Level::AddColissionEntity(UINT model_id, const D3DXVECTOR3 & pos)
+{
+	ColissionEntity *pEntity = CreateColissionEntity(model_id, pos);
+
+	auto node = m_pLevelParser->GetNode(XML_PARSER_LAYER(LayerTestCategory::xml_test_node, _T("objects")));
+	pugi::xml_node newNode = node.append_child("object");
+	AddAttribute(newNode, _T("id"), model_id, true);
+	AddAttribute(newNode, _T("pos"), pEntity->GetTranslation(), true);
+	AddAttribute(newNode, _T("rot"), pEntity->GetRotation(), true);
+
+	return AddColissionEntity(pEntity);
+}
+
+bool Level::RemoveColissionEntity(ColissionEntity * pEntity)
+{
+	auto it = std::find(m_ColissionEntities.begin(), m_ColissionEntities.end(), pEntity);
+	if(it != m_ColissionEntities.end())
+	{
+		m_ColissionEntities.erase(it);
+		bool removedXML(false);
+		auto node = m_pLevelParser->GetNode(XML_PARSER_LAYER(LayerTestCategory::xml_test_node, _T("objects")));
+		for(auto node_it : node.children())
+		{
+			D3DXVECTOR3 testPos = GetAttribueValue<D3DXVECTOR3>(node_it, _T("pos"));
+			if(testPos == pEntity->GetTranslation())
+			{
+				node.remove_child(node_it);
+				removedXML = true;
+			}
+		}
+		return removedXML;
+	}
+	return false;
+}
+
+bool Level::RemoveColissionEntity(const D3DXVECTOR3 & pos)
+{
+	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
+	ColissionEntity * pTarget(nullptr);
+	auto it = std::find_if(m_ColissionEntities.begin(), m_ColissionEntities.end(), [&] (ColissionEntity * pEntity) 
+	{
+		D3DXVECTOR3 vec = pEntity->GetTranslation() - pos;
+		float length(D3DXVec3Length(&vec));
+		bool result(length<size);
+		if(length < size)
+		{
+			pTarget = pEntity;
+			return true;
+		}
+		return false;
+	});
+	if(it != m_ColissionEntities.end())
+	{
+		m_ColissionEntities.erase(it);
+		bool removedXML(false);
+		auto node = m_pLevelParser->GetNode(XML_PARSER_LAYER(LayerTestCategory::xml_test_node, _T("objects")));
+		for(auto node_it : node.children())
+		{
+			D3DXVECTOR3 testPos = GetAttribueValue<D3DXVECTOR3>(node_it, _T("pos"));
+			D3DXVECTOR3 vec = pos - testPos;
+			float length(D3DXVec3Length(&vec));
+			if(length < size)
+			{
+				node.remove_child(node_it);
+				removedXML = true;
+			}
+		}
+		return removedXML;
+	}
+	return false;
+}
+
+void Level::ClearColissionEntities()
+{
+	//todo : shouldn't we clear this
+	m_ColissionEntities.clear();
+}
+
+bool Level::IsLegalToBuild(const D3DXVECTOR3 & pos)
+{
+	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
+	auto it = std::find_if(m_ColissionEntities.begin(), m_ColissionEntities.end(), [&] (ColissionEntity * pEntity) 
+	{
+		D3DXVECTOR3 vec = pEntity->GetTranslation() - pos;
+		float length(D3DXVec3Length(&vec));
+		bool result(length<size);
+		return length < size;
+	});
+	return it == m_ColissionEntities.end();
+}
+
+void Level::EnterEditor()
+{
+	/*for(auto it : m_ColissionEntities)
+	{
+		it->Disable();
+	}*/
+}
+
+void Level::LeaveEditor()
+{
+	/*for(auto it : m_ColissionEntities)
+	{
+		it->Disable();
+	}*/
 }

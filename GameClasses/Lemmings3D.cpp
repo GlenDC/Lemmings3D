@@ -21,12 +21,6 @@
 #include "Helpers/BinaryReader.h"
 
 #include "GameScenes\MainMenuScreen.h"
-#include "GameScenes\Labs\Week1.h"	//Lab Week1 (Pong)
-#include "GameScenes\Labs\Week2.h"	//Lab Week2 (Character)
-#include "GameScenes\Labs\Week4.h"	//Lab Week4 (Bones)
-#include "GameScenes\Labs\Week5.h"	//Lab Week5 (Animations)
-#include "GameScenes\Labs\Week6.h"	//Lab Week6 (GeometryShader)
-#include "GameScenes\Labs\Week6_picking.h"	//Lab Week6 (Picking)
 #include "Managers\ScreenManager.h"
 #include "Managers\Stopwatch.h"
 
@@ -55,23 +49,4 @@ void Lemmings3D::Initialize()
 	//Lemmings3D
 	ScreenManager::GetInstance()->AddScreen(new MainMenuScreen());
 	ScreenManager::GetInstance()->AddActiveScreen(_T("MainMenuScreen"));
-
-	////Lab Week1
-	//ScreenManager::GetInstance()->AddScreen(new Week1());
-	////ScreenManager::GetInstance()->AddActiveScreen(L"Week1");
-	////Lab Week2
-	//ScreenManager::GetInstance()->AddScreen(new Week2());
-	////ScreenManager::GetInstance()->AddActiveScreen(L"Week2");
-	////Lab Week4
-	//ScreenManager::GetInstance()->AddScreen(new Week4());
-	////ScreenManager::GetInstance()->AddActiveScreen(L"Week4");
-	////Lab Week5
-	/*ScreenManager::GetInstance()->AddScreen(new Week5());
-	ScreenManager::GetInstance()->AddActiveScreen(L"Week5");*/
-	////Lab Week6
-	//ScreenManager::GetInstance()->AddScreen(new Week6());
-	////ScreenManager::GetInstance()->AddActiveScreen(L"Week6");
-	////Lab Week6 Picking
-	/*ScreenManager::GetInstance()->AddScreen(new Week6_picking());
-	ScreenManager::GetInstance()->AddActiveScreen(L"Week6_picking");*/
 }

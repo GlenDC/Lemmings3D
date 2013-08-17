@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Parameters>
+	<Parameter name="Funky Forest" value="song_funky_forest.mp3" />
+	<Parameter name="Main" value="main_menu.mp3" />
+</Parameters>

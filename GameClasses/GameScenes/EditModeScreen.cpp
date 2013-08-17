@@ -28,6 +28,7 @@ EditModeScreen::EditModeScreen(GameScreen * parent, InputManager *inputManager)
 	, m_EditorCubeVec()
 	, m_pBuilder(nullptr)
 	, m_pCamera(nullptr)
+	, m_EditorMode(EntityMode::mode_environment)
 {
 }
 
@@ -77,6 +78,8 @@ void EditModeScreen::Update(const GameContext& context)
 	}
 
 	auto object = m_pParentScreen->GetPlayer()->GetPickComponent()->Pick(context, context.Input->GetMousePosition(), D3DXVECTOR2(1280,720));
+	ColissionEntity * pCE = dynamic_cast<ColissionEntity*>(object);
+	m_EditorMode = pCE == nullptr ? EntityMode::mode_environment : EntityMode::mode_object;
 	if(object != nullptr)
 	{
 		auto position = object->GetComponent<TransformComponent>()->GetWorldPosition();
@@ -103,14 +106,32 @@ void EditModeScreen::Activate()
 	CalculateEditorCollision();
 	m_pBuilder->SetSettings();
 
+	m_pParentScreen->GetLevel()->EnterEditor();
+
 	BaseModeScreen::Activate();
 }
 
 void EditModeScreen::Deactivate()
 {
 	m_pParentScreen->PauseGame(false);
+	ClearCollectionList();
+	m_pParentScreen->GetLevel()->LeaveEditor();
 
 	BaseModeScreen::Deactivate();
+}
+
+void EditModeScreen::Save()
+{
+	auto transform = m_pCamera->GetComponent<TransformComponent>();
+	m_pParentScreen->GetPlayer()->SetSetting<D3DXVECTOR3>(_T("EDITOR_CAMERA_POS"), transform->GetWorldPosition());
+	m_pParentScreen->GetPlayer()->SetSetting<float>(_T("EDITOR_CAMERA_YAW"), m_pCamera->GetYaw());
+	m_pParentScreen->GetPlayer()->SetSetting<float>(_T("EDITOR_CAMERA_PITCH"), m_pCamera->GetPitch());
+	m_pParentScreen->GetPlayer()->SetSetting<float>(_T("EDITOR_CAMERA_FOV"), m_pParentScreen->GetCameraFOV());
+	m_pParentScreen->GetPlayer()->SetSetting<int>(_T("EDITOR_CAMERA_SPEED"), m_pCamera->GetMoveSpeed());
+	m_pParentScreen->GetPlayer()->SetSetting<float>(_T("EDITOR_CAMERA_ROT_SPEED"), m_pCamera->GetRotSpeed());
+	m_pParentScreen->GetPlayer()->Save(); 
+	m_pParentScreen->GetLevel()->Save();
+	m_pParentScreen->ReportStatus(_T("Settings and level Saved for ") + m_pParentScreen->GetPlayer()->GetName() + _T("."));
 }
 
 void EditModeScreen::AddEnvironmentCube(const D3DXVECTOR3 & pos, int id)
@@ -133,8 +154,15 @@ void EditModeScreen::AddEnvironmentCube(const D3DXVECTOR3 & pos, int id)
 
 bool EditModeScreen::RemoveEnvironmentCube(const D3DXVECTOR3 & pos)
 {
-	return m_pParentScreen->GetLevel()->RemoveEnvironmentCube(pos);
 	RemovePhysicsCube(pos);
+	if(m_EditorMode == EntityMode::mode_environment)
+	{
+		return m_pParentScreen->GetLevel()->RemoveEnvironmentCube(pos);
+	}
+	else
+	{
+		return m_pParentScreen->GetLevel()->RemoveColissionEntity(pos);
+	}
 }
 
 bool EditModeScreen::PaintEnvironmentCube(const D3DXVECTOR3 & pos, int id)
@@ -171,7 +199,7 @@ void EditModeScreen::ClearCollectionList()
 {
 	for(UINT i = 0 ; i < m_EditorCubeVec.size() ; ++i)
 	{
-		m_pParentScreen->RemoveSceneObject(m_EditorCubeVec[i]);
+		m_pParentScreen->RemoveObject(m_EditorCubeVec[i]);
 	}
 	m_EditorCubeVec.clear();
 }

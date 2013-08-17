@@ -29,6 +29,8 @@ public:
 
 	virtual void Activate();
 	virtual void Deactivate();
+
+	virtual void Save();
 	
 private:
 	EditorCamera *m_pCamera;

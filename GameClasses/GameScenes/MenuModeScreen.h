@@ -28,6 +28,8 @@ public:
 
 	virtual void Activate();
 	virtual void Deactivate();
+
+	virtual void Save();
 	
 private:
 	shared_ptr<SpriteFont> m_pSpriteFont;

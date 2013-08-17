@@ -33,6 +33,8 @@ public:
 	virtual void Activate();
 	virtual void Deactivate();
 
+	virtual void Save();
+
 	void AddEnvironmentCube(const D3DXVECTOR3 & pos, const int id);
 	bool RemoveEnvironmentCube(const D3DXVECTOR3 & pos);
 	bool PaintEnvironmentCube(const D3DXVECTOR3 & pos, const int id);
@@ -41,6 +43,12 @@ public:
 	std::shared_ptr<Level> GetCurrentLevel() const;
 	
 private:
+	enum EntityMode : byte
+	{
+		mode_object = 0,
+		mode_environment = 1
+	};
+
 	void CalculateEditorCollision();
 	void ClearCollectionList();
 	void CreateAndAddPhysicsCube(const D3DXVECTOR3 & pos, float size);
@@ -49,6 +57,8 @@ private:
 	std::vector<PhysicsCube*> m_EditorCubeVec;
 	EditorBuilder *m_pBuilder;
 	EditorCamera *m_pCamera;
+
+	EntityMode m_EditorMode;
 
 	// Disabling default copy constructor and default assignment operator.
 	EditModeScreen(const EditModeScreen& yRef);									

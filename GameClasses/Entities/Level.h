@@ -17,6 +17,7 @@
 class XMLParser;
 class InstancedObject;
 class PhysicsCube;
+class ColissionEntity;
 
 class Level 
 {
@@ -56,14 +57,27 @@ public:
 	inline float GetCurrentDepth() const { return m_CurrentDepth; }
 	float GetHigherDepth();
 
+	bool AddColissionEntity(ColissionEntity * pEntity);
+	bool AddColissionEntity(UINT model_id, const D3DXVECTOR3 & pos);
+	bool RemoveColissionEntity(ColissionEntity * pEntity);
+	bool RemoveColissionEntity(const D3DXVECTOR3 & pos);
+	void ClearColissionEntities();
+
+	bool IsLegalToBuild(const D3DXVECTOR3 & pos);
+
+	void EnterEditor();
+	void LeaveEditor();
+
 private:
 	void CreateBlocks();
 	void PaintBlocks();
+	void CreateObjects();
 	inline void IncreaseMinDepth() { m_MinDepth += m_HeigthDifference; CheckCurrentDepth(); } 
 	inline void DecreaseMinDepth() { m_MinDepth -= m_HeigthDifference; CheckCurrentDepth(); } 
 	inline void IncreaseMaxDepth() { m_MaxDepth += m_HeigthDifference; CheckCurrentDepth(); } 
 	inline void DecreaseMaxDepth() { m_MaxDepth -= m_HeigthDifference; CheckCurrentDepth(); } 
 	void CheckCurrentDepth();
+	ColissionEntity * CreateColissionEntity(UINT model_id, const D3DXVECTOR3 & pos);
 
 	tstring m_LevelXMLFileName;
 	InstancedObject * m_pInstancedObject;
@@ -77,6 +91,8 @@ private:
 
 	XMLParser * m_pLevelParser;
 	std::vector<PhysicsCube*> m_pPhysicsCubeVec;
+
+	std::vector<ColissionEntity*> m_ColissionEntities;
 
 	GameScene * m_pGame;
 

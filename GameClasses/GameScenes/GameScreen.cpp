@@ -615,15 +615,15 @@ void GameScreen::StartGame()
 
 	/*Stopwatch::GetInstance()->CreateTimer(_T("SpawnFirstEnemy"), 2.0f, false, false, [&] () { 
 		m_pLemmingsCharacter = new LemmingCharacter(D3DXVECTOR3(305,340,350));
-		AddSceneObject(m_pLemmingsCharacter);
+		AddObject(m_pLemmingsCharacter);
 		m_pLemmingsCharacter->Initialize();
 
 		m_pLemmingsCharacter1 = new LemmingCharacter(D3DXVECTOR3(315,340,345));
-		AddSceneObject(m_pLemmingsCharacter1);
+		AddObject(m_pLemmingsCharacter1);
 		m_pLemmingsCharacter1->Initialize();
 
 		m_pLemmingsCharacter2 = new LemmingCharacter(D3DXVECTOR3(325,340,340));
-		AddSceneObject(m_pLemmingsCharacter2);
+		AddObject(m_pLemmingsCharacter2);
 		m_pLemmingsCharacter2->Initialize();
 	});*/
 
@@ -660,14 +660,5 @@ void GameScreen::SetEditorHUD()
 
 void GameScreen::SaveAll()
 {
-	/*auto transform = m_pCamera->GetComponent<TransformComponent>();
-	m_pPlayer->SetSetting<D3DXVECTOR3>(_T("EDITOR_CAMERA_POS"), transform->GetWorldPosition());
-	m_pPlayer->SetSetting<float>(_T("EDITOR_CAMERA_YAW"), m_pCamera->GetYaw());
-	m_pPlayer->SetSetting<float>(_T("EDITOR_CAMERA_PITCH"), m_pCamera->GetPitch());
-	m_pPlayer->SetSetting<float>(_T("EDITOR_CAMERA_FOV"), m_CameraFOV);
-	m_pPlayer->SetSetting<int>(_T("EDITOR_CAMERA_SPEED"), m_pCamera->GetMoveSpeed());
-	m_pPlayer->SetSetting<float>(_T("EDITOR_CAMERA_ROT_SPEED"), m_pCamera->GetRotSpeed());
-	m_pPlayer->Save(); 
-	m_pLevel->Save();
-	ReportStatus(_T("Settings and level Saved for ") + m_pPlayer->GetName() + _T("."));*/
+	dynamic_cast<BaseModeScreen*>(m_StateMachine.GetCurrentState())->Save();
 }

@@ -26,7 +26,10 @@ void EditorModeBuilder::Update(const GameContext & context)
 	{
 		float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
 		LemmingsHelpers::SnapPositionXYZ(m_pEditor->m_Position, size);
-		m_pEditor->GetEditScreen()->AddEnvironmentCube(m_pEditor->m_Position,0);
+		if(m_pEditor->GetEditScreen()->GetCurrentLevel()->IsLegalToBuild(m_pEditor->m_Position))
+		{
+			m_pEditor->GetEditScreen()->AddEnvironmentCube(m_pEditor->m_Position,0);
+		}
 	}
 }
 
