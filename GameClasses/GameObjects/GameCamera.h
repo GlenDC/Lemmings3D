@@ -4,29 +4,34 @@
 #include "BaseCamera.h"
 //====================================================================
 
-//====================== EditorCamera Class =========================
+//====================== GameCamera Class =========================
 // Description:
-//		Camera for the LevelEditor 
-// Last Modification: July 2013
+//		Main camera to play the game as a player
+// Last Modification: August 2013
 // Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
 
 struct GameContext;
 class CameraComponent;
+class GameScreen;
 
-class EditorCamera : public BaseCamera
+class GameCamera : public BaseCamera
 {
 public:
-	EditorCamera(void);
-	~EditorCamera(void);
+	explicit GameCamera(GameScreen * screen);
+	~GameCamera(void);
 protected:
 	virtual void Initialize();
 	virtual void Update(const GameContext& context);
 
+	GameScreen * m_pGame;
+	float m_ZoomOffset;
+	D3DXVECTOR3 m_CameraPosition;
+
 private:
 	// Disabling default copy constructor and default assignment operator.
-	EditorCamera(const EditorCamera& yRef);									
-	EditorCamera& operator=(const EditorCamera& yRef);
+	GameCamera(const GameCamera& yRef);									
+	GameCamera& operator=(const GameCamera& yRef);
 };
 

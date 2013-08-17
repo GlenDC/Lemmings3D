@@ -21,7 +21,7 @@
 #include "../Entities/StatusReport.h"
 #include "../GameObjects/GameEntity.h"
 #include "../GameObjects/ColissionEntity.h"
-#include "../GameObjects/EditorCamera.h"
+#include "../GameObjects/BaseCamera.h"
 #include "../Helpers/HeightmapParser.h"
 #include "../Lib/GlobalParameters.h" 
 #include "../Lib/LemmingsHelpers.h"
@@ -92,6 +92,9 @@ void GameScreen::Initialize()
 	AddMainMenuElements();
 	m_pGameMenu->Initialize();
 
+	m_pLevel = shared_ptr<Level>(new Level(m_LevelFile, this));
+	m_pLevel->Initialize();
+
 	auto gameMode = new GameModeScreen(this, ScreenManager::GetInstance()->GetInputManager());
 	gameMode->Initialize();
 	m_StateMachine.AddState(_T("game"), gameMode);
@@ -105,9 +108,6 @@ void GameScreen::Initialize()
 	m_StateMachine.AddState(_T("menu"), menuMode);
 
 	m_StateMachine.SetState(_T("game"));
-
-	m_pLevel = shared_ptr<Level>(new Level(m_LevelFile, this));
-	m_pLevel->Initialize();
 	
 	//ID3D10ShaderResourceView *m_pCameraRotationTexture;
 	//SpriteInfo m_CameraRotationSprite;

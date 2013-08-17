@@ -1,39 +1,77 @@
 //====================== #INCLUDES ===================================
-#include "EditorCamera.h"
+#include "GameCamera.h"
 //--------------------------------------------------------------------
 #include "OverlordComponents.h"
+#include "../GameScenes/GameScreen.h"
+#include "../Entities/Level.h"
 //--------------------------------------------------------------------
 #include "Helpers/GeneralStructs.h"
 //====================================================================
 
-EditorCamera::EditorCamera(void)
+GameCamera::GameCamera(GameScreen * screen)
 	: BaseCamera()
+	, m_pGame(screen)
+	, m_ZoomOffset(0)
+	, m_CameraPosition(0,0,0)
 {
 }
 
 
-EditorCamera::~EditorCamera(void)
+GameCamera::~GameCamera(void)
 {
 }
 
-void EditorCamera::Initialize()
+void GameCamera::Initialize()
 {
+	D3DXVECTOR3 pos = m_pGame->GetLevel()->GetCenter();
+	pos.y = m_pGame->GetLevel()->GetMaxDepth();
+	GetComponent<TransformComponent>()->Translate(pos);
+	m_CameraPosition = pos;
 	BaseCamera::Initialize();
 }
 
-void EditorCamera::Update(const GameContext& context)
+void GameCamera::Update(const GameContext& context)
 {
 	if(m_pCamera->IsActive())
 	{
+		D3DXVECTOR3 pos = m_CameraPosition;
+		D3DXVECTOR3 center = m_pGame->GetLevel()->GetCenter();
+		pos.x = center.x;
+		pos.z = center.z;
 		//HANDLE INPUT
-		D3DXVECTOR2 move = D3DXVECTOR2(0,0);
-		move.y = context.Input->IsKeyboardKeyDown('W')?1.0f:0.0f;
-		if(move.y == 0) move.y = -(context.Input->IsKeyboardKeyDown('S')?1.0f:0.0f);
-		if(move.y == 0) move.y = context.Input->GetThumbstickPosition().y;
+		float moveY(0);
+		moveY = context.Input->IsKeyboardKeyDown('W')?1.0f:0.0f;
+		if(moveY == 0) moveY = -(context.Input->IsKeyboardKeyDown('S')?1.0f:0.0f);
+		if(moveY == 0) moveY = context.Input->GetThumbstickPosition().y;
 
-		move.x = context.Input->IsKeyboardKeyDown('D')?1.0f:0.0f;
-		if(move.x == 0) move.x = -(context.Input->IsKeyboardKeyDown('A')?1.0f:0.0f);
-		if(move.x == 0) move.x = context.Input->GetThumbstickPosition().x;
+		float offsetTranslation(0);
+		if(context.Input->IsKeyboardKeyDown('A'))
+		{
+			offsetTranslation = -1.0f;
+		}
+		else if(context.Input->IsKeyboardKeyDown('D'))
+		{
+			offsetTranslation = 1.0f;
+		}
+
+		m_ZoomOffset += offsetTranslation * context.GameTime.ElapsedSeconds() * GetMoveSpeed();
+		float min_check(m_pGame->GetLevel()->GetMaxDepth() / 2.0f);
+		if(m_ZoomOffset < 0)
+		{
+			m_ZoomOffset = 0;
+		}
+		if(m_ZoomOffset > min_check)
+		{
+			m_ZoomOffset = min_check;
+		}
+
+		pos.y += moveY * m_MoveSpeed * context.GameTime.ElapsedSeconds();
+		if(pos.y < min_check)
+		{
+			pos.y = min_check;
+		}
+
+		m_CameraPosition = pos;
 
 		D3DXVECTOR2 look = D3DXVECTOR2(0,0);
 		if(context.Input->IsMouseButtonDown(VK_LBUTTON))
@@ -49,10 +87,6 @@ void EditorCamera::Update(const GameContext& context)
 
 		//CALCULATE TRANSFORMS
 		auto transform = GetComponent<TransformComponent>();
-		auto currPos = transform->GetWorldPosition();
-
-		currPos += transform->GetForward() * move.y * m_MoveSpeed*context.GameTime.ElapsedSeconds();
-		currPos += transform->GetRight() * move.x * m_MoveSpeed*context.GameTime.ElapsedSeconds();
 
 		m_TotalYaw += look.x * m_RotationSpeed * context.GameTime.ElapsedSeconds();
 		m_TotalPitch += look.y * m_RotationSpeed * context.GameTime.ElapsedSeconds();
@@ -70,7 +104,8 @@ void EditorCamera::Update(const GameContext& context)
 		if(m_CanMove)
 		{
 			transform->Rotate(finalQuat);
-			transform->Translate(currPos);
+			pos += m_ZoomOffset * transform->GetForward();
+			transform->Translate(pos);
 		}
 	}
 

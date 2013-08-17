@@ -100,8 +100,10 @@
     <ClCompile Include="GameClasses\Entities\StatusReport.cpp" />
     <ClCompile Include="GameClasses\Entities\Timer.cpp" />
     <ClCompile Include="GameClasses\Entities\UserSettings.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\BaseCamera.cpp" />
     <ClCompile Include="GameClasses\GameObjects\ColissionEntity.cpp" />
     <ClCompile Include="GameClasses\GameObjects\EditorCamera.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\GameCamera.cpp" />
     <ClCompile Include="GameClasses\GameObjects\GameEntity.cpp" />
     <ClCompile Include="GameClasses\GameObjects\InstancedObject.cpp" />
     <ClCompile Include="GameClasses\GameObjects\LemmingCharacter.cpp" />
@@ -183,8 +185,10 @@
     <ClInclude Include="GameClasses\Entities\StatusReport.h" />
     <ClInclude Include="GameClasses\Entities\Timer.h" />
     <ClInclude Include="GameClasses\Entities\UserSettings.h" />
+    <ClInclude Include="GameClasses\GameObjects\BaseCamera.h" />
     <ClInclude Include="GameClasses\GameObjects\ColissionEntity.h" />
     <ClInclude Include="GameClasses\GameObjects\EditorCamera.h" />
+    <ClInclude Include="GameClasses\GameObjects\GameCamera.h" />
     <ClInclude Include="GameClasses\GameObjects\GameEntity.h" />
     <ClInclude Include="GameClasses\GameObjects\InstancedObject.h" />
     <ClInclude Include="GameClasses\GameObjects\LemmingCharacter.h" />

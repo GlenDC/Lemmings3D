@@ -21,7 +21,7 @@
 //====================================================================
 
 class ColissionEntity;
-class EditorCamera;
+class BaseCamera;
 class GameEntity;
 class Player;
 class StatusReport;
@@ -57,7 +57,7 @@ public:
 	void SetPreviousState();
 	void SetGameUIDisabled(bool disabled);
 
-	void SetActiveCamera(EditorCamera * pCamera) { m_pActiveCameraObject = pCamera; }
+	void SetActiveCamera(BaseCamera * pCamera) { m_pActiveCameraObject = pCamera; }
 
 	float GetCameraFOV() const { return m_CameraFOV; }
 
@@ -90,7 +90,7 @@ private:
 
 	StatusReport * m_pStatusReport;
 
-	EditorCamera * m_pActiveCameraObject;
+	BaseCamera * m_pActiveCameraObject;
 
 	AppMode m_AppMode, m_PreviousAppMode;
 	StateManager m_StateMachine;

@@ -4,7 +4,7 @@
 #include "BaseModeScreen.h"
 //====================================================================
 
-class EditorCamera;
+class GameCamera;
 class LemmingCharacter;
 class RisingWater;
 
@@ -33,7 +33,7 @@ public:
 	virtual void Save();
 	
 private:
-	EditorCamera *m_pCamera;
+	GameCamera *m_pCamera;
 
 	LemmingCharacter	*m_pLemmingsCharacter, 
 						*m_pLemmingsCharacter1, 

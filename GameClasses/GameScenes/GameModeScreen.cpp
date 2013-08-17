@@ -18,7 +18,7 @@
 #include "../GameObjects/ColissionEntity.h"
 #include "../GameObjects/LemmingCharacter.h"
 #include "../GameObjects/PhysicsCube.h"
-#include "../GameObjects/EditorCamera.h"
+#include "../GameObjects/GameCamera.h"
 #include "../Managers/ScreenManager.h"
 #include "../Managers/Stopwatch.h"
 #include "../Managers/ColissionCollector.h"
@@ -42,7 +42,7 @@ GameModeScreen::~GameModeScreen(void)
 
 void GameModeScreen::Initialize()
 {
-	m_pCamera = new EditorCamera();
+	m_pCamera = new GameCamera(m_pParentScreen);
 	m_pParentScreen->AddSceneObject(m_pCamera);
 	m_pCamera->GetComponent<CameraComponent>()->SetFieldOfView(LemmingsHelpers::ToRad(m_pParentScreen->GetPlayer()->GetSetting<float>(_T("EDITOR_CAMERA_FOV"))));
 	m_pCamera->SetInformation(m_pParentScreen->GetPlayer()->GetSetting<D3DXVECTOR3>(_T("EDITOR_CAMERA_POS")),
