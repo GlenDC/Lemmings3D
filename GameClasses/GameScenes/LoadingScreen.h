@@ -30,6 +30,8 @@ public:
 	virtual void Activated();
 	virtual void Deactivated();
 
+	void SetLoadingDescription(const tstring & description);
+
 private:
 	static const unsigned int MAX_DOTS = 3;
 	shared_ptr<SpriteFont> m_pSpriteFont;
@@ -38,6 +40,8 @@ private:
 
 protected:
 	tstring m_PreviousScreenName;
+	tstring m_LoadingDescription;
+	tstring m_TipID;
 	UIDockInterface * m_pUIDock;
 
 private:

@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 <Level name="big adventure" width="32" height="32" heightmap="TestLandscape.raw" height_scale="0.055">
-	<blocks>
-	</blocks>
-	<painted>
-	</painted>
-	<objects>
-	</objects>
+	<blocks />
+	<painted />
+	<objects />
 </Level>

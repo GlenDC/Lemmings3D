@@ -56,5 +56,6 @@ technique10 Default {
 		SetBlendState(EnableBlending,float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
 		SetVertexShader(CompileShader(vs_4_0, MainVS()));
 		SetPixelShader(CompileShader(ps_4_0, MainPS()));
+		SetGeometryShader( NULL );
 	}
 }

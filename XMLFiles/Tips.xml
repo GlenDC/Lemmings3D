@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<Parameters>
+	<Parameter name="COUNT" value="5" />
+	<Parameter name="0" value="you shouldnt put your kitty in the microwave" />
+	<Parameter name="1" value="if you played for an hour ore more you should take a break" />
+	<Parameter name="2" value="try to edit the level while playing" />
+	<Parameter name="3" value="you shouldnt use a bucket of water to cool your computer heat" />
+	<Parameter name="4" value="you can play this game without an internet connection" />
+</Parameters>

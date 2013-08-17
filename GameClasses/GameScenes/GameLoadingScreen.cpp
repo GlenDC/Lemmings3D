@@ -23,11 +23,12 @@ GameLoadingScreen::~GameLoadingScreen(void)
 
 void GameLoadingScreen::Initialize()
 {
-	// Increase the playcounter of this level for user stats
+	// Increase the play counter of this level for user stats
 	tstringstream strstr;
 	strstr << m_LevelID;
 	tstring levelstring = strstr.str();
 	ParameterClass & container = ParameterManager::GetInstance()->CreateOrGet(_T("Levels"));
+	SetLoadingDescription(container.GetParameter<tstring>(levelstring));
 	UINT totals_played = container.GetChildParameter<UINT>(levelstring, _T("TIMES_PLAYED"));
 	++totals_played;
 	container.SetChildParameter<UINT>(levelstring, _T("TIMES_PLAYED"), totals_played);

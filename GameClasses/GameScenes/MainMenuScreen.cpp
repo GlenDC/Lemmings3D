@@ -76,7 +76,7 @@ void MainMenuScreen::Initialize()
 		}, level_0_succeeds == 0);
 	UINT level_1_succeeds = container_levels.GetChildParameter<UINT>(_T("1"), _T("TIMES_SUCCEED"));
 	m_pLevelMenuDock->AddButtonLevel(880,200,_T("Btn_Level_2"), 
-		container_levels.GetParameter<tstring>(_T("1")),
+		container_levels.GetParameter<tstring>(_T("2")),
 		container_levels.GetChildParameter<tstring>(_T("2"), _T("BTN_IMAGE")), 2, 
 		container_levels.GetChildParameter<UINT>(_T("2"), _T("BEST_SCORE")),
 		container_levels.GetChildParameter<UINT>(_T("2"), _T("BEST_TIME")), [&] () 
@@ -159,7 +159,7 @@ void MainMenuScreen::Update(const GameContext& context)
 void MainMenuScreen::Draw(const GameContext& context)
 {
 	m_pLevelMenuDock->Draw(context);
-	//m_pStatisticsDock->Draw(context);
+	m_pStatisticsDock->Draw(context);
 	m_pMainMenuDock->Draw(context);
 
 	ScreenManager::GetInstance()->DrawCursor(context);

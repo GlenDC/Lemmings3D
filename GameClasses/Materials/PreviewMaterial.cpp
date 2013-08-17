@@ -9,6 +9,15 @@ PreviewMaterial::PreviewMaterial()
 	, m_pShaderTexture(nullptr)
 	, m_PreviewPosition(0,0,0)
 {
+	m_pElementDescVec.push_back(D3D10_INPUT_PER_VERTEX_DATA);
+	m_pElementDescVec.push_back(D3D10_INPUT_PER_VERTEX_DATA);
+	m_pElementDescVec.push_back(D3D10_INPUT_PER_VERTEX_DATA);
+	m_InstanceDataStepRateVec.push_back(0);
+	m_InstanceDataStepRateVec.push_back(0);
+	m_InstanceDataStepRateVec.push_back(0);
+	m_InputSloteVec.push_back(0);
+	m_InputSloteVec.push_back(0);
+	m_InputSloteVec.push_back(0);
 }
 
 PreviewMaterial::~PreviewMaterial(void)

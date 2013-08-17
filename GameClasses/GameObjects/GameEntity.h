@@ -58,6 +58,9 @@ public:
 	const D3DXQUATERNION & GetRotation() const;
 	const D3DXMATRIX & GetWorldMatrix() const;
 
+	float GetCameraHeight() const { return m_CameraHeight; }
+	D3DXVECTOR3 GetCameraTargetPosition() const;
+
 protected:
 	ModelComponent* m_pVisualModel;
 	Material *m_pVisualMaterial;
@@ -66,6 +69,7 @@ protected:
 	tstring m_VisualResourcePath;
 	MaterialType m_MaterialName;
 	bool m_IsVisible;
+	float m_CameraHeight;
 
 private:
 	friend class BaseScreen;

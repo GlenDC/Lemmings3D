@@ -98,6 +98,7 @@
     <ClCompile Include="GameClasses\Entities\RenderContext.cpp" />
     <ClCompile Include="GameClasses\Entities\RisingWater.cpp" />
     <ClCompile Include="GameClasses\Entities\StatusReport.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\ThirdPersonCamera.cpp" />
     <ClCompile Include="GameClasses\Entities\Timer.cpp" />
     <ClCompile Include="GameClasses\Entities\UserSettings.cpp" />
     <ClCompile Include="GameClasses\GameObjects\BaseCamera.cpp" />
@@ -116,6 +117,7 @@
     <ClCompile Include="GameClasses\GameScenes\Editor\EditorModeEraser.cpp" />
     <ClCompile Include="GameClasses\GameScenes\Editor\EditorModePainter.cpp" />
     <ClCompile Include="GameClasses\GameScenes\Editor\EditorModePlacer.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\FollowCamera.cpp" />
     <ClCompile Include="GameClasses\GameScenes\GameLoadingScreen.cpp" />
     <ClCompile Include="GameClasses\GameScenes\GameModeScreen.cpp" />
     <ClCompile Include="GameClasses\GameScenes\GameScreen.cpp" />
@@ -183,6 +185,7 @@
     <ClInclude Include="GameClasses\Entities\RisingWater.h" />
     <ClInclude Include="GameClasses\Entities\State.h" />
     <ClInclude Include="GameClasses\Entities\StatusReport.h" />
+    <ClInclude Include="GameClasses\GameObjects\ThirdPersonCamera.h" />
     <ClInclude Include="GameClasses\Entities\Timer.h" />
     <ClInclude Include="GameClasses\Entities\UserSettings.h" />
     <ClInclude Include="GameClasses\GameObjects\BaseCamera.h" />
@@ -201,6 +204,7 @@
     <ClInclude Include="GameClasses\GameScenes\Editor\EditorModeEraser.h" />
     <ClInclude Include="GameClasses\GameScenes\Editor\EditorModePainter.h" />
     <ClInclude Include="GameClasses\GameScenes\Editor\EditorModePlacer.h" />
+    <ClInclude Include="GameClasses\GameObjects\FollowCamera.h" />
     <ClInclude Include="GameClasses\GameScenes\GameLoadingScreen.h" />
     <ClInclude Include="GameClasses\GameScenes\GameModeScreen.h" />
     <ClInclude Include="GameClasses\GameScenes\GameScreen.h" />

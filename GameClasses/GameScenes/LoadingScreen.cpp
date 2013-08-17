@@ -7,6 +7,9 @@
 #include "../GameScenes/MainMenuScreen.h"
 #include "../GameObjects/GameEntity.h"
 #include "../UserInterface/UIDockInterface.h"
+#include "../Managers/ParameterManager.h"
+#include "../Entities/ParameterClass.h"
+#include "../XML/XMLConverter.h"
 //--------------------------------------------------------------------
 #include "Graphics/GraphicsDevice.h"
 #include "Helpers/GeneralStructs.h"
@@ -21,8 +24,14 @@ LoadingScreen::LoadingScreen(const tstring & previousScreen)
 	, m_LoadTime(0)
 	, m_RemovedPrevious(false)
 	, m_PreviousScreenName(previousScreen)
+	, m_LoadingDescription()
+	, m_TipID()
 	, m_pUIDock(nullptr)
 {
+	auto & container =  ParameterManager::GetInstance()->CreateOrGet(_T("Tips"));
+	UINT tips_count = container.GetParameter<UINT>(_T("COUNT"));
+	UINT random_tip_id = rand() % tips_count;
+	m_TipID = XMLConverter::ConvertToTString(random_tip_id);
 }
 
 
@@ -64,7 +73,17 @@ void LoadingScreen::Draw(const GameContext& context)
 		strstr << _T(".");
 	}
 	m_pUIDock->Draw(context);
-	//SpriteBatch::DrawTextW(m_pSpriteFont.get(), strstr.str(), D3DXVECTOR2(1150, 675), D3DXCOLOR(1,1,1,1));
+	SpriteBatch::DrawTextW(m_pSpriteFont.get(), strstr.str(), D3DXVECTOR2(1150, 675), D3DXCOLOR(1,1,1,1));
+	UINT hor_offset = m_pSpriteFont->GetMetric('A').Width * m_LoadingDescription.size();
+	float center(660.0f);
+	SpriteBatch::DrawTextW(m_pSpriteFont.get(), m_LoadingDescription, D3DXVECTOR2(center - ( hor_offset / 2 ), 365), D3DXCOLOR(1,1,0,1));
+	
+	strstr.str(_T(""));
+	auto & container =  ParameterManager::GetInstance()->CreateOrGet(_T("Tips"));
+	strstr << _T("tip: ") << container.GetParameter<tstring>(m_TipID);
+	UINT hor_tip_offset = m_pSpriteFont->GetMetric('h').Width * strstr.str().size();
+	SpriteBatch::DrawTextW(m_pSpriteFont.get(), strstr.str(), D3DXVECTOR2(center - ( hor_tip_offset / 2 ), 395), D3DXCOLOR(1,1,0,0.5f));
+
 	BaseScreen::Draw(context);
 }
 
@@ -84,4 +103,9 @@ void LoadingScreen::Activated()
 
 void LoadingScreen::Deactivated()
 {
+}
+
+void LoadingScreen::SetLoadingDescription(const tstring & description)
+{
+	m_LoadingDescription = description;
 }

@@ -1,54 +1,49 @@
 //====================== #INCLUDES ===================================
-#include "GameCamera.h"
+#include "FollowCamera.h"
 //--------------------------------------------------------------------
 #include "OverlordComponents.h"
 #include "../GameScenes/GameScreen.h"
 #include "../Entities/Level.h"
+#include "../GameObjects/GameEntity.h"
+#include "../Lib/GlobalParameters.h"
 //--------------------------------------------------------------------
 #include "Helpers/GeneralStructs.h"
-#include "Diagnostics/Logger.h"
 //====================================================================
 
-GameCamera::GameCamera(GameScreen * screen)
+FollowCamera::FollowCamera()
 	: BaseCamera()
-	, m_pGame(screen)
+	, m_pTarget(nullptr)
 	, m_ZoomOffset(0)
-	, m_CameraPosition(0,0,0)
+	, m_MinZoom(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 2.5f)
+	, m_MaxZoom(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 7.5f)
 {
 }
 
 
-GameCamera::~GameCamera(void)
+FollowCamera::~FollowCamera(void)
 {
 }
 
-void GameCamera::Initialize()
+void FollowCamera::SetTarget(GameEntity * target)
 {
-	D3DXVECTOR3 pos = m_pGame->GetLevel()->GetCenter();
-	pos.y = m_pGame->GetLevel()->GetMaxDepth();
-	GetComponent<TransformComponent>()->Translate(pos);
-	m_CameraPosition = pos;
+	m_pTarget = target;
+}
+
+void FollowCamera::SetRotation(const D3DXQUATERNION & rotation)
+{
+	GetComponent<TransformComponent>()->Rotate(rotation);
+}
+
+void FollowCamera::Initialize()
+{
 	BaseCamera::Initialize();
 }
 
-void GameCamera::Update(const GameContext& context)
+void FollowCamera::Update(const GameContext& context)
 {
-	if(m_pCamera->IsActive())
+	if(m_pCamera->IsActive() && m_pTarget)
 	{
-		D3DXVECTOR3 pos = m_CameraPosition;
-		D3DXVECTOR3 center = m_pGame->GetLevel()->GetCenter();
-		pos.x = center.x;
-		pos.z = center.z;
-		//HANDLE INPUT
-		float moveY(0);
-		moveY = context.Input->IsKeyboardKeyDown('W')?1.0f:0.0f;
-		if(moveY == 0) moveY = -(context.Input->IsKeyboardKeyDown('S')?1.0f:0.0f);
-		if(moveY == 0) moveY = context.Input->GetThumbstickPosition().y;
-		if(context.Input->IsMouseButtonDown(VK_MBUTTON) && moveY == 0
-			&& context.Input->GetMouseMovement().y != 0)
-		{
-			moveY = context.Input->GetMouseMovement().y > 0 ? -1.0f : 1.0f;
-		}
+		D3DXVECTOR3 pos = m_pTarget->GetTranslation();
 
 		float offsetTranslation(0);
 		if(context.Input->IsKeyboardKeyDown('A'))
@@ -59,25 +54,14 @@ void GameCamera::Update(const GameContext& context)
 		{
 			offsetTranslation = 1.0f;
 		}
+		if(context.Input->IsMouseButtonDown(VK_MBUTTON) && offsetTranslation == 0
+			&& context.Input->GetMouseMovement().y != 0)
+		{
+			offsetTranslation = context.Input->GetMouseMovement().y > 0 ? 1.0f : -1.0f;
+		}
 
 		m_ZoomOffset += offsetTranslation * context.GameTime.ElapsedSeconds() * GetMoveSpeed();
-		float min_check(m_pGame->GetLevel()->GetMaxDepth() / 2.0f);
-		if(m_ZoomOffset < 0)
-		{
-			m_ZoomOffset = 0;
-		}
-		if(m_ZoomOffset > min_check)
-		{
-			m_ZoomOffset = min_check;
-		}
-
-		pos.y += moveY * m_MoveSpeed * context.GameTime.ElapsedSeconds();
-		if(pos.y < min_check)
-		{
-			pos.y = min_check;
-		}
-
-		m_CameraPosition = pos;
+		m_ZoomOffset = max(m_MinZoom, min(m_ZoomOffset, m_MaxZoom));
 
 		D3DXVECTOR2 look = D3DXVECTOR2(0,0);
 		if(context.Input->IsMouseButtonDown(VK_LBUTTON))
@@ -110,7 +94,7 @@ void GameCamera::Update(const GameContext& context)
 		if(m_CanMove)
 		{
 			transform->Rotate(finalQuat);
-			pos += m_ZoomOffset * transform->GetForward();
+			pos += m_ZoomOffset * transform->GetForward() * -1;
 			transform->Translate(pos);
 		}
 	}

@@ -4,6 +4,7 @@
 #include "../Materials/FlatTextureMaterial.h"
 #include "../Materials/SpikeyMaterial.h"
 #include "../GameScenes/BaseScreen.h"
+#include "../Lib/GlobalParameters.h"
 //--------------------------------------------------------------------
 #include "OverlordComponents.h"
 //====================================================================
@@ -16,6 +17,7 @@ GameEntity::GameEntity(Material * material)
 	,m_VisualResourcePath(_T("./Resources/Sphere.ovm"))
 	,m_MaterialName(MaterialType::MatCustom)
 	,m_IsVisible(true)
+	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 1.5f)
 {
 
 }
@@ -28,6 +30,7 @@ GameEntity::GameEntity(MaterialType material)
 	,m_VisualResourcePath(_T("./Resources/Sphere.ovm"))
 	,m_MaterialName(material)
 	,m_IsVisible(true)
+	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 1.5f)
 {
 }
 
@@ -39,6 +42,7 @@ GameEntity::GameEntity(const tstring & visualModelPath, MaterialType material)
 	,m_VisualResourcePath(visualModelPath)
 	,m_MaterialName(material)
 	,m_IsVisible(true)
+	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 1.5f)
 {
 }
 
@@ -50,6 +54,7 @@ GameEntity::GameEntity(const tstring & visualModelPath, Material * material)
 	,m_VisualResourcePath(visualModelPath)
 	,m_MaterialName(MaterialType::MatCustom)
 	,m_IsVisible(true)
+	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 1.5f)
 {
 }
 
@@ -163,4 +168,11 @@ const D3DXQUATERNION & GameEntity::GetRotation() const
 const D3DXMATRIX & GameEntity::GetWorldMatrix() const
 {
 	return GetTransform()->GetWorldMatrix();
+}
+
+D3DXVECTOR3 GameEntity::GetCameraTargetPosition() const
+{
+	D3DXVECTOR3 pos = GetTranslation();
+	pos.y += GetCameraHeight();
+	return pos;
 }

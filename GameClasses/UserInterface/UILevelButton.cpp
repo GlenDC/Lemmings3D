@@ -16,11 +16,11 @@ UILevelButton::UILevelButton(const int x, const int y, const tstring & name, con
 
 	m_pDock = new UIDockInterface(x, y, 327, 315, m_pParrentDock->GetDefaultFont());
 	m_pDock->AddButton(0,25,_T("Btn_Image"), button_image, select_function);
-	//m_pDock->AddTextField(0,0,327,25,_T("Txt_Name"), level_name, D3DXCOLOR(1,1,1,1));
+	m_pDock->AddTextField(0,-25,327,25,_T("Txt_Name"), level_name, D3DXCOLOR(1,1,1,1));
 	tstringstream strstr;
 	strstr  << highscore;
-	//m_pDock->AddTextField(0, 285, 327, 25, _T("Txt_HighScore"), strstr.str(), D3DXCOLOR(1,1,1,1));
-	//m_pDock->AddTextField(305, 285, 327, 25, _T("Txt_Time"), LemmingsHelpers::GetTimeStringFromSecondsValue(best_time), D3DXCOLOR(1,1,1,1));
+	m_pDock->AddTextField(0, 405, 327, 25, _T("Txt_HighScore"), strstr.str(), D3DXCOLOR(1,1,1,1));
+	m_pDock->AddTextField(305, 405, 327, 25, _T("Txt_Time"), LemmingsHelpers::GetTimeStringFromSecondsValue(best_time), D3DXCOLOR(1,1,1,1));
 	m_pDock->Initialize();
 }
 
