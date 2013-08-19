@@ -29,12 +29,12 @@ LemmingCharacter::LemmingCharacter(const D3DXVECTOR3 & startPos)
 	, m_RunAcceleration(m_MaxRunVelocity/m_RunAccelerationTime)
 	, m_JumpVelocity(m_Gravity/m_JumpAccelerationTime)
 {
-	ColissionCollector::GetInstance()->AddUser(this);
+//	ColissionCollector::GetInstance()->AddUser(this);
 }
 
 LemmingCharacter::~LemmingCharacter()
 {
-	ColissionCollector::GetInstance()->RemoveUser(this);
+	//ColissionCollector::GetInstance()->RemoveUser(this);
 	delete m_pSkinnedMaterial;
 }
 

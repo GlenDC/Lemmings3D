@@ -33,7 +33,7 @@ public:
 private:
 
 	UINT m_LevelID;
-	std::thread m_Thread;
+	std::thread m_Thread, m_InnerThread;
 
 	// Disabling default copy constructor and default assignment operator.
 	GameLoadingScreen(const GameLoadingScreen& yRef);									

@@ -42,12 +42,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>PugiXML\src;..\OverlordEngine;C:\Program Files (x86)\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(IncludePath)</IncludePath>
+    <IncludePath>..\OverlordEngine;C:\Program Files (x86)\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;PugiXML\src;$(IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files (x86)\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>..\OverlordEngine;PugiXML\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -77,13 +78,14 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>winmm.lib;Debug\OverlordEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -98,6 +100,11 @@
     <ClCompile Include="GameClasses\Entities\RenderContext.cpp" />
     <ClCompile Include="GameClasses\Entities\RisingWater.cpp" />
     <ClCompile Include="GameClasses\Entities\StatusReport.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\Decal.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\Hero.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\KeyObject.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\Lemming.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\SkyBox.cpp" />
     <ClCompile Include="GameClasses\GameObjects\ThirdPersonCamera.cpp" />
     <ClCompile Include="GameClasses\Entities\Timer.cpp" />
     <ClCompile Include="GameClasses\Entities\UserSettings.cpp" />
@@ -143,6 +150,7 @@
     <ClCompile Include="GameClasses\Managers\Stopwatch.cpp" />
     <ClCompile Include="GameClasses\Managers\TimeManager.cpp" />
     <ClCompile Include="GameClasses\Materials\BaseModelMaterial.cpp" />
+    <ClCompile Include="GameClasses\Materials\SkyBoxMaterial.cpp" />
     <ClCompile Include="GameClasses\Materials\TileMaterial.cpp" />
     <ClCompile Include="GameClasses\Materials\FlatColorMaterial.cpp" />
     <ClCompile Include="GameClasses\Materials\FlatTextureMaterial.cpp" />
@@ -151,6 +159,7 @@
     <ClCompile Include="GameClasses\Materials\PreviewMaterial.cpp" />
     <ClCompile Include="GameClasses\Materials\SkikeyMaterial.cpp" />
     <ClCompile Include="GameClasses\Materials\SkinnedMaterial.cpp" />
+    <ClCompile Include="GameClasses\Materials\UberShaderMaterial.cpp" />
     <ClCompile Include="GameClasses\UserInterface\AmountButton.cpp" />
     <ClCompile Include="GameClasses\UserInterface\BaseCursor.cpp" />
     <ClCompile Include="GameClasses\UserInterface\UIButton.cpp" />
@@ -185,6 +194,11 @@
     <ClInclude Include="GameClasses\Entities\RisingWater.h" />
     <ClInclude Include="GameClasses\Entities\State.h" />
     <ClInclude Include="GameClasses\Entities\StatusReport.h" />
+    <ClInclude Include="GameClasses\GameObjects\Decal.h" />
+    <ClInclude Include="GameClasses\GameObjects\Hero.h" />
+    <ClInclude Include="GameClasses\GameObjects\KeyObject.h" />
+    <ClInclude Include="GameClasses\GameObjects\Lemming.h" />
+    <ClInclude Include="GameClasses\GameObjects\SkyBox.h" />
     <ClInclude Include="GameClasses\GameObjects\ThirdPersonCamera.h" />
     <ClInclude Include="GameClasses\Entities\Timer.h" />
     <ClInclude Include="GameClasses\Entities\UserSettings.h" />
@@ -234,6 +248,7 @@
     <ClInclude Include="GameClasses\Managers\Stopwatch.h" />
     <ClInclude Include="GameClasses\Managers\TimeManager.h" />
     <ClInclude Include="GameClasses\Materials\BaseModelMaterial.h" />
+    <ClInclude Include="GameClasses\Materials\SkyBoxMaterial.h" />
     <ClInclude Include="GameClasses\Materials\TileMaterial.h" />
     <ClInclude Include="GameClasses\Materials\FlatColorMaterial.h" />
     <ClInclude Include="GameClasses\Materials\FlatTextureMaterial.h" />
@@ -242,6 +257,7 @@
     <ClInclude Include="GameClasses\Materials\PreviewMaterial.h" />
     <ClInclude Include="GameClasses\Materials\SkinnedMaterial.h" />
     <ClInclude Include="GameClasses\Materials\SpikeyMaterial.h" />
+    <ClInclude Include="GameClasses\Materials\UberShaderMaterial.h" />
     <ClInclude Include="GameClasses\UserInterface\AmountButton.h" />
     <ClInclude Include="GameClasses\UserInterface\BaseCursor.h" />
     <ClInclude Include="GameClasses\UserInterface\UIButton.h" />

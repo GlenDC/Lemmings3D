@@ -49,11 +49,14 @@ public:
 	void AddPlaneCollider(float distance, const NxVec3 & normal, bool useMaterial = true);
 	//Add capsule collider compontent, if none user-defined collider is added a defaul box collider will be used.
 	void AddCapsuleCollider(float height, float radius, bool useMaterial = true);
+
+	float GetCollectionRange() const { return m_CollectionRange; }
 protected:
 	PhysicsMaterial * m_pPhysicsMaterial;
 	RigidBodyComponent *m_pRigidBody;
 	std::vector<BaseColliderComponent*> m_ColliderComponents;
 	bool m_IsStatic;
+	float m_CollectionRange;
 
 private:
 

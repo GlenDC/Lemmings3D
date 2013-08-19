@@ -38,8 +38,11 @@ void XMLParser::Reload()
 
 	pugi::xml_parse_result result = m_XMLDocument.load_file(file_path.c_str());
 	
-	//assert if document can't load for any reason
-	ASSERTC(result, result.description());
+
+	#ifndef NDEBUG
+		//assert if document can't load for any reason
+		ASSERTC(result, result.description());
+	#endif
 }
 
 void XMLParser::Save()

@@ -19,6 +19,7 @@
 #include "../GameObjects/EditorCamera.h"
 #include "../Managers/ScreenManager.h"
 #include "../Managers/Stopwatch.h"
+#include "../Managers/ColissionCollector.h"
 //--------------------------------------------------------------------
 #include <cmath>
 //====================================================================
@@ -99,6 +100,8 @@ void EditModeScreen::Draw2D(const GameContext& context)
 
 void EditModeScreen::Activate()
 {
+	ColissionCollector::GetInstance()->Disable();
+
 	m_pCamera->GetComponent<CameraComponent>()->SetActive();
 	m_pParentScreen->SetActiveCamera(m_pCamera);
 	m_pParentScreen->PauseGame(true);
@@ -116,6 +119,8 @@ void EditModeScreen::Deactivate()
 	m_pParentScreen->PauseGame(false);
 	ClearCollectionList();
 	m_pParentScreen->GetLevel()->LeaveEditor();
+	ColissionCollector::GetInstance()->Enable();
+
 
 	BaseModeScreen::Deactivate();
 }
@@ -144,6 +149,7 @@ void EditModeScreen::AddEnvironmentCube(const D3DXVECTOR3 & pos, int id)
 	if(it_found == environment.end())
 	{
 		m_pParentScreen->GetLevel()->AddEnvironmentCube(pos, id);
+		ColissionCollector::GetInstance()->AddEnvironment(pos);
 		float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
 		if(pos.y == m_pParentScreen->GetLevel()->GetCurrentDepth())
 		{
@@ -158,6 +164,7 @@ bool EditModeScreen::RemoveEnvironmentCube(const D3DXVECTOR3 & pos)
 	if(m_EditorMode == EntityMode::mode_environment)
 	{
 		return m_pParentScreen->GetLevel()->RemoveEnvironmentCube(pos);
+		ColissionCollector::GetInstance()->RemoveEnvironment(pos);
 	}
 	else
 	{

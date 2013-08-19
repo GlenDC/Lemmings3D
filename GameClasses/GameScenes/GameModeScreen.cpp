@@ -15,6 +15,7 @@
 #include "../Entities/EditorBuilder.h"
 #include "../Entities/RisingWater.h"
 #include "../GameObjects/GameEntity.h"
+#include "../GameObjects/Hero.h"
 #include "../GameObjects/ColissionEntity.h"
 #include "../GameObjects/LemmingCharacter.h"
 #include "../GameObjects/PhysicsCube.h"
@@ -23,6 +24,7 @@
 #include "../Managers/ScreenManager.h"
 #include "../Managers/Stopwatch.h"
 #include "../Managers/ColissionCollector.h"
+#include "../Managers/SpritefontManager.h"
 //====================================================================
 
 GameModeScreen::GameModeScreen(GameScreen * parent, InputManager *inputManager)
@@ -33,6 +35,7 @@ GameModeScreen::GameModeScreen(GameScreen * parent, InputManager *inputManager)
 	, m_pLemmingsCharacter(nullptr)
 	, m_pLemmingsCharacter1(nullptr)
 	, m_pLemmingsCharacter2(nullptr)
+	, m_pHero(nullptr)
 	, m_pRisingWater(nullptr)
 {
 
@@ -41,6 +44,7 @@ GameModeScreen::GameModeScreen(GameScreen * parent, InputManager *inputManager)
 
 GameModeScreen::~GameModeScreen(void)
 {
+	ColissionCollector::GetInstance()->RemoveUser(m_pHero);
 }
 
 void GameModeScreen::Initialize()
@@ -56,6 +60,11 @@ void GameModeScreen::Initialize()
 									m_pParentScreen->GetPlayer()->GetSetting<float>(_T("GAME_CAMERA_PITCH")),
 									m_pParentScreen->GetPlayer()->GetSetting<float>(_T("GAME_CAMERA_SPEED")),
 									m_pParentScreen->GetPlayer()->GetSetting<float>(_T("GAME_CAMERA_ROT_SPEED")));
+
+	m_pHero = new Hero();
+	m_pParentScreen->AddSceneObject(m_pHero);
+	m_pHero->Translate(m_pParentScreen->GetLevel()->GetCenter());
+	ColissionCollector::GetInstance()->AddUser(m_pHero);
 
 	//m_pRisingWater = new RisingWater(m_pLevel->GetMinDepth(), m_pLevel->GetMaxDepth());
 	/*D3DXVECTOR3 offset = m_pLevel->Getoffset();
@@ -110,6 +119,10 @@ void GameModeScreen::Update(const GameContext& context)
 	m_pParentScreen->GetPlayer()->Update(context);
 	m_pParentScreen->GetPlayer()->UpdateMenu(context);
 	//m_pRisingWater->Update(context);
+	if(m_pSelectedObject != nullptr)
+	{
+		m_pSelectedObject->UpdateControl(context);
+	}
 	ColissionCollector::GetInstance()->Update(const_cast<GameContext&>(context));
 }
 
@@ -122,6 +135,14 @@ void GameModeScreen::Draw2D(const GameContext& context)
 {
 	m_pParentScreen->GetPlayer()->DrawMenu(context);
 	//m_pRisingWater->Draw2D(context);
+
+	if(m_pSelectedObject != nullptr)
+	{
+		auto pFont = SpritefontManager::GetInstance()->CreateOrGet(_T("GameOver"));
+		tstringstream strstr;
+		strstr << _T("selected: ") << m_pSelectedObject->GetName();
+		SpriteBatch::DrawTextW(pFont.get(), strstr.str(), D3DXVECTOR2(120, 5), D3DXCOLOR(0.184f,0.565f,0.22f,1));
+	}
 }
 
 void GameModeScreen::Activate()

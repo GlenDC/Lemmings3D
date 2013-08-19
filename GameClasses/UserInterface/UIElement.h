@@ -37,7 +37,7 @@ public:
 	virtual ~UIElement(); //default destructor
 
 	// return true when the element can toggle AND the state is toggled
-	bool IsToggledOn() const { return m_CanToggle && m_State == ElementStates::TOGGLE; }
+	bool IsToggledOn() const { return m_CanToggle && m_IsToggled; }
 	// returns true if the state is disabled
 	bool IsDisabled() const { return m_State == ElementStates::DISABLED; }
 	float GetAlphaValue() const { return m_AlphaValue; }
@@ -58,7 +58,7 @@ public:
 		{ m_State = disabled ? ElementStates::DISABLED : ElementStates::IDLE; }
 	//toggle on an element;
 	void SetToggleOn(bool toggledOn) { m_State = toggledOn && m_CanToggle ?
-		ElementStates::TOGGLE : ElementStates::IDLE; }
+		ElementStates::TOGGLE : ElementStates::IDLE; m_IsToggled = toggledOn; }
 	//excectue the select function if its not equal to null
 	virtual void Select() { if(m_SelectFunction != nullptr) m_SelectFunction(); }
 	//Set alpha vale of element
@@ -104,6 +104,8 @@ protected:
 	bool m_IsHovered;
 	// if true, the element is visible and will be drawn
 	bool m_IsVisible;
+
+	bool m_IsToggled;
 	// docktinerface where the element is added to
 	const UIDockInterface * m_pParrentDock;
 	// alpha value of element

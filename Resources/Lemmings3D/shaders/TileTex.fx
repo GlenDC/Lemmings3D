@@ -4,6 +4,7 @@ cbuffer cbPerObject{
 	float4x4 ViewInverse;
 	float4x4 Projection : Projection;
 	float2 UVTile = float2(1,1);
+	float2 UVScale = float2(1,1);
 };
 
 cbuffer cbPerFrame{
@@ -73,7 +74,8 @@ VS_OUTPUT VS(VS_INPUT input){
 float4 PS(VS_OUTPUT input):SV_TARGET
 {
 	float2 uv = input.TexCoord.xy;
-	uv *= UVTile;
+	uv *= UVScale;
+	uv += UVTile * UVScale; 
 	return m_Texture.Sample(samLinear, uv);
 }
 

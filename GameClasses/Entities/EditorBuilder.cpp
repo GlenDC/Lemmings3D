@@ -32,7 +32,7 @@ EditorBuilder::EditorBuilder(EditModeScreen * pEditor)
 	m_pPreviewObject = new PreviewObject();
 	m_pPreviewObject->Initialize();
 
-	TileMaterial * material = new TileMaterial(D3DXVECTOR2(1,1));
+	TileMaterial * material = new TileMaterial(D3DXVECTOR2(1,1), D3DXVECTOR2(1,1));
 	material->SetDiffuse(_T("tex_blueprints.png"));
 
 	m_pLocalFloor = new GameEntity(_T("./Resources/Lemmings3D/models/unit_plane.ovm"), material);
@@ -214,7 +214,7 @@ void EditorBuilder::SetSettings()
 	scale *= size;
 	transform->Scale(scale);
 
-	dynamic_cast<TileMaterial*>(m_pLocalFloor->GetMaterial())->SetUVTile(
+	dynamic_cast<TileMaterial*>(m_pLocalFloor->GetMaterial())->SetUVScale(
 		D3DXVECTOR2(
 			float(m_pEditor->GetCurrentLevel()->Getwidth()),
 			float(m_pEditor->GetCurrentLevel()->GetHeight())

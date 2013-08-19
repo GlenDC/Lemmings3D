@@ -29,6 +29,13 @@ void PhysicsCube::Initialize()
 	AddComponent(m_pRigidBody);
 
 	m_pCollider = new BoxColliderComponent(m_Size, m_Size, m_Size);
+
+	PhysicsMaterial * pMaterial = new PhysicsMaterial();
+	pMaterial->SetRestitution(0.7f);
+	pMaterial->SetStaticFriction(0.5f);
+	pMaterial->SetDynamicFriction(0.5f);
+
+	m_pCollider->SetPhysicsMaterial(pMaterial);
 	AddComponent(m_pCollider);
 
 	auto transform = GetComponent<TransformComponent>();

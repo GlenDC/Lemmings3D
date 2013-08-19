@@ -15,4 +15,6 @@
 	<Parameter name="LOG_WAIT_TIME" value="0.5" />
 	<Parameter name="MAX_LOG_DELAY_TIME" value="2.0" />
 	<Parameter name="ALLOW_STATUS_LOG" value="True" />
+	<Parameter name="HERO_SPEED" value="1.0" />
+	<Parameter name="HERO_RUN_SPEED" value="2.0" />
 </Parameters>

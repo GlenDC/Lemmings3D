@@ -40,6 +40,10 @@ void UIButton::Update(const GameContext &context)
 {
 	m_ButtonSprite.Color.a = m_AlphaValue;
 	m_ButtonSprite.OffsetY = m_ButtonSprite.UVY * (float)m_State;
+	if(m_IsToggled)
+	{
+		m_ButtonSprite.OffsetY = m_ButtonSprite.UVY * (float)ElementStates::TOGGLE;
+	}
 	m_ButtonSprite.OffsetX = 0;
 	LemmingsHelpers::Rect zone(GetScreenZone());
 	m_ButtonSprite.Transform = LemmingsHelpers::MatrixScale(1.0f,0.2f,0) * LemmingsHelpers::MatrixTranslation((float)zone.X, (float)zone.Y,  0.02f);

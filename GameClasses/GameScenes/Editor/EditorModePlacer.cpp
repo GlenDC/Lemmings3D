@@ -35,11 +35,11 @@ EditorModePlacer::EditorModePlacer (EditorBuilder * pEditor)
 		tstring name = XMLConverter::ConvertToTString(i);
 		
 		//Create button
-		m_pModelMenu->AddButton(x,65,name, modelParameters.GetParameter<tstring>(name), [&] () 
+		m_pModelMenu->AddButton(x,65,name, modelParameters.GetParameter<tstring>(name), [&, name, i] () 
 		{ 
-			m_pModelMenu->ToggleElement(name);
+			m_pModelMenu->ToggleElement( name );
 			m_CurrentModelID = i;
-		}, false, true);
+		}, false, i == 0 ? true : false);
 		x += width;
 
 		//Create previewObject
@@ -79,7 +79,14 @@ void EditorModePlacer::Update(const GameContext & context)
 	pos.y += size / 2.0f;
 	if(context.Input->IsActionTriggered((int)InputControls::MOUSE_RIGHT_PRESSED))
 	{
-		m_pEditor->GetEditScreen()->GetCurrentLevel()->AddColissionEntity(m_CurrentModelID, pos);
+		if(m_CurrentModelID > 1 && m_CurrentModelID < 6)
+		{
+			m_pEditor->GetEditScreen()->GetCurrentLevel()->AddGameEntity(m_CurrentModelID, pos);
+		}
+		else
+		{
+			m_pEditor->GetEditScreen()->GetCurrentLevel()->AddColissionEntity(m_CurrentModelID, pos);
+		}
 	}
 	m_PreviewObjects[m_CurrentModelID]->GetComponent<TransformComponent>()->Translate(pos);
 	m_PreviewObjects[m_CurrentModelID]->Update(context);

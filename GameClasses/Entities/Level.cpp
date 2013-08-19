@@ -13,6 +13,10 @@
 #include "../GameObjects/InstancedObject.h"
 #include "../GameObjects/PhysicsCube.h"
 #include "../GameObjects/ColissionEntity.h"
+#include "../GameObjects/GameEntity.h"
+#include "../GameObjects/KeyObject.h"
+#include "../GameObjects/Decal.h"
+#include "../GameObjects/SkyBox.h"
 #include "../Managers/ScreenManager.h"
 #include "../Managers/ParameterManager.h"
 #include "../Materials/BaseModelMaterial.h"
@@ -35,6 +39,8 @@ Level::Level(const tstring & file, GameScene * pScene)
 	, m_pLevelParser(nullptr)
 	, m_pPhysicsCubeVec(0)
 	, m_ColissionEntities(0)
+	, m_GameEntities(0)
+	, m_pSkyBox(nullptr)
 	, m_pGame(pScene)
 {
 
@@ -56,18 +62,10 @@ Level::~Level(void)
 		}
 	}*/
 	delete m_pInstancedObject;
-	for(UINT i = 0 ; i < m_pPhysicsCubeVec.size() ; ++i)
-	{
-		m_pGame->RemoveObject(m_pPhysicsCubeVec[i]);
-		delete m_pPhysicsCubeVec[i];
-	}
 	m_pPhysicsCubeVec.clear();
-	for(UINT i = 0 ; i < m_ColissionEntities.size() ; ++i)
-	{
-		m_pGame->RemoveObject(m_ColissionEntities[i]);
-		delete m_ColissionEntities[i];
-	}
 	m_ColissionEntities.clear();
+	m_GameEntities.clear();
+	delete m_pSkyBox;
 }
 
 void Level::Initialize()
@@ -172,7 +170,7 @@ void Level::Initialize()
 				m_pPhysicsCubeVec.push_back(cube);*/
 				pos.y -= size;
 				++counter;
-			} while ( counter < 3 && pos.y > m_Offset.y );
+			} while ( pos.y > m_Offset.y );
 			//Fill holes
 			/*do
 			{
@@ -194,6 +192,9 @@ void Level::Initialize()
 
 	m_pInstancedObject->Initialize();
 
+	m_pSkyBox = new SkyBox(this, m_Center, _T("grassenvmap1024.dds"));
+	m_pSkyBox->Initialize();
+
 	///*tstringstream strstr;
 	//strstr << _T("HeightMap[") << (m_Height-1) << _T("][") << (m_Width-1) << _T("] == {") <<
 	//	m_Positions2DVector[m_Height-1][m_Width-1].x << _T(";") << 
@@ -205,6 +206,8 @@ void Level::Initialize()
 void Level::Draw(const GameContext & context)
 {
 	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
+
+	m_pSkyBox->Draw(context);
 
 	if(ScreenManager::GetInstance()->CanDrawPhysics())
 	{
@@ -403,9 +406,18 @@ void Level::CreateObjects()
 		D3DXVECTOR3 pos = GetAttribueValue<D3DXVECTOR3>(node_it, _T("pos"));
 		D3DXQUATERNION rot = GetAttribueValue<D3DXQUATERNION>(node_it, _T("rot"));
 		int id = GetAttribueValue<int>(node_it, _T("id"));
-		auto pEntity = CreateColissionEntity(id, pos);
-		pEntity->Rotate(rot);
-		AddColissionEntity(pEntity);
+		if(id > 1 && id < 6)
+		{
+			auto pEntity = CreateGameEntity(id, pos);
+			pEntity->Rotate(rot);
+			AddGameEntity(pEntity);
+		}
+		else
+		{
+			auto pEntity = CreateColissionEntity(id, pos);
+			pEntity->Rotate(rot);
+			AddColissionEntity(pEntity);
+		}
 	}
 }
 
@@ -423,24 +435,33 @@ void Level::CheckCurrentDepth()
 
 ColissionEntity * Level::CreateColissionEntity(UINT model_id, const D3DXVECTOR3 & pos)
 {
-	auto & modelParameters = ParameterManager::GetInstance()->CreateOrGet(_T("Models"));
-	tstring name = XMLConverter::ConvertToTString(model_id);
-	//Create previewObject
-	tstringstream strstr;
-	strstr << _T("./Resources/Lemmings3D/models/") << modelParameters.GetChildParameter<tstring>(name, _T("MODEL"));
-	tstring model_path = strstr.str();
-	strstr.str(_T(""));
-	strstr << _T("./Resources/Lemmings3D/textures/") << modelParameters.GetChildParameter<tstring>(name, _T("TEXTURE"));
-	tstring texture_path = strstr.str();
-	strstr.str(_T(""));
-	strstr << _T("./Resources/Lemmings3D/models/") << modelParameters.GetChildParameter<tstring>(name, _T("CONVEX"));
-		
-	auto material = new BaseModelMaterial();
-	material->SetDiffuse(texture_path);
-	material->SetAlpha(1.0f);
+	ColissionEntity * pEntity(nullptr);
+	if(model_id == 1)
+	{
+		pEntity = new KeyObject();
+	}
+	else
+	{
+		auto & modelParameters = ParameterManager::GetInstance()->CreateOrGet(_T("Models"));
+		tstring name = XMLConverter::ConvertToTString(model_id);
+		//Create previewObject
+		tstringstream strstr;
+		strstr << _T("./Resources/Lemmings3D/models/") << modelParameters.GetChildParameter<tstring>(name, _T("MODEL"));
+		tstring model_path = strstr.str();
+		strstr.str(_T(""));
+		strstr << _T("./Resources/Lemmings3D/textures/") << modelParameters.GetChildParameter<tstring>(name, _T("TEXTURE"));
+		tstring texture_path = strstr.str();
+		strstr.str(_T(""));
+		strstr << _T("./Resources/Lemmings3D/models/") << modelParameters.GetChildParameter<tstring>(name, _T("CONVEX"));
 
-	ColissionEntity * pEntity = new ColissionEntity(model_path, material);
-	pEntity->AddMeshCollider(strstr.str(), true, false);
+
+		auto material = new BaseModelMaterial();
+		material->SetDiffuse(texture_path);
+		material->SetAlpha(1.0f);
+
+		pEntity = new ColissionEntity(model_path, material);
+		pEntity->AddMeshCollider(strstr.str(), true, false);
+	}
 	
 	m_pGame->AddSceneObject(pEntity);
 	pEntity->SetIsStatic(true);
@@ -448,6 +469,22 @@ ColissionEntity * Level::CreateColissionEntity(UINT model_id, const D3DXVECTOR3 
 
 	pEntity->Translate(pos);
 
+	return pEntity;
+}
+
+GameEntity * Level::CreateGameEntity(UINT model_id, const D3DXVECTOR3 & pos)
+{
+	GameEntity * pEntity(nullptr);
+	if(model_id > 1 && model_id < 6)
+	{
+		pEntity = new Decal(model_id - 2);
+	}
+	if(pEntity != nullptr)
+	{
+		m_pGame->AddSceneObject(pEntity);
+		pEntity->Initialize();
+		pEntity->Translate(pos);
+	}
 	return pEntity;
 }
 
@@ -462,6 +499,18 @@ bool Level::AddColissionEntity(ColissionEntity * pEntity)
 	return false;
 }
 
+bool Level::AddGameEntity(GameEntity * pEntity)
+{
+	auto it = std::find(m_GameEntities.begin(), m_GameEntities.end(), pEntity);
+	if(it == m_GameEntities.end())
+	{
+		m_GameEntities.push_back(pEntity);
+		return true;
+	}
+	return false;
+}
+
+
 bool Level::AddColissionEntity(UINT model_id, const D3DXVECTOR3 & pos)
 {
 	ColissionEntity *pEntity = CreateColissionEntity(model_id, pos);
@@ -474,6 +523,20 @@ bool Level::AddColissionEntity(UINT model_id, const D3DXVECTOR3 & pos)
 
 	return AddColissionEntity(pEntity);
 }
+
+bool Level::AddGameEntity(UINT model_id, const D3DXVECTOR3 & pos)
+{
+	GameEntity *pEntity = CreateGameEntity(model_id, pos);
+
+	auto node = m_pLevelParser->GetNode(XML_PARSER_LAYER(LayerTestCategory::xml_test_node, _T("objects")));
+	pugi::xml_node newNode = node.append_child("object");
+	AddAttribute(newNode, _T("id"), model_id, true);
+	AddAttribute(newNode, _T("pos"), pEntity->GetTranslation(), true);
+	AddAttribute(newNode, _T("rot"), pEntity->GetRotation(), true);
+
+	return AddGameEntity(pEntity);
+}
+	
 
 bool Level::RemoveColissionEntity(ColissionEntity * pEntity)
 {

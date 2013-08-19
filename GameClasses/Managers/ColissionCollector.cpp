@@ -3,27 +3,35 @@
 #include "Game.h"
 #include "Stopwatch.h"
 //--------------------------------------------------------------------
+#include "OverlordComponents.h"
 #include "../Entities/Level.h"
 #include "../GameScenes/GameScreen.h"
 #include "../GameObjects/PhysicsCube.h"
-#include "../Interfaces/IColissionUser.h"
+#include "../GameObjects/ColissionEntity.h"
 #include "../Lib/GlobalParameters.h"
+#include <future>
 //====================================================================
 
 ColissionCollector* ColissionCollector::m_pInstance = nullptr;
 
 ColissionCollector::ColissionCollector(void)
-	: m_IsInitialized(false)
+	: m_CheckCounter(0)
+	, m_IsInitialized(false)
 	, m_RefreshAllowed(true)
+	, m_Enabled(true)
+	, m_ActiveList()
+	, m_IdleList()
 	, m_pLevel(nullptr)
 	, m_pGameScene(nullptr)
 	, m_CurrentCheckNumber(0)
 	, m_FrontBatch(0)
+	, m_ThreadAvailable(true)
 {
 }
 
 ColissionCollector::~ColissionCollector(void)
 {
+	ClearEnvironment();
 }
 
 ColissionCollector* ColissionCollector::GetInstance()
@@ -46,21 +54,34 @@ void ColissionCollector::Initialize()
 
 void ColissionCollector::Update(GameContext& context)
 {
-	for(UINT i = 0 ; i < m_CubeVec[0].size() ; ++i)
+	for(UINT i = 0 ; i < m_ActiveList.size() ; ++i)
 	{
-		m_CubeVec[0][i]->Update(context);
+		auto cube = m_ActiveList[i];
+		if(!GenerateIdleEntityIfInvalid(cube->GetTranslation()))
+		{
+			RemovePhysicsCube(cube, false);
+			m_ActiveList.erase(m_ActiveList.begin() + i);
+		}
+		else
+		{
+			++i;
+		}
+	}
+	if(m_ThreadAvailable)
+	{
+		std::async(std::launch::async, UpdateList, context);
 	}
 }
 
 // nothing to draw
 void ColissionCollector::Draw(GameContext& context) {}
 
-void ColissionCollector::AddUser(IColissionUser * pUser)
+void ColissionCollector::AddUser(ColissionEntity * pUser)
 {
 	m_UserVec.push_back(pUser);
 }
 
-bool ColissionCollector::RemoveUser(IColissionUser * pUser)
+bool ColissionCollector::RemoveUser(ColissionEntity * pUser)
 {
 	for(UINT i = 0 ; i < m_UserVec.size() ; ++i)
 	{
@@ -75,55 +96,200 @@ bool ColissionCollector::RemoveUser(IColissionUser * pUser)
 
 void ColissionCollector::RefreshColissionList(const GameContext & context)
 {
-	/*if(m_RefreshAllowed)
-	{*/
+	if (m_pLevel && m_Enabled)
+	{
 		float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
-		if(m_CurrentCheckNumber == 0)
+		for(UINT i = 0 ; i < m_ActiveList.size() ; )
 		{
-			for(UINT i = 0 ; i < m_CubeVec[0].size() ; ++i)
+			auto cube = m_ActiveList[i];
+			if(!GenerateIdleEntityIfInvalid(cube->GetTranslation()))
 			{
-				m_pGameScene->RemoveObject(m_CubeVec[0][i]);
+				RemovePhysicsCube(cube, false);
+				m_ActiveList.erase(m_ActiveList.begin() + i);
 			}
-			m_CubeVec[0].resize(0);
-			for(UINT i = 0 ; i < m_CubeVec[1].size() ; ++i)
+			else
 			{
-				m_CubeVec[0].push_back(m_CubeVec[1][i]);
+				++i;
 			}
-			m_CubeVec[1].resize(0);
 		}
-
-		if (m_pLevel)
-		{
-			const vector<D3DXVECTOR3> & vecPos = m_pLevel->GetEnvironment();
-	
-			int newBatch = (int)(vecPos.size() * (context.GameTime.ElapsedSeconds() / 4.0f));
-
-			for(int i = m_CurrentCheckNumber ; i < m_CurrentCheckNumber + newBatch && (UINT)i < vecPos.size() ; ++i)
-			{
-				for(UINT u = 0 ; u < m_UserVec.size() ; ++u)
-				{
-					D3DXVECTOR3 lengthVec = vecPos[i] - m_UserVec[u]->GetCUPosition();
-					float length(D3DXVec3Length(&lengthVec));
-					if(length < m_UserVec[u]->GetCURange())
-					{
-						PhysicsCube * cube = new PhysicsCube(vecPos[i], size);
-						m_pGameScene->AddSceneObject(cube);
-						cube->Initialize();
-						m_CubeVec[1].push_back(cube);
-						break;
-					}
-				}
-			}
-
-			m_CurrentCheckNumber += newBatch;
-			if((UINT)m_CurrentCheckNumber > vecPos.size())
-				m_CurrentCheckNumber = 0;
-		}
-		/*m_RefreshAllowed = false;
-	}*/
+	}
 }
 
 void ColissionCollector::RefreshCollection(const GameContext & context)
 {
 	RefreshColissionList(context);
+}
+
+void ColissionCollector::CopyEnvironment()
+{
+	const vector<D3DXVECTOR3> & vecPos = m_pLevel->GetEnvironment();
+	for(auto & pos : vecPos)
+	{
+		AddEnvironment(pos);
+	}
+}
+
+void ColissionCollector::ClearEnvironment()
+{
+	m_ActiveList.clear();
+	m_IdleList.clear();
+}
+
+void ColissionCollector::UpdateIdleList(const GameContext & context)
+{
+	m_ThreadAvailable = false;
+	for(UINT i = 0 ; i < m_IdleList.size() ; )
+	{
+		auto & entity = m_IdleList[i];
+		entity.Timer -= context.GameTime.ElapsedSpeedGameTime;
+		if(entity.Timer < 0)
+		{
+			AddEnvironment(entity.Position);
+			m_IdleList.erase(m_IdleList.begin());
+		}
+		else
+		{
+			++i;
+		}
+	}
+	m_ThreadAvailable = true;
+}
+
+void ColissionCollector::AddEnvironment(const D3DXVECTOR3 & pos)
+{
+	if(GenerateIdleEntityIfInvalid(pos))
+	{
+		float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
+		PhysicsCube * pCube = new PhysicsCube(pos, size);
+		m_pGameScene->AddObject(pCube);
+		m_ActiveList.push_back(pCube);
+	}
+}
+
+void ColissionCollector::RemoveEnvironment(const D3DXVECTOR3 & pos)
+{
+	auto it = std::find_if(m_ActiveList.begin(), m_ActiveList.end(), [&] (const PhysicsCube * cube) 
+	{
+		return cube->GetTranslation() == pos;
+	});
+	if(it != m_ActiveList.end())
+	{
+		m_ActiveList.erase(it);
+		RemovePhysicsCube(*it);
+		return;
+	}
+	auto itIdle = std::find_if(m_IdleList.begin(), m_IdleList.end(), [&] (const IdleEntity & entity) 
+	{
+		return entity.Position == pos;
+	});
+	if(itIdle != m_IdleList.end())
+	{
+		m_IdleList.erase(itIdle);
+	}
+}
+
+void ColissionCollector::Enable()
+{
+	m_Enabled = true;
+	for(auto cube : m_ActiveList)
+	{
+		m_pGameScene->AddSceneObject(cube);
+	}
+}
+
+void ColissionCollector::Disable()
+{
+	m_Enabled = false;
+	for(auto cube : m_ActiveList)
+	{
+		RemovePhysicsCube(cube, false);
+	}
+}
+
+void ColissionCollector::UpdateList(const GameContext & context)
+{
+	GetInstance()->UpdateIdleList(context);
+}
+
+bool ColissionCollector::IsValid(const D3DXVECTOR3 & pos)
+{
+	for(UINT u = 0 ; u < m_UserVec.size() ; ++u)
+	{
+		auto user = m_UserVec[u];
+		D3DXVECTOR3 lengthVec = pos - user->GetTranslation();
+		float length(D3DXVec3Length(&lengthVec));
+		if(length < user->GetCollectionRange())
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool ColissionCollector::GenerateIdleEntityIfInvalid(const D3DXVECTOR3 & pos)
+{
+	bool found(false);
+	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
+	float min_2d_dis((float)START_VALUE), min_y_dis((float)START_VALUE), bonus_height(0); 
+	for(UINT u = 0 ; u < m_UserVec.size() ; ++u)
+	{
+		auto user = m_UserVec[u];
+		D3DXVECTOR3 lengthVec = pos - user->GetTranslation();
+		float length(D3DXVec3Length(&lengthVec));
+		D3DXVECTOR3 lengthVecY(0,lengthVec.y,0);
+		float lengthY(D3DXVec3Length(&lengthVecY));
+		if(!(length < user->GetCollectionRange() && lengthY < size))
+		{
+			// check for 2d_dis
+			D3DXVECTOR3 lengthVec2D(lengthVec);
+			float length2D(D3DXVec3Length(&lengthVec2D));
+			if(length2D < min_2d_dis)
+			{
+				min_2d_dis = length2D;
+				D3DXVECTOR3 lengthVecY(0, lengthVec.y, 0);
+				float lengthY(D3DXVec3Length(&lengthVecY));
+				min_y_dis = lengthY;
+				if(user->GetTranslation().y < pos.y)
+				{
+					bonus_height = (min_y_dis / size) * 4;
+				}
+				else
+				{
+					bonus_height = 0;
+				}
+			}
+		}
+		else
+		{
+			found = true;
+			break;
+		}
+	}
+	if(!found)
+	{
+		IdleEntity entity;
+		entity.Position = pos;
+		float time_2d(min_2d_dis / size), time_y(min_y_dis / size);
+		if(time_2d > 5)
+			bonus_height *= (time_2d / 5) * 4;
+		entity.Timer = ( time_2d * 0.05f + time_y * 0.01f ) * bonus_height;
+		m_IdleList.push_back(entity);
+	}
+	return found;
+}
+
+void ColissionCollector::RemovePhysicsCube(PhysicsCube * pCube, bool mark_for_delete)
+{
+	if(mark_for_delete)
+	{
+		m_pGameScene->RemoveObject(pCube);
+	}
+	else
+	{
+		m_pGameScene->ClearObject(pCube);
+	}
+	/*if(mark_for_delete)
+	{	
+		pCube->MarkForDelete();
+	}*/
 }

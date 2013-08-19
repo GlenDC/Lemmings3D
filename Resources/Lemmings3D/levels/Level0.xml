@@ -261,5 +261,9 @@
 	<objects>
 		<object id="0" pos="96;174;336" rot="(0,0,0,1)" />
 		<object id="0" pos="96;174;324" rot="(0,0,0,1)" />
+		<object id="2" pos="216;186;204" rot="(0,0,0,1)" />
+		<object id="4" pos="216;186;192" rot="(0,0,0,1)" />
+		<object id="5" pos="216;186;180" rot="(0,0,0,1)" />
+		<object id="4" pos="108;174;84" rot="(0,0,0,1)" />
 	</objects>
 </Level>

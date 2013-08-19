@@ -15,6 +15,7 @@
 #include "Managers/ContentManager.h"
 #include "Diagnostics/FPS.h"
 //--------------------------------------------------------------------
+#include "../Materials/UberShaderMaterial.h"
 #include "../Entities/ParameterClass.h"
 #include "../Entities/Level.h"
 #include "../Entities/Player.h"
@@ -64,6 +65,7 @@ GameScreen::~GameScreen(void)
 	SafeDelete(m_pStatusReport);
 	//Unset the camera component of the scene?!
 	SafeDelete(m_pPlayer);
+	ColissionCollector::GetInstance()->ClearEnvironment();
 
 	TimeManager::GetInstance()->SetGameScreen(nullptr);
 }
@@ -517,22 +519,46 @@ void GameScreen::AddMainMenuElements()
 	//m_pGameMenu->AddAmountButton(990,bigBtnY,_T("Main_Button_Amount_J"), _T("Main_Btn_Sqrt_Big_J.png"), 0, [&] () { /* DO NOTHING IN THA BODY */ });
 
 	//Big Rect Buttons
-	m_pGameMenu->AddButton(1102,118,_T("Main_Button_Rect_A"), _T("Main_Btn_Rect_Big_A.png"), [&] () { /* DO NOTHING IN THA BODY */ });
-	m_pGameMenu->AddButton(1204,118,_T("Main_Button_Rect_B"), _T("Main_Btn_Rect_Big_B.png"), [&] () { /* DO NOTHING IN THA BODY */ });
+	m_pGameMenu->AddButton(1102,118,_T("Main_Button_Rect_A"), _T("Main_Btn_Rect_Big_A.png"), [&] () 
+	{
+		UberShaderMaterial::EnableGlobalSpecular(!UberShaderMaterial::IsGlobalSpecularEnabled());
+		m_pGameMenu->ToggleUniqueElement(_T("Main_Button_Rect_A"), !UberShaderMaterial::IsGlobalSpecularEnabled());
+	});
+	m_pGameMenu->AddButton(1204,118,_T("Main_Button_Rect_B"), _T("Main_Btn_Rect_Big_B.png"), [&] () 
+	{
+		UberShaderMaterial::EnableGlobalNormal(!UberShaderMaterial::IsGlobalNormalEnabled());
+		m_pGameMenu->ToggleUniqueElement(_T("Main_Button_Rect_B"), !UberShaderMaterial::IsGlobalNormalEnabled());
+	});
 	m_pGameMenu->AddButton(1306,118,_T("Main_Button_Rect_C"), _T("Main_Btn_Rect_Big_C.png"), [&] () 
 	{ 
 		TimeManager::GetInstance()->IncreaseGameSpeed();
 		SetGameSpeedTxtField();
 	});
-	m_pGameMenu->AddButton(1102,168,_T("Main_Button_Rect_D"), _T("Main_Btn_Rect_Big_D.png"), [&] () { /* DO NOTHING IN THA BODY */ });
-	m_pGameMenu->AddButton(1204,168,_T("Main_Button_Rect_E"), _T("Main_Btn_Rect_Big_E.png"), [&] () { /* DO NOTHING IN THA BODY */ });
+	m_pGameMenu->AddButton(1102,168,_T("Main_Button_Rect_D"), _T("Main_Btn_Rect_Big_D.png"), [&] () 
+	{
+		UberShaderMaterial::EnableGlobalEnvironment(!UberShaderMaterial::IsGlobalEnvironmentEnabled());
+		m_pGameMenu->ToggleUniqueElement(_T("Main_Button_Rect_D"), !UberShaderMaterial::IsGlobalEnvironmentEnabled());
+	});
+	m_pGameMenu->AddButton(1204,168,_T("Main_Button_Rect_E"), _T("Main_Btn_Rect_Big_E.png"), [&] () 
+	{
+		UberShaderMaterial::EnableGlobalOpacity(!UberShaderMaterial::IsGlobalOpacityEnabled());
+		m_pGameMenu->ToggleUniqueElement(_T("Main_Button_Rect_E"), !UberShaderMaterial::IsGlobalOpacityEnabled());
+	});
 	m_pGameMenu->AddButton(1306,168,_T("Main_Button_Rect_F"), _T("Main_Btn_Rect_Big_F.png"), [&] () 
 	{ 
 		TimeManager::GetInstance()->ResetGameSpeed();
 		SetGameSpeedTxtField();
 	});
-	m_pGameMenu->AddButton(1102,218,_T("Main_Button_Rect_G"), _T("Main_Btn_Rect_Big_G.png"), [&] () { /* DO NOTHING IN THA BODY */ });
-	m_pGameMenu->AddButton(1204,218,_T("Main_Button_Rect_H"), _T("Main_Btn_Rect_Big_H.png"), [&] () { /* DO NOTHING IN THA BODY */ });
+	m_pGameMenu->AddButton(1102,218,_T("Main_Button_Rect_G"), _T("Main_Btn_Rect_Big_G.png"), [&] () 
+	{
+		UberShaderMaterial::EnableGlobalHalfLambert(!UberShaderMaterial::IsGlobalHalfLambertEnabled());
+		m_pGameMenu->ToggleUniqueElement(_T("Main_Button_Rect_G"), !UberShaderMaterial::IsGlobalHalfLambertEnabled());
+	});
+	m_pGameMenu->AddButton(1204,218,_T("Main_Button_Rect_H"), _T("Main_Btn_Rect_Big_H.png"), [&] () 
+	{
+		UberShaderMaterial::EnableGlobalFresnelFallof(!UberShaderMaterial::IsGlobalFresnelFallofEnabled());
+		m_pGameMenu->ToggleUniqueElement(_T("Main_Button_Rect_H"), !UberShaderMaterial::IsGlobalFresnelFallofEnabled());
+	});
 	m_pGameMenu->AddButton(1306,218,_T("Main_Button_Rect_I"), _T("Main_Btn_Rect_Big_I.png"), [&] () 
 	{ 
 		TimeManager::GetInstance()->DecreaseGameSpeed();

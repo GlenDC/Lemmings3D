@@ -1,10 +1,32 @@
 <?xml version="1.0"?>
 <Parameters>
-	<Parameter name="COUNT" value="1" />
+	<Parameter name="COUNT" value="6" />
 	<Parameter name="0" value="Header_Editor_Square_Placer_HelloObject.png">
 		<Parameter name="MODEL" value="HelloObject.ovm" />
 		<Parameter name="CONVEX" value="HelloObject_ConvexMesh.ovp" />
 		<Parameter name="TRIANGLE" value="HelloObject_TriangleMesh.ovp" />
 		<Parameter name="TEXTURE" value="CharacterTexture.png" />
+	</Parameter>
+	<Parameter name="1" value="Header_Editor_Square_Placer_KeyObject.png">
+		<Parameter name="MODEL" value="KeyObject.ovm" />
+		<Parameter name="CONVEX" value="KeyObject_ConvexMesh.ovp" />
+		<Parameter name="TRIANGLE" value="KeyObject_TriangleMesh.ovp" />
+		<Parameter name="TEXTURE" value="KeyDiffuse.png" />
+	</Parameter>
+	<Parameter name="2" value="Header_Editor_Square_Placer_Decal1.png">
+		<Parameter name="MODEL" value="plane_decal.ovm" />
+		<Parameter name="TEXTURE" value="decal_flowers.png" />
+	</Parameter>
+	<Parameter name="3" value="Header_Editor_Square_Placer_Decal2.png">
+		<Parameter name="MODEL" value="plane_decal.ovm" />
+		<Parameter name="TEXTURE" value="decal_flowers.png" />
+	</Parameter>
+	<Parameter name="4" value="Header_Editor_Square_Placer_Decal3.png">
+		<Parameter name="MODEL" value="plane_decal.ovm" />
+		<Parameter name="TEXTURE" value="decal_flowers.png" />
+	</Parameter>
+	<Parameter name="5" value="Header_Editor_Square_Placer_Decal4.png">
+		<Parameter name="MODEL" value="plane_decal.ovm" />
+		<Parameter name="TEXTURE" value="decal_flowers.png" />
 	</Parameter>
 </Parameters>

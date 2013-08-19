@@ -4,8 +4,8 @@
 		<Parameter name="FILE" value="TestLevel" />
 		<Parameter name="BEST_TIME" value="0" />
 		<Parameter name="BEST_SCORE" value="0" />
-		<Parameter name="TIMES_PLAYED" value="331" />
-		<Parameter name="TIMES_SUCCEED" value="2" />
+		<Parameter name="TIMES_PLAYED" value="463" />
+		<Parameter name="TIMES_SUCCEED" value="0" />
 		<Parameter name="BTN_IMAGE" value="UI_Level_btn_0.png" />
 		<Parameter name="SOUND_TRACK" value="Funky Forest" />
 	</Parameter>
@@ -13,8 +13,8 @@
 		<Parameter name="FILE" value="TestLevel" />
 		<Parameter name="BEST_TIME" value="0" />
 		<Parameter name="BEST_SCORE" value="0" />
-		<Parameter name="TIMES_PLAYED" value="25" />
-		<Parameter name="TIMES_SUCCEED" value="1" />
+		<Parameter name="TIMES_PLAYED" value="39" />
+		<Parameter name="TIMES_SUCCEED" value="0" />
 		<Parameter name="BTN_IMAGE" value="UI_Level_btn_1.png" />
 		<Parameter name="SOUND_TRACK" value="Funky Forest" />
 	</Parameter>
@@ -22,8 +22,8 @@
 		<Parameter name="FILE" value="TestLevel" />
 		<Parameter name="BEST_TIME" value="0" />
 		<Parameter name="BEST_SCORE" value="0" />
-		<Parameter name="TIMES_PLAYED" value="12" />
-		<Parameter name="TIMES_SUCCEED" value="1" />
+		<Parameter name="TIMES_PLAYED" value="21" />
+		<Parameter name="TIMES_SUCCEED" value="0" />
 		<Parameter name="BTN_IMAGE" value="UI_Level_btn_2.png" />
 		<Parameter name="SOUND_TRACK" value="Funky Forest" />
 	</Parameter>

@@ -17,6 +17,7 @@ UIElement::UIElement(const int x, const int y, const int width, const int height
 	,m_IsOffline(false)
 	,m_CanToggle(true)
 	,m_AlphaValue(1.0f)
+	,m_IsToggled(false)
 {
 	//nothing to create
 }
@@ -51,10 +52,7 @@ void UIElement::Update(const GameContext &context)
                                 myZone.Y < mousePosition.y &&
                                 myZone.Y + myZone.Height > mousePosition.y;
 		bool clicked = ScreenManager::GetInstance()->LeftMouseButtonPressed();
-		if (m_State != ElementStates::TOGGLE)
-        {
-			m_State = hoveredButton && clicked ? ElementStates::CLICK : hoveredButton ? ElementStates::HOVER : ElementStates::IDLE;
-        }
+		m_State = hoveredButton && clicked ? ElementStates::CLICK : hoveredButton ? ElementStates::HOVER : ElementStates::IDLE;
 		if (m_State == ElementStates::CLICK && m_SelectFunction != nullptr)
         {
 			m_SelectFunction();
@@ -69,7 +67,7 @@ void UIElement::Update(const GameContext &context)
             //Program.Game.Audio.SoundSFX2D.PlaySound("buttonHover", false, (int)GameSpace.AudioSFXChannels.ui_buttons);
 			m_IsHovered = true;
         }
-		else if (m_IsHovered && m_State != ElementStates::TOGGLE && hoveredButton == false)
+		else if (m_IsHovered && hoveredButton == false)
         {
 			m_IsHovered = false;
 			if (m_UnHoverFunction != nullptr)

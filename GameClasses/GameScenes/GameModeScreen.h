@@ -7,6 +7,7 @@
 class GameCamera;
 class FollowCamera;
 class GameEntity;
+class Hero;
 class LemmingCharacter;
 class RisingWater;
 
@@ -35,10 +36,12 @@ public:
 	virtual void Save();
 	
 private:
+
 	FollowCamera *m_pFollowCamera;
 	GameCamera *m_pCamera;
 
 	GameEntity * m_pSelectedObject;
+	Hero * m_pHero;
 	LemmingCharacter	*m_pLemmingsCharacter, 
 						*m_pLemmingsCharacter1, 
 						*m_pLemmingsCharacter2;

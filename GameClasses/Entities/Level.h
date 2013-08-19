@@ -17,7 +17,9 @@
 class XMLParser;
 class InstancedObject;
 class PhysicsCube;
+class GameEntity;
 class ColissionEntity;
+class SkyBox;
 
 class Level 
 {
@@ -58,7 +60,9 @@ public:
 	float GetHigherDepth();
 
 	bool AddColissionEntity(ColissionEntity * pEntity);
+	bool AddGameEntity(GameEntity * pEntity);
 	bool AddColissionEntity(UINT model_id, const D3DXVECTOR3 & pos);
+	bool AddGameEntity(UINT model_id, const D3DXVECTOR3 & pos);
 	bool RemoveColissionEntity(ColissionEntity * pEntity);
 	bool RemoveColissionEntity(const D3DXVECTOR3 & pos);
 	void ClearColissionEntities();
@@ -78,6 +82,7 @@ private:
 	inline void DecreaseMaxDepth() { m_MaxDepth -= m_HeigthDifference; CheckCurrentDepth(); } 
 	void CheckCurrentDepth();
 	ColissionEntity * CreateColissionEntity(UINT model_id, const D3DXVECTOR3 & pos);
+	GameEntity * CreateGameEntity(UINT model_id, const D3DXVECTOR3 & pos);
 
 	tstring m_LevelXMLFileName;
 	InstancedObject * m_pInstancedObject;
@@ -93,6 +98,9 @@ private:
 	std::vector<PhysicsCube*> m_pPhysicsCubeVec;
 
 	std::vector<ColissionEntity*> m_ColissionEntities;
+	std::vector<GameEntity*> m_GameEntities;
+
+	SkyBox * m_pSkyBox;
 
 	GameScene * m_pGame;
 

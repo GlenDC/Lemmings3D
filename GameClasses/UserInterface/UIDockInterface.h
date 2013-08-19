@@ -135,6 +135,7 @@ public:
 	bool CursorInZone(const D3DXVECTOR2 & cursorPos);
     // toggle an element. 
     void ToggleElement(const tstring & name);
+	void ToggleUniqueElement(const tstring & name, bool toggled);
     // select an element. (== execute it's select function, if it's not null)
     void SelectElement(const tstring & name);
     // Select the first element in the list.

@@ -334,6 +334,16 @@ void UIDockInterface::ToggleElement(const tstring & name)
 	}
 }
 
+void UIDockInterface::ToggleUniqueElement(const tstring & name, bool toggled)
+{
+	UINT value = LemmingsHelpers::GenerateHash(name);
+	auto element = m_ElementList.find(value);
+	if(element != m_ElementList.end())
+	{
+		element->second->SetToggleOn(toggled);
+	}
+}
+
 void UIDockInterface::SelectElement(const tstring & name)
 {
 	UINT value = LemmingsHelpers::GenerateHash(name);

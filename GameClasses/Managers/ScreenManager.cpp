@@ -182,7 +182,7 @@ void ScreenManager::Update(GameContext& context)
 	}
 	m_GarbageScreens.clear();
 
-	ColissionCollector::GetInstance()->RefreshCollection(context);
+	//ColissionCollector::GetInstance()->RefreshCollection(context);
 
 	if(m_pControlScreen != nullptr)
 	{

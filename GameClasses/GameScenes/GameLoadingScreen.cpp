@@ -7,11 +7,14 @@
 #include "../Managers/Stopwatch.h"
 #include "../Managers/AudioManager.h"
 #include "../GameScenes/GameScreen.h"
+#include "../Managers/ColissionCollector.h"
+#include <future>
 //============================================================================
 GameLoadingScreen::GameLoadingScreen(const tstring & previousScreen, UINT leveL_id)
 	: LoadingScreen(previousScreen)
 	, m_LevelID(leveL_id)
 	, m_Thread()
+	, m_InnerThread()
 {
 
 }
@@ -45,13 +48,17 @@ void GameLoadingScreen::Initialize()
 		tstringstream strstr;
 		strstr << _T("level") << m_LevelID;
 		ScreenManager::GetInstance()->AddScreen(new GameScreen(strstr.str()));
-		Stopwatch::GetInstance()->CreateTimer(_T("leveL_start_timer"), 1.0f, true, false, []() 
+		m_InnerThread = std::thread([&] ()
 		{
-			ScreenManager::GetInstance()->AddActiveScreen(_T("GameScreen"));	
-			ScreenManager::GetInstance()->SetControlScreen(_T("GameScreen"));
-			ScreenManager::GetInstance()->RemoveActiveScreen(_T("LoadingScreen"));
-			ScreenManager::GetInstance()->RemoveScreen(_T("LoadingScreen"));
-			ScreenManager::GetInstance()->SetPhysicsDrawEnabled(true);
+			ColissionCollector::GetInstance()->CopyEnvironment();
+			Stopwatch::GetInstance()->CreateTimer(_T("leveL_start_timer"), 1.0f, true, false, []() 
+			{	
+				ScreenManager::GetInstance()->AddActiveScreen(_T("GameScreen"));
+				ScreenManager::GetInstance()->RemoveActiveScreen(_T("LoadingScreen"));
+				ScreenManager::GetInstance()->RemoveScreen(_T("LoadingScreen"));
+				ScreenManager::GetInstance()->SetPhysicsDrawEnabled(false);
+				ScreenManager::GetInstance()->SetControlScreen(_T("GameScreen"));
+			});
 		});
 	});
 	LoadingScreen::Initialize();

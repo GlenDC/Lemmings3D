@@ -44,20 +44,6 @@ public:
 	bool IsVisible() const { m_IsVisible; }
 	void SetIsVisible(bool is_visible) { m_IsVisible = is_visible; }
 
-	TransformComponent * GetTransform() const;
-	void Translate(float x, float y, float z);
-	void Translate(const D3DXVECTOR3 & vector);
-	void Scale(float x, float y, float z);
-	void Scale(const D3DXVECTOR3 & vector);
-	void Rotate(float x, float y, float z);
-	void Rotate(const D3DXVECTOR3 & vector);
-	void Rotate(const D3DXQUATERNION & rotation);
-
-	const D3DXVECTOR3 & GetTranslation() const;
-	const D3DXVECTOR3 & GetScale() const;
-	const D3DXQUATERNION & GetRotation() const;
-	const D3DXMATRIX & GetWorldMatrix() const;
-
 	float GetCameraHeight() const { return m_CameraHeight; }
 	D3DXVECTOR3 GetCameraTargetPosition() const;
 
