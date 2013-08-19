@@ -17,4 +17,5 @@
 	<Parameter name="ALLOW_STATUS_LOG" value="True" />
 	<Parameter name="HERO_SPEED" value="1.0" />
 	<Parameter name="HERO_RUN_SPEED" value="2.0" />
+	<Parameter name="MUTE_MASTER_SOUND" value="True" />
 </Parameters>

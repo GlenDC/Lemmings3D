@@ -37,6 +37,7 @@ public:
 	virtual ~GameEntity();
 
 	virtual void Initialize();
+	void CreateModelAndMaterial();
 	virtual void Draw(const GameContext & context);
 	void SetMaterial(Material * material);
 	Material * GetMaterial() const { return m_pVisualMaterial; }
@@ -59,6 +60,7 @@ protected:
 
 private:
 	friend class BaseScreen;
+	bool m_MaterialAndModelCreated;
 
 	// Disabling default copy constructor and default assignment operator.
 	GameEntity(const GameEntity& yRef);									

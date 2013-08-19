@@ -32,12 +32,15 @@ public:
 	void PlaySoundEffect(const tstring & name);
 	void PlaySong(const tstring & name);
 
+	void SetIsMuted(bool is_muted);
+	bool IsMuted() const;
+
 private:
 	AudioManager(void);
 	static AudioManager* m_pInstance;
 	tstring GetFile(const tstring & name);
 	
-	bool m_IsInitialized;
+	bool m_IsInitialized, m_IsMuted;
 
 	FModSound *m_pCurrentSong;
 	std::vector<FModSound*> m_Sounds;

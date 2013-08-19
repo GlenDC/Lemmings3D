@@ -14,6 +14,7 @@
 class RigidBodyComponent;
 class PhysicsMaterial;
 class BaseColliderComponent;
+class KeyPickup;
 
 class ColissionEntity : public GameEntity
 {
@@ -32,6 +33,8 @@ public:
 	virtual void Enable();
 	virtual void Disable();
 
+	void GiveKey(ColissionEntity * original_key);
+
 	void SetIsStatic(bool is_static);
 	bool IsStatic() const;
 
@@ -40,23 +43,30 @@ public:
 		float dynamicFriction = 0, float staticFriction = 0, NxCombineMode frictionCombineMode = NX_CM_MIN);
 
 	//Add box collider compontent, if none user-defined collider is added a defaul box collider will be used.
-	void AddBoxCollider(float width, float height, float depth, bool useMaterial = true);
+	void AddBoxCollider(float width, float height, float depth, bool useMaterial = true, bool isTrigger = false);
 	//Add mesh collider  compontent, if none user-defined collider is added a defaul box collider will be used.
-	void AddMeshCollider(const tstring & path, bool isConvex, bool useMaterial = true);
+	void AddMeshCollider(const tstring & path, bool isConvex, bool useMaterial = true, bool isTrigger = false);
 	//Add sphere collider compontent, if none user-defined collider is added a defaul box collider will be used.
-	void AddSphereCollider(float radius, bool useMaterial = true);
+	void AddSphereCollider(float radius, bool useMaterial = true, bool isTrigger = false);
 	//Add plane collider compontent, if none user-defined collider is added a defaul box collider will be used.
-	void AddPlaneCollider(float distance, const NxVec3 & normal, bool useMaterial = true);
+	void AddPlaneCollider(float distance, const NxVec3 & normal, bool useMaterial = true, bool isTrigger = false);
 	//Add capsule collider compontent, if none user-defined collider is added a defaul box collider will be used.
-	void AddCapsuleCollider(float height, float radius, bool useMaterial = true);
+	void AddCapsuleCollider(float height, float radius, bool useMaterial = true, bool isTrigger = false);
+
+	void ClearColliders();
+	void RemoveRigidBody();
 
 	float GetCollectionRange() const { return m_CollectionRange; }
 protected:
+	virtual void InitializeRigidBody();
+
 	PhysicsMaterial * m_pPhysicsMaterial;
 	RigidBodyComponent *m_pRigidBody;
 	std::vector<BaseColliderComponent*> m_ColliderComponents;
 	bool m_IsStatic;
 	float m_CollectionRange;
+	KeyPickup *m_pPickup;
+	ColissionEntity * m_pOriginalKey;
 
 private:
 

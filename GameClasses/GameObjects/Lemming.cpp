@@ -25,9 +25,9 @@ Lemming::Lemming(const tstring & diff_texture)
 	pMaterial->EnableHalfLambert(true);
 	m_pVisualMaterial = pMaterial;	
 
-	tstring collission_path = _T("./Resources/Lemmings3D/models/LemmingsCharacter_TriangleMesh.ovp");
+	tstring collission_path = _T("./Resources/Lemmings3D/models/LemmingsCharacter_ConvexMesh.ovp");
 
-	AddMeshCollider(collission_path, false, false);
+	AddMeshCollider(collission_path, true, false);
 
 	m_Name = _T("Player");
 }

@@ -5,6 +5,7 @@
 #include "OverlordComponents.h"
 //--------------------------------------------------------------------
 #include "../GameScenes/BaseScreen.h"
+#include "KeyPickup.h"
 //====================================================================
 
 ColissionEntity::ColissionEntity(Material * material)
@@ -14,6 +15,8 @@ ColissionEntity::ColissionEntity(Material * material)
 	, m_ColliderComponents(0)
 	, m_IsStatic(false)
 	, m_CollectionRange(50)
+	, m_pPickup(nullptr)
+	, m_pOriginalKey(nullptr)
 {
 
 }
@@ -25,6 +28,8 @@ ColissionEntity::ColissionEntity(MaterialType material)
 	, m_ColliderComponents(0)
 	, m_IsStatic(false)
 	, m_CollectionRange(50)
+	, m_pPickup(nullptr)
+	, m_pOriginalKey(nullptr)
 {
 
 }
@@ -36,6 +41,8 @@ ColissionEntity::ColissionEntity(const tstring & visualModelPath, MaterialType m
 	, m_ColliderComponents(0)
 	, m_IsStatic(false)
 	, m_CollectionRange(50)
+	, m_pPickup(nullptr)
+	, m_pOriginalKey(nullptr)
 {
 
 }
@@ -47,6 +54,8 @@ ColissionEntity::ColissionEntity(const tstring & visualModelPath, Material * mat
 	, m_ColliderComponents(0)
 	, m_IsStatic(false)
 	, m_CollectionRange(50)
+	, m_pPickup(nullptr)
+	, m_pOriginalKey(nullptr)
 {
 
 }
@@ -66,7 +75,9 @@ ColissionEntity::~ColissionEntity() //Default Destructor
 
 void ColissionEntity::Initialize()
 {
-	m_pRigidBody = new RigidBodyComponent();
+	CreateModelAndMaterial();
+
+	InitializeRigidBody();
 	AddComponent(m_pRigidBody);
 
 	if(m_pPhysicsMaterial == nullptr)
@@ -89,7 +100,7 @@ void ColissionEntity::Initialize()
 			AddComponent(it);
 		}
 	}
-
+	
 	GameEntity::Initialize();
 }
 
@@ -116,6 +127,15 @@ void ColissionEntity::Disable()
 		}
 	}
 	GameEntity::Disable();
+}
+
+void ColissionEntity::GiveKey(ColissionEntity * original_key)
+{
+	m_pPickup= new KeyPickup();
+	m_pPickup->Initialize();
+	m_pPickup->SetOwner(this);
+	m_pScene->AddObject(m_pPickup);
+	m_pOriginalKey = original_key;
 }
 
 void ColissionEntity::SetIsStatic(bool is_static)
@@ -152,45 +172,71 @@ void ColissionEntity::SetPhysicsMaterial(float restituation, NxCombineMode resti
 }
 
 void ColissionEntity::AddBoxCollider(float width, float height, 
-									 float depth, bool useMaterial)
+									 float depth, bool useMaterial, bool isTrigger)
 {
 	auto boxCollider = new BoxColliderComponent(width, height, depth);
 	if(useMaterial)
 		boxCollider->SetPhysicsMaterial(m_pPhysicsMaterial);
+	boxCollider->SetAsTrigger(isTrigger);
 	m_ColliderComponents.push_back(boxCollider);
 }
 
 void ColissionEntity::AddMeshCollider(const tstring & path, bool isConvex, 
-									  bool useMaterial)
+									  bool useMaterial, bool isTrigger)
 {
 	auto meshCollider = new MeshColliderComponent(path, isConvex);
 	if(useMaterial)
 		meshCollider->SetPhysicsMaterial(m_pPhysicsMaterial);
+	meshCollider->SetAsTrigger(isTrigger);
 	m_ColliderComponents.push_back(meshCollider);
 }
 
-void ColissionEntity::AddSphereCollider(float radius, bool useMaterial)
+void ColissionEntity::AddSphereCollider(float radius, bool useMaterial, bool isTrigger)
 {
 	auto sphereCollider = new SphereColliderComponent(radius);
 	if(useMaterial)
 		sphereCollider->SetPhysicsMaterial(m_pPhysicsMaterial);
+	sphereCollider->SetAsTrigger(isTrigger);
 	m_ColliderComponents.push_back(sphereCollider);
 }
 
 void ColissionEntity::AddPlaneCollider(float distance, const NxVec3 & normal, 
-									   bool useMaterial)
+									   bool useMaterial, bool isTrigger)
 {
 	auto planeCollider = new PlaneColliderComponent(distance, normal);
 	if(useMaterial)
 		planeCollider->SetPhysicsMaterial(m_pPhysicsMaterial);
+	planeCollider->SetAsTrigger(isTrigger);
 	m_ColliderComponents.push_back(planeCollider);
 }
 
 void ColissionEntity::AddCapsuleCollider(float height, float radius, 
-										 bool useMaterial)
+										 bool useMaterial, bool isTrigger)
 {
 	auto capsuleCollider = new CapsuleColliderComponent(height, radius);
 	if(useMaterial)
 		capsuleCollider->SetPhysicsMaterial(m_pPhysicsMaterial);
+	capsuleCollider->SetAsTrigger(isTrigger);
 	m_ColliderComponents.push_back(capsuleCollider);
+}
+
+void ColissionEntity::ClearColliders()
+{
+	for(UINT i = 0 ; i < m_ColliderComponents.size() ; ++i)
+	{
+		RemoveComponent(m_ColliderComponents[i]);
+	}
+	m_ColliderComponents.clear();
+	
+}
+
+void ColissionEntity::RemoveRigidBody()
+{
+	RemoveComponent(m_pRigidBody);
+	m_pRigidBody = nullptr;
+}
+
+void ColissionEntity::InitializeRigidBody()
+{
+	m_pRigidBody = new RigidBodyComponent();
 }

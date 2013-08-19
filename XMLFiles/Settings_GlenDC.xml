@@ -13,5 +13,5 @@
 	<Parameter name="GAME_CAMERA_FOV" value="70" />
 	<Parameter name="GAME_CAMERA_SPEED" value="100" />
 	<Parameter name="GAME_CAMERA_ROT_SPEED" value="0.5" />
-	<Parameter name="MUTE_MASTER_VOLUME" value="0" />
+	<Parameter name="MUTE_MASTER_VOLUME" value="True" />
 </Parameters>

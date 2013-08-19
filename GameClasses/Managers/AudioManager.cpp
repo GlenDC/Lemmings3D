@@ -15,6 +15,7 @@ AudioManager::AudioManager(void)
 	, m_pCurrentSong(nullptr)
 	, m_Sounds(0)
 	, m_GarbageSounds(0)
+	, m_IsMuted(false)
 {
 }
 
@@ -55,6 +56,7 @@ void AudioManager::Update(GameContext& context)
 {
 	for ( auto effect : m_Sounds )
 	{
+		effect->SetMuted(m_IsMuted);
 		if(!effect->IsPlaying())
 		{
 			m_GarbageSounds.push_back(effect);
@@ -84,6 +86,7 @@ void AudioManager::PlaySoundEffect(const tstring & name)
 	FModSound * sound = new FModSound();
 	sound->CreateSound(GetFile(name));
 	sound->Play();
+	sound->SetMuted(m_IsMuted);
 	m_Sounds.push_back(sound);
 }
 
@@ -99,8 +102,23 @@ void AudioManager::PlaySong(const tstring & name)
 	FModSound * sound = new FModSound();
 	sound->CreateStream(GetFile(name));
 	sound->Play();
+	sound->SetMuted(m_IsMuted);
 	m_pCurrentSong = sound;
 	m_Sounds.push_back(sound);
+}
+
+void AudioManager::SetIsMuted(bool is_muted)
+{
+	m_IsMuted = is_muted;
+	for ( auto effect : m_Sounds )
+	{
+		effect->SetMuted(is_muted);
+	}
+}
+
+bool AudioManager::IsMuted() const
+{
+	return m_IsMuted;
 }
 
 tstring AudioManager::GetFile(const tstring & name)

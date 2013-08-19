@@ -18,6 +18,7 @@ GameEntity::GameEntity(Material * material)
 	,m_MaterialName(MaterialType::MatCustom)
 	,m_IsVisible(true)
 	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 1.5f)
+	,m_MaterialAndModelCreated(false)
 {
 
 }
@@ -31,6 +32,7 @@ GameEntity::GameEntity(MaterialType material)
 	,m_MaterialName(material)
 	,m_IsVisible(true)
 	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 1.5f)
+	,m_MaterialAndModelCreated(false)
 {
 }
 
@@ -43,6 +45,7 @@ GameEntity::GameEntity(const tstring & visualModelPath, MaterialType material)
 	,m_MaterialName(material)
 	,m_IsVisible(true)
 	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 1.5f)
+	,m_MaterialAndModelCreated(false)
 {
 }
 
@@ -55,6 +58,7 @@ GameEntity::GameEntity(const tstring & visualModelPath, Material * material)
 	,m_MaterialName(MaterialType::MatCustom)
 	,m_IsVisible(true)
 	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 1.5f)
+	,m_MaterialAndModelCreated(false)
 {
 }
 
@@ -65,26 +69,36 @@ GameEntity::~GameEntity() //Default Destructor
 
 void GameEntity::Initialize()
 {
-	if(m_MaterialName != MaterialType::MatCustom)
-	{
-		switch(m_MaterialName)
-		{
-		case MaterialType::MatSpikey:
-			m_pVisualMaterial = new SpikeyMaterial();
-			break;
-		case MaterialType::MatFlatTexture:
-			m_pVisualMaterial = new FlatTextureMaterial();
-		default:
-			m_pVisualMaterial = new FlatColorMaterial();
-			break;
-		}
-	}
-
-	m_pVisualModel = new ModelComponent(m_VisualResourcePath);
-	m_pVisualModel->SetMaterial(m_pVisualMaterial);
-	AddComponent(m_pVisualModel);
+	CreateModelAndMaterial();
 
 	GameObject::Initialize();
+}
+
+void GameEntity::CreateModelAndMaterial()
+{
+	if(m_MaterialAndModelCreated == false)
+	{
+		if(m_MaterialName != MaterialType::MatCustom)
+		{
+			switch(m_MaterialName)
+			{
+			case MaterialType::MatSpikey:
+				m_pVisualMaterial = new SpikeyMaterial();
+				break;
+			case MaterialType::MatFlatTexture:
+				m_pVisualMaterial = new FlatTextureMaterial();
+			default:
+				m_pVisualMaterial = new FlatColorMaterial();
+				break;
+			}
+		}
+
+		m_pVisualModel = new ModelComponent(m_VisualResourcePath);
+		m_pVisualModel->SetMaterial(m_pVisualMaterial);
+		AddComponent(m_pVisualModel);
+
+		m_MaterialAndModelCreated = true;
+	}
 }
 
 void GameEntity::Draw(const GameContext & context)

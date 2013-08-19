@@ -136,7 +136,8 @@ void MainMenuScreen::Initialize()
 	container.SetParameter<UINT>(_T("TOTAL_SESSIONS"), sessions);
 	container.Save();
 	container_levels.Save();
-
+	bool is_muted = GlobalParameters::GetParameters()->GetParameter<bool>(_T("MUTE_MASTER_SOUND"));
+	AudioManager::GetInstance()->SetIsMuted(is_muted);
 	AudioManager::GetInstance()->PlaySong(_T("Main"));
 
 	BaseScreen::Initialize();

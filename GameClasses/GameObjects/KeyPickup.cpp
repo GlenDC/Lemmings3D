@@ -1,5 +1,5 @@
 //================================ INCLUDES =========================
-#include "KeyObject.h"
+#include "KeyPickup.h"
 #include "OverlordComponents.h"
 #include "../Managers/ParameterManager.h"
 #include "../Entities/ParameterClass.h"
@@ -7,12 +7,16 @@
 #include "../Materials/BaseModelMaterial.h"
 #include "../Lib/GlobalParameters.h"
 #include "../GameObjects/ColissionEntity.h"
-#include "../GameObjects/Lemming.h"
 //===================================================================
 
-KeyObject::KeyObject()
-	: ColissionEntity (
-		MaterialType::MatCustom)
+KeyPickup::KeyPickup()
+	: GameEntity (
+	MaterialType::MatCustom)
+	, m_pOwner(nullptr)
+	, m_OriginalPosition(0, 0, 0)
+	, m_Height(0)
+	, m_Rotation(0)
+	, m_Direction(1)
 {
 	auto & container = ParameterManager::GetInstance()->CreateOrGet(_T("Models"));
 
@@ -29,40 +33,46 @@ KeyObject::KeyObject()
 	pMaterial->SetDiffuse(texture_path);
 	pMaterial->SetAlpha(1.0f);
 	m_pVisualMaterial = pMaterial;	
-
-	strstr.str(_T(""));
-	strstr << _T("./Resources/Lemmings3D/models/") << container.GetChildParameter<tstring>(name, _T("CONVEX"));
-	tstring collission_path = strstr.str();
-
-	AddMeshCollider(collission_path, true, false, true);
-
-	m_Name = _T("Key");
 }
 
-KeyObject::~KeyObject()
+KeyPickup::~KeyPickup()
 {
 
 }
 
-void KeyObject::Initialize()
+void KeyPickup::Initialize()
 {
-	ColissionEntity::Initialize();
+	GameEntity::Initialize();
 }
 
-void KeyObject::InitializeRigidBody()
+void KeyPickup::Update(const GameContext & context)
 {
-	ColissionEntity::InitializeRigidBody();
-	m_pRigidBody->SetOnTriggerCallBack([this](RigidBodyComponent* trigger, RigidBodyComponent* receiver, TriggerAction action)
+	GameEntity::Update(context);
+
+	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
+
+
+	D3DXVECTOR3 pos = m_OriginalPosition;
+	if(m_pOwner != nullptr)
 	{
-		if(action == TriggerAction::ENTER)
-		{
-			auto owner = dynamic_cast<Lemming*>(receiver->GetParentObject());
-			if(owner != nullptr)
-			{
-				owner->GiveKey(this);
-				Translate(D3DXVECTOR3(-9999,-9999,-999));
-			}
-		}
-	});
-	m_pRigidBody->SetStatic(true);
+		pos = m_pOwner->GetCameraTargetPosition();
+		pos.y -= size / 4;
+		m_Rotation += context.GameTime.ElapsedSeconds() * 50;
+		Rotate(0,m_Rotation,0);
+	}
+	else if(pos.y == 0)
+	{
+		m_OriginalPosition = GetTransform()->GetWorldPosition();
+		pos = m_OriginalPosition;
+	}
+
+	m_Height += m_Direction * context.GameTime.ElapsedSeconds() * 2.0f;
+	if(abs(m_Height) > size / 8.0f)
+	{
+		m_Height = m_Direction * size / 8.0f;
+		m_Direction *= -1;
+	}
+
+	pos.y += m_Height;
+	Translate(pos);
 }

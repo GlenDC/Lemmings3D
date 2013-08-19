@@ -103,6 +103,7 @@
     <ClCompile Include="GameClasses\GameObjects\Decal.cpp" />
     <ClCompile Include="GameClasses\GameObjects\Hero.cpp" />
     <ClCompile Include="GameClasses\GameObjects\KeyObject.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\KeyPickup.cpp" />
     <ClCompile Include="GameClasses\GameObjects\Lemming.cpp" />
     <ClCompile Include="GameClasses\GameObjects\SkyBox.cpp" />
     <ClCompile Include="GameClasses\GameObjects\ThirdPersonCamera.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="GameClasses\GameObjects\Decal.h" />
     <ClInclude Include="GameClasses\GameObjects\Hero.h" />
     <ClInclude Include="GameClasses\GameObjects\KeyObject.h" />
+    <ClInclude Include="GameClasses\GameObjects\KeyPickup.h" />
     <ClInclude Include="GameClasses\GameObjects\Lemming.h" />
     <ClInclude Include="GameClasses\GameObjects\SkyBox.h" />
     <ClInclude Include="GameClasses\GameObjects\ThirdPersonCamera.h" />

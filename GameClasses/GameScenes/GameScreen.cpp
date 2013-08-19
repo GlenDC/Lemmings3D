@@ -33,6 +33,7 @@
 #include "../Managers/ColissionCollector.h"
 #include "../UserInterface/UIDockInterface.h"
 #include "../XML/XMLConverter.h"
+#include "../Managers/AudioManager.h"
 //====================================================================
 
 GameScreen::GameScreen(const tstring & level_file)
@@ -386,6 +387,7 @@ void GameScreen::AddHeaderMenuElements()
 			m_pHeaderMenu->SetElementDisabled(_T("ABtn_UnMute"), false);
 			ReportStatus(_T("Master Volume muted!"));
 			m_pPlayer->SetSetting(_T("MUTE_MASTER_VOLUME"), true);
+			AudioManager::GetInstance()->SetIsMuted(true);
 		});
 	});
 	m_pHeaderMenu->AddButton(1670,5, _T("ABtn_UnMute"), _T("Main_Volume_Unmute.png"), [&] () 
@@ -398,9 +400,11 @@ void GameScreen::AddHeaderMenuElements()
 			m_pHeaderMenu->SetElementDisabled(_T("ABtn_UnMute"), true);
 			ReportStatus(_T("Master Volume unmuted!"));
 			m_pPlayer->SetSetting(_T("MUTE_MASTER_VOLUME"), false);
+			AudioManager::GetInstance()->SetIsMuted(false);
 		});
 	});
 	bool masterVolumeMuted = m_pPlayer->GetSetting<bool>(_T("MUTE_MASTER_VOLUME"));
+	AudioManager::GetInstance()->SetIsMuted(masterVolumeMuted);
 	if(masterVolumeMuted)
 	{
 		m_pHeaderMenu->SetElementVisible(_T("ABtn_Mute"), false);
@@ -439,8 +443,8 @@ void GameScreen::AddHeaderMenuElements()
 			ReportStatus(_T("Physics Debug Rendering disabled!"));
 		});
 	});
-	m_pHeaderMenu->SetElementVisible(_T("ABtn_EnableRendering"), false);
-	m_pHeaderMenu->SetElementDisabled(_T("ABtn_EnableRendering"), true);
+	m_pHeaderMenu->SetElementVisible(_T("ABtn_DisableRendering"), false);
+	m_pHeaderMenu->SetElementDisabled(_T("ABtn_DisableRendering"), true);
 	//Reset Camera Transformation
 	m_pHeaderMenu->AddButton(435,5, _T("ABtn_ResetCamera"), _T("Header_Btn_Rect_ResetCamera.png"), [&] () 
 	{ 
