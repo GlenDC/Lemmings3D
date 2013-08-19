@@ -34,9 +34,11 @@
 #include "../UserInterface/UIDockInterface.h"
 #include "../XML/XMLConverter.h"
 #include "../Managers/AudioManager.h"
+#include "../Managers/ParameterManager.h"
+#include "../Entities/WorldBroadCast.h"
 //====================================================================
 
-GameScreen::GameScreen(const tstring & level_file)
+GameScreen::GameScreen(const tstring & level_file, UINT level_id)
 	:BaseScreen(_T("GameScreen"), _T("Play Lemmings3D"), true)
 	,m_pLevel(nullptr)
 	,m_pHeaderMenu(nullptr)
@@ -50,6 +52,7 @@ GameScreen::GameScreen(const tstring & level_file)
 	,m_StateMachine()
 	,m_RefreshLevelTimer(true)
 	,m_BuildModePosRefresh(false)
+	,m_LevelID(level_id)
 	,m_CameraFOV(70.0f)
 	,m_CameraSpeed(1.0f)
 	,m_CameraZoom(0)
@@ -230,6 +233,8 @@ void GameScreen::EndControl()
 
 void GameScreen::Activated()
 {
+	ParameterClass & container = ParameterManager::GetInstance()->CreateOrGet(_T("Levels"));
+	AudioManager::GetInstance()->PlaySong(container.GetChildParameter<tstring>(XMLConverter::ConvertToTString(m_LevelID), _T("SOUND_TRACK")));
 }
 
 void GameScreen::Deactivated()
@@ -254,6 +259,7 @@ void GameScreen::PauseGame(bool paused)
 		{
 			SwitchMode(AppMode::Pause);
 		}
+		WorldBroadCast::GetInstance()->Send(_T("Game paused..."));
 	}
 	else
 	{
@@ -270,6 +276,7 @@ void GameScreen::PauseGame(bool paused)
 		{
 			SwitchMode(m_PreviousAppMode);
 		}
+		WorldBroadCast::GetInstance()->Send(_T("Game unpaused..."));
 	}
 }
 
@@ -317,11 +324,13 @@ void GameScreen::SwitchMode(AppMode mode)
 		m_pHeaderMenu->SetTextField(_T("NMode_Name"), _T("EDITOR"));
 		SetGameSpeedTxtField();
 		SetEditorHUD();
+		WorldBroadCast::GetInstance()->Send(_T("Editor Activated!"));
 		break;
 	case AppMode::Game:
 		m_pHeaderMenu->SetTextField(_T("NMode_Name"), _T("PLAYING"));
 		SetGameSpeedTxtField();
 		SetGameHUD();
+		WorldBroadCast::GetInstance()->Send(_T("Game Activated!"));
 		break;
 	case AppMode::Pause:
 		m_pHeaderMenu->SetTextField(_T("NMode_Name"), _T("PAUSED"));
@@ -350,6 +359,7 @@ void GameScreen::AddHeaderMenuElements()
 			m_pHeaderMenu->SetElementVisible(_T("ABtn_Windowed"), true);
 			m_pHeaderMenu->SetElementDisabled(_T("ABtn_Windowed"), false);
 			ReportStatus(_T("Game is now fullScreen!"));
+			WorldBroadCast::GetInstance()->Send(_T("Window is now maximized!"));
 		});
 	});
 	m_pHeaderMenu->AddButton(1820,5, _T("ABtn_Windowed"), _T("Main_Button_Windowed.png"), [&] () 
@@ -362,6 +372,7 @@ void GameScreen::AddHeaderMenuElements()
 			m_pHeaderMenu->SetElementVisible(_T("ABtn_Windowed"), false);
 			m_pHeaderMenu->SetElementDisabled(_T("ABtn_Windowed"), true);
 			ReportStatus(_T("Game is now windowed!"));
+			WorldBroadCast::GetInstance()->Send(_T("Window is now normalized!"));
 		});
 	});
 	m_pHeaderMenu->SetElementVisible(_T("ABtn_Windowed"), false);
@@ -388,6 +399,7 @@ void GameScreen::AddHeaderMenuElements()
 			ReportStatus(_T("Master Volume muted!"));
 			m_pPlayer->SetSetting(_T("MUTE_MASTER_VOLUME"), true);
 			AudioManager::GetInstance()->SetIsMuted(true);
+			WorldBroadCast::GetInstance()->Send(_T("Master volume muted... silence will folow!"));
 		});
 	});
 	m_pHeaderMenu->AddButton(1670,5, _T("ABtn_UnMute"), _T("Main_Volume_Unmute.png"), [&] () 
@@ -401,6 +413,7 @@ void GameScreen::AddHeaderMenuElements()
 			ReportStatus(_T("Master Volume unmuted!"));
 			m_pPlayer->SetSetting(_T("MUTE_MASTER_VOLUME"), false);
 			AudioManager::GetInstance()->SetIsMuted(false);
+			WorldBroadCast::GetInstance()->Send(_T("Master volume muted... enjoy the music!"));
 		});
 	});
 	bool masterVolumeMuted = m_pPlayer->GetSetting<bool>(_T("MUTE_MASTER_VOLUME"));
@@ -429,6 +442,7 @@ void GameScreen::AddHeaderMenuElements()
 			m_pHeaderMenu->SetElementDisabled(_T("ABtn_DisableRendering"), false);
 			ScreenManager::GetInstance()->SetPhysicsDrawEnabled(true);
 			ReportStatus(_T("Physics Debug Rendering enabled!"));
+			WorldBroadCast::GetInstance()->Send(_T("Physics debug rendering enabled..."));
 		});
 	});
 	m_pHeaderMenu->AddButton(715,5, _T("ABtn_DisableRendering"), _T("Header_Btn_Rect_DisableDebugRendering.png"), [&] () 
@@ -441,6 +455,7 @@ void GameScreen::AddHeaderMenuElements()
 			m_pHeaderMenu->SetElementDisabled(_T("ABtn_EnableRendering"), false);
 			ScreenManager::GetInstance()->SetPhysicsDrawEnabled(false);
 			ReportStatus(_T("Physics Debug Rendering disabled!"));
+			WorldBroadCast::GetInstance()->Send(_T("Physics debug rendering disabled..."));
 		});
 	});
 	m_pHeaderMenu->SetElementVisible(_T("ABtn_DisableRendering"), false);
@@ -527,11 +542,17 @@ void GameScreen::AddMainMenuElements()
 	{
 		UberShaderMaterial::EnableGlobalSpecular(!UberShaderMaterial::IsGlobalSpecularEnabled());
 		m_pGameMenu->ToggleUniqueElement(_T("Main_Button_Rect_A"), !UberShaderMaterial::IsGlobalSpecularEnabled());
+		tstringstream strstr;
+		strstr << _T("UberShader: Specular Texture is ") << ( UberShaderMaterial::IsGlobalSpecularEnabled() ? _T("enabled") : _T("disabled") );
+		WorldBroadCast::GetInstance()->Send(strstr.str());
 	});
 	m_pGameMenu->AddButton(1204,118,_T("Main_Button_Rect_B"), _T("Main_Btn_Rect_Big_B.png"), [&] () 
 	{
 		UberShaderMaterial::EnableGlobalNormal(!UberShaderMaterial::IsGlobalNormalEnabled());
 		m_pGameMenu->ToggleUniqueElement(_T("Main_Button_Rect_B"), !UberShaderMaterial::IsGlobalNormalEnabled());
+		tstringstream strstr;
+		strstr << _T("UberShader: Normal Texture is ") << ( UberShaderMaterial::IsGlobalNormalEnabled() ? _T("enabled") : _T("disabled") );
+		WorldBroadCast::GetInstance()->Send(strstr.str());
 	});
 	m_pGameMenu->AddButton(1306,118,_T("Main_Button_Rect_C"), _T("Main_Btn_Rect_Big_C.png"), [&] () 
 	{ 
@@ -542,11 +563,17 @@ void GameScreen::AddMainMenuElements()
 	{
 		UberShaderMaterial::EnableGlobalEnvironment(!UberShaderMaterial::IsGlobalEnvironmentEnabled());
 		m_pGameMenu->ToggleUniqueElement(_T("Main_Button_Rect_D"), !UberShaderMaterial::IsGlobalEnvironmentEnabled());
+		tstringstream strstr;
+		strstr << _T("UberShader: Environment Texture is ") << ( UberShaderMaterial::IsGlobalEnvironmentEnabled() ? _T("enabled") : _T("disabled") );
+		WorldBroadCast::GetInstance()->Send(strstr.str());
 	});
 	m_pGameMenu->AddButton(1204,168,_T("Main_Button_Rect_E"), _T("Main_Btn_Rect_Big_E.png"), [&] () 
 	{
 		UberShaderMaterial::EnableGlobalOpacity(!UberShaderMaterial::IsGlobalOpacityEnabled());
 		m_pGameMenu->ToggleUniqueElement(_T("Main_Button_Rect_E"), !UberShaderMaterial::IsGlobalOpacityEnabled());
+		tstringstream strstr;
+		strstr << _T("UberShader: Opacity Texture is ") << ( UberShaderMaterial::IsGlobalOpacityEnabled() ? _T("enabled") : _T("disabled") );
+		WorldBroadCast::GetInstance()->Send(strstr.str());
 	});
 	m_pGameMenu->AddButton(1306,168,_T("Main_Button_Rect_F"), _T("Main_Btn_Rect_Big_F.png"), [&] () 
 	{ 
@@ -557,11 +584,17 @@ void GameScreen::AddMainMenuElements()
 	{
 		UberShaderMaterial::EnableGlobalHalfLambert(!UberShaderMaterial::IsGlobalHalfLambertEnabled());
 		m_pGameMenu->ToggleUniqueElement(_T("Main_Button_Rect_G"), !UberShaderMaterial::IsGlobalHalfLambertEnabled());
+		tstringstream strstr;
+		strstr << _T("UberShader: Half Lambert ") << ( UberShaderMaterial::IsGlobalHalfLambertEnabled() ? _T("enabled") : _T("disabled") );
+		WorldBroadCast::GetInstance()->Send(strstr.str());
 	});
 	m_pGameMenu->AddButton(1204,218,_T("Main_Button_Rect_H"), _T("Main_Btn_Rect_Big_H.png"), [&] () 
 	{
 		UberShaderMaterial::EnableGlobalFresnelFallof(!UberShaderMaterial::IsGlobalFresnelFallofEnabled());
 		m_pGameMenu->ToggleUniqueElement(_T("Main_Button_Rect_H"), !UberShaderMaterial::IsGlobalFresnelFallofEnabled());
+		tstringstream strstr;
+		strstr << _T("UberShader: Fresnel Fallof") << ( UberShaderMaterial::IsGlobalFresnelFallofEnabled() ? _T("enabled") : _T("disabled") );
+		WorldBroadCast::GetInstance()->Send(strstr.str());
 	});
 	m_pGameMenu->AddButton(1306,218,_T("Main_Button_Rect_I"), _T("Main_Btn_Rect_Big_I.png"), [&] () 
 	{ 
@@ -662,7 +695,13 @@ void GameScreen::StartGame()
 		[&] () {
 			ReportStatus(_T("Good Luck and Have Fun!"));
 	});
-	
+	WorldBroadCast::GetInstance()->SetOrigin(D3DXVECTOR2(10,15));
+	WorldBroadCast::GetInstance()->Send(_T("Good Luck & Have Fun!"));
+	WorldBroadCast::GetInstance()->Send(_T("All the rest is done with your good old mouse"));
+	WorldBroadCast::GetInstance()->Send(_T("Escape to pause the game and go to the menu"));
+	WorldBroadCast::GetInstance()->Send(_T("Controls for Camera: WASD (Querty)"));
+	WorldBroadCast::GetInstance()->Send(_T("Welcome in the world of Lemmings3D"));
+
 	Stopwatch::GetInstance()->CreateTimer(_T("EditorRefreshPositionTimer"), 0.5f, false, true, [&] () { m_BuildModePosRefresh = true; });
 }
 
@@ -674,6 +713,9 @@ void GameScreen::QuitGame()
 void GameScreen::SetGameSpeedTxtField()
 {
 	m_pHeaderMenu->SetTextField(_T("ATxt_GameSpeed"), _T("x") + XMLConverter::ConvertToTString<float>(TimeManager::GetInstance()->GetGameSpeed()));
+	tstringstream strstr;
+	strstr << _T("Gamespeed changed to ") << TimeManager::GetInstance()->GetGameSpeed();
+	WorldBroadCast::GetInstance()->Send(strstr.str());
 }
 
 void GameScreen::SetGameHUD()

@@ -79,6 +79,7 @@ private:
 	bool m_IsInitialized, m_RefreshAllowed;
 	bool m_Enabled;
 
+	std::vector<D3DXVECTOR3> m_SleepList;
 	std::vector<IdleEntity>  m_IdleList;
 	std::vector<PhysicsCube*> m_ActiveList;
 	std::vector<ColissionEntity*> m_UserVec;

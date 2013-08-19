@@ -1,3 +1,4 @@
+#pragma once
 //====================== #INCLUDES ===================================
 #include "BaseScreen.h"
 #include <memory>

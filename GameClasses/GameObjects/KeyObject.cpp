@@ -8,6 +8,7 @@
 #include "../Lib/GlobalParameters.h"
 #include "../GameObjects/ColissionEntity.h"
 #include "../GameObjects/Lemming.h"
+#include "../Entities/WorldBroadCast.h"
 //===================================================================
 
 KeyObject::KeyObject()
@@ -60,6 +61,8 @@ void KeyObject::InitializeRigidBody()
 			if(owner != nullptr)
 			{
 				owner->GiveKey(this);
+				WorldBroadCast::GetInstance()->Send(_T("You can use this key to open the Gate!"));
+				WorldBroadCast::GetInstance()->Send(_T("Gate key has been picked up..."));
 				Translate(D3DXVECTOR3(-9999,-9999,-999));
 			}
 		}

@@ -2,4 +2,9 @@
 <Parameters>
 	<Parameter name="Funky Forest" value="song_funky_forest.mp3" />
 	<Parameter name="Main" value="main_menu.mp3" />
+	<Parameter name="No" value="acces_denied.wav" />
+	<Parameter name="Loading" value="Lullatone_Polka_Dots.mp3" />
+	<Parameter name="Loading Finished" value="bing.wav" />
+	<Parameter name="Demo" value="shaders_bg.mp3" />
+	<Parameter name="Goodbye" value="Apu.mp3" />
 </Parameters>

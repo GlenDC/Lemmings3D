@@ -32,6 +32,8 @@ public:
 	virtual void Activated();
 	virtual void Deactivated();
 
+	void Exit();
+
 private:
 	shared_ptr<SpriteFont> m_pSpriteFont;
 	UIDockInterface * m_pMainMenuDock,

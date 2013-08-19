@@ -31,7 +31,7 @@ class UIDockInterface;
 class GameScreen : public BaseScreen
 {
 public:
-	explicit GameScreen(const tstring & level_file);
+	explicit GameScreen(const tstring & level_file, UINT level_id);
 	virtual ~GameScreen(void);
 
 	virtual void Initialize();
@@ -97,6 +97,8 @@ private:
 
 	bool	m_RefreshLevelTimer,
 			m_BuildModePosRefresh;
+
+	UINT m_LevelID;
 
 	//Camera info
 	float m_CameraFOV, m_CameraZoom, m_CameraSpeed;

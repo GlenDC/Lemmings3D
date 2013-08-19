@@ -11,6 +11,8 @@
 Lemming::Lemming(const tstring & diff_texture)
 	: ColissionEntity (
 	MaterialType::MatCustom)
+	, m_TargetSpeed(0,0,0)
+	, m_Direction(0,0,0)
 {
 	m_VisualResourcePath = _T("./Resources/Lemmings3D/models/LemmingsCharacter.ovm");
 	tstring specular_path = _T("lemmings_s.png");
@@ -46,4 +48,13 @@ void Lemming::Initialize()
 void Lemming::Update(const GameContext & context)
 {
 	ColissionEntity::Update(context);
+}
+
+void Lemming::Move(const GameContext & context)
+{
+	D3DXVECTOR3 pos = GetTranslation();
+	pos.x += m_Direction.x * m_TargetSpeed.x * context.GameTime.ElapsedSpeedGameTime;
+	pos.y += m_Direction.y * m_TargetSpeed.y * context.GameTime.ElapsedSpeedGameTime;
+	pos.z += m_Direction.z * m_TargetSpeed.z * context.GameTime.ElapsedSpeedGameTime;
+	Translate(pos);
 }

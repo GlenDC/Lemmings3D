@@ -22,6 +22,7 @@
 #include "../Managers/ColissionCollector.h"
 //--------------------------------------------------------------------
 #include <cmath>
+#include "../Entities/WorldBroadCast.h"
 //====================================================================
 
 EditModeScreen::EditModeScreen(GameScreen * parent, InputManager *inputManager)
@@ -137,6 +138,7 @@ void EditModeScreen::Save()
 	m_pParentScreen->GetPlayer()->Save(); 
 	m_pParentScreen->GetLevel()->Save();
 	m_pParentScreen->ReportStatus(_T("Settings and level Saved for ") + m_pParentScreen->GetPlayer()->GetName() + _T("."));
+	WorldBroadCast::GetInstance()->Send(_T("Editor and level settings saved!"));
 }
 
 void EditModeScreen::AddEnvironmentCube(const D3DXVECTOR3 & pos, int id)

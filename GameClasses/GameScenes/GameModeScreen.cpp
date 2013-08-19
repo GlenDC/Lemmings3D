@@ -25,6 +25,7 @@
 #include "../Managers/Stopwatch.h"
 #include "../Managers/ColissionCollector.h"
 #include "../Managers/SpritefontManager.h"
+#include "../Entities/WorldBroadCast.h"
 //====================================================================
 
 GameModeScreen::GameModeScreen(GameScreen * parent, InputManager *inputManager)
@@ -171,4 +172,5 @@ void GameModeScreen::Save()
 	m_pParentScreen->GetPlayer()->SetSetting<int>(_T("GAME_CAMERA_SPEED"), m_pCamera->GetMoveSpeed());
 	m_pParentScreen->GetPlayer()->SetSetting<float>(_T("GAME_CAMERA_ROT_SPEED"), m_pCamera->GetRotSpeed());
 	m_pParentScreen->GetPlayer()->Save(); 
+	WorldBroadCast::GetInstance()->Send(_T("Game and player settings saved!"));
 }

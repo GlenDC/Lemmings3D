@@ -79,7 +79,11 @@ void EditorModePlacer::Update(const GameContext & context)
 	pos.y += size / 2.0f;
 	if(context.Input->IsActionTriggered((int)InputControls::MOUSE_RIGHT_PRESSED))
 	{
-		if(m_CurrentModelID > 1 && m_CurrentModelID < 6)
+		if(m_CurrentModelID == 6 || m_CurrentModelID == 7)
+		{
+			m_pEditor->GetEditScreen()->GetCurrentLevel()->AddSpecialObject(m_CurrentModelID, pos);
+		}
+		else if(m_CurrentModelID > 1 && m_CurrentModelID < 6)
 		{
 			m_pEditor->GetEditScreen()->GetCurrentLevel()->AddGameEntity(m_CurrentModelID, pos);
 		}

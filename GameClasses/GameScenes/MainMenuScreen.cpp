@@ -18,6 +18,8 @@
 #include "Managers/ContentManager.h"
 #include "OverlordComponents.h"
 #include "Scenegraph/GameObject.h"
+#include "ShaderLoadingScreen.h"
+#include "../Managers/Stopwatch.h"
 //====================================================================
 
 MainMenuScreen::MainMenuScreen(void)
@@ -34,6 +36,7 @@ MainMenuScreen::~MainMenuScreen(void)
 {
 	SafeDelete(m_pMainMenuDock);
 	SafeDelete(m_pLevelMenuDock);
+	SafeDelete(m_pStatisticsDock);
 }
 
 void MainMenuScreen::Initialize()
@@ -49,8 +52,12 @@ void MainMenuScreen::Initialize()
 
 	m_pMainMenuDock = new UIDockInterface(0, 0, 1280, 720, m_pSpriteFont); 
 	m_pMainMenuDock->AddImage(0,0,_T("IMG_Background"), _T("MainMenu_BG.png"));
-	m_pMainMenuDock->AddButton(710, 840, _T("Main_Btn_Options"), _T("MainMenu_btn_options.png"), [&] () { } );
-	m_pMainMenuDock->AddButton(710, 950, _T("Main_Btn_Quit"), _T("MainMenu_btn_quit.png"), [&] () { PostQuitMessage(0); } );
+	m_pMainMenuDock->AddButton(710, 840, _T("Main_Btn_Options"), _T("MainMenu_btn_options.png"), [&] () 
+	{
+		ScreenManager::GetInstance()->AddScreen(new ShaderLoadingScreen(_T("MainMenuScreen")));
+	} );
+	m_pMainMenuDock->AddButton(710, 950, _T("Main_Btn_Quit"), _T("MainMenu_btn_quit.png"), [&] () { 
+		Exit(); } );
 	m_pMainMenuDock->Initialize();
 	
 	auto pFont = SpritefontManager::GetInstance()->CreateOrGet(_T("GameOver"),35);
@@ -147,7 +154,7 @@ void MainMenuScreen::Update(const GameContext& context)
 {
 	if(context.Input->IsActionTriggered((int)InputControls::KB_ESCAPE_PRESSED))
 	{
-		ScreenManager::GetInstance()->QuitGame();
+		Exit();
 	}
 
 	m_pMainMenuDock->Update(context);
@@ -184,4 +191,13 @@ void MainMenuScreen::Activated()
 
 void MainMenuScreen::Deactivated()
 {
+}
+
+void MainMenuScreen::Exit()
+{
+	AudioManager::GetInstance()->PlaySoundEffect(_T("Goodbye"));
+	Stopwatch::GetInstance()->CreateTimer(_T("exit"), 1.5f, true, false, [&] ()
+	{
+		ScreenManager::GetInstance()->QuitGame();
+	});
 }

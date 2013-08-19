@@ -14,6 +14,8 @@
 #include "../Managers/ScreenManager.h"
 #include "../Managers/SpritefontManager.h"
 #include "../UserInterface/UIDockInterface.h"
+#include "../Managers/AudioManager.h"
+#include "../Entities/WorldBroadCast.h"
 //====================================================================
 
 MenuModeScreen::MenuModeScreen(GameScreen * parent, InputManager *inputManager)
@@ -42,7 +44,8 @@ void MenuModeScreen::Initialize()
 			m_pParentScreen->SetPreviousState();
 		} );
 	m_MainMenuDock->AddButton(15, 102, _T("BTN_Options"), _T("menuscreen_btn_options.png"), 
-		[&] () { } );
+		[&] () {
+			AudioManager::GetInstance()->PlaySoundEffect(_T("No")); } );
 	m_MainMenuDock->AddButton(15, 188, _T("BTN_Quit"), _T("menuscreen_btn_quit.png"), 
 		[&] () 
 		{
@@ -52,6 +55,7 @@ void MenuModeScreen::Initialize()
 			ScreenManager::GetInstance()->RemoveActiveScreen(_T("GameScreen"));
 			ScreenManager::GetInstance()->RemoveScreen(_T("GameScreen"));
 			ScreenManager::GetInstance()->SetPhysicsDrawEnabled(false);
+			WorldBroadCast::GetInstance()->Clear();
 		});
 
 	m_MainMenuDock->Initialize();

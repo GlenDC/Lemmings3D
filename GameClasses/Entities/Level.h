@@ -20,11 +20,13 @@ class PhysicsCube;
 class GameEntity;
 class ColissionEntity;
 class SkyBox;
+class PortalEnter;
+class PortalExit;
 
 class Level 
 {
 public:
-	explicit Level(const tstring & file, GameScene * pScene);
+	Level(const tstring & file, GameScene * pScene);
 	~Level(void);
 
 	void Initialize();
@@ -58,6 +60,10 @@ public:
 	float GetLowerDepth();
 	inline float GetCurrentDepth() const { return m_CurrentDepth; }
 	float GetHigherDepth();
+
+	void AddSpecialObject(UINT id, const D3DXVECTOR3 & pos);
+	void CreatePortalEntrance(const D3DXVECTOR3 & pos);
+	void CreatePortalExit(const D3DXVECTOR3 & pos);
 
 	bool AddColissionEntity(ColissionEntity * pEntity);
 	bool AddGameEntity(GameEntity * pEntity);
@@ -101,6 +107,9 @@ private:
 	std::vector<GameEntity*> m_GameEntities;
 
 	SkyBox * m_pSkyBox;
+
+	PortalEnter * m_pPortalEntrance;
+	PortalExit * m_pPortalExit;
 
 	GameScene * m_pGame;
 

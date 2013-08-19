@@ -26,6 +26,7 @@ ColissionCollector::ColissionCollector(void)
 	, m_CurrentCheckNumber(0)
 	, m_FrontBatch(0)
 	, m_ThreadAvailable(true)
+	, m_SleepList(0)
 {
 }
 
@@ -59,7 +60,7 @@ void ColissionCollector::Update(GameContext& context)
 		auto cube = m_ActiveList[i];
 		if(!GenerateIdleEntityIfInvalid(cube->GetTranslation()))
 		{
-			RemovePhysicsCube(cube, false);
+			RemovePhysicsCube(cube);
 			m_ActiveList.erase(m_ActiveList.begin() + i);
 		}
 		else
@@ -133,6 +134,7 @@ void ColissionCollector::ClearEnvironment()
 {
 	m_ActiveList.clear();
 	m_IdleList.clear();
+	m_SleepList.clear();
 }
 
 void ColissionCollector::UpdateIdleList(const GameContext & context)
@@ -157,12 +159,26 @@ void ColissionCollector::UpdateIdleList(const GameContext & context)
 
 void ColissionCollector::AddEnvironment(const D3DXVECTOR3 & pos)
 {
-	if(GenerateIdleEntityIfInvalid(pos))
+	D3DXVECTOR3 min_col = GlobalParameters::GetParameters()->GetParameter<D3DXVECTOR3>(_T("AUTO_COLLISION_MIN"));
+	D3DXVECTOR3 max_col = GlobalParameters::GetParameters()->GetParameter<D3DXVECTOR3>(_T("AUTO_COLLISION_MAX"));
+	if(pos.x > min_col.x && pos.y > min_col.y && pos.z > min_col.z
+		&& pos.x < max_col.x && pos.y < max_col.y && pos.z < max_col.z)
 	{
-		float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
-		PhysicsCube * pCube = new PhysicsCube(pos, size);
-		m_pGameScene->AddObject(pCube);
-		m_ActiveList.push_back(pCube);
+		if(GenerateIdleEntityIfInvalid(pos))
+		{
+			float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
+			PhysicsCube * pCube = new PhysicsCube(pos, size);
+			m_pGameScene->AddObject(pCube);
+			m_ActiveList.push_back(pCube);
+		}
+	}
+	else
+	{
+		auto it = std::find(m_SleepList.begin(), m_SleepList.end(), pos);
+		if(it == m_SleepList.end())
+		{
+			m_SleepList.push_back(pos);
+		}
 	}
 }
 
@@ -185,6 +201,15 @@ void ColissionCollector::RemoveEnvironment(const D3DXVECTOR3 & pos)
 	if(itIdle != m_IdleList.end())
 	{
 		m_IdleList.erase(itIdle);
+		return;
+	}
+	auto itSleep = std::find_if(m_SleepList.begin(), m_SleepList.end(), [&] (const D3DXVECTOR3 & position)
+	{
+		return position == pos;
+	});
+	if(itSleep != m_SleepList.end())
+	{
+		m_SleepList.erase(itSleep);
 	}
 }
 
@@ -231,23 +256,22 @@ bool ColissionCollector::GenerateIdleEntityIfInvalid(const D3DXVECTOR3 & pos)
 	bool found(false);
 	float size = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));
 	float min_2d_dis((float)START_VALUE), min_y_dis((float)START_VALUE), bonus_height(0); 
+	D3DXVECTOR3 lengthVec(0,0,0), lengthVecY(0,0,0), lengthVec2D(0,0,0);
 	for(UINT u = 0 ; u < m_UserVec.size() ; ++u)
 	{
 		auto user = m_UserVec[u];
-		D3DXVECTOR3 lengthVec = pos - user->GetTranslation();
+		lengthVec = pos - user->GetTranslation();
 		float length(D3DXVec3Length(&lengthVec));
-		D3DXVECTOR3 lengthVecY(0,lengthVec.y,0);
+		lengthVecY.y = lengthVec.y;
 		float lengthY(D3DXVec3Length(&lengthVecY));
 		if(!(length < user->GetCollectionRange() && lengthY < size))
 		{
 			// check for 2d_dis
-			D3DXVECTOR3 lengthVec2D(lengthVec);
+			lengthVec2D = lengthVec;
 			float length2D(D3DXVec3Length(&lengthVec2D));
 			if(length2D < min_2d_dis)
 			{
 				min_2d_dis = length2D;
-				D3DXVECTOR3 lengthVecY(0, lengthVec.y, 0);
-				float lengthY(D3DXVec3Length(&lengthVecY));
 				min_y_dis = lengthY;
 				if(user->GetTranslation().y < pos.y)
 				{
@@ -269,10 +293,17 @@ bool ColissionCollector::GenerateIdleEntityIfInvalid(const D3DXVECTOR3 & pos)
 	{
 		IdleEntity entity;
 		entity.Position = pos;
-		float time_2d(min_2d_dis / size), time_y(min_y_dis / size);
-		if(time_2d > 5)
-			bonus_height *= (time_2d / 5) * 4;
-		entity.Timer = ( time_2d * 0.05f + time_y * 0.01f ) * bonus_height;
+		if(min_y_dis > size || min_2d_dis > size * 6)
+		{
+			float time_2d(min_2d_dis / size), time_y(min_y_dis / size);
+			if(time_2d > 5)
+				bonus_height *= (time_2d / 5) * 2;
+			entity.Timer = ( time_2d * 0.5f + time_y * 0.65f ) * bonus_height;
+		}
+		else
+		{
+			entity.Timer = 0;
+		}
 		m_IdleList.push_back(entity);
 	}
 	return found;

@@ -20,6 +20,8 @@
 #include "../Managers/ScreenManager.h"
 #include "../Managers/ParameterManager.h"
 #include "../Materials/BaseModelMaterial.h"
+#include "../GameObjects/PortalEnter.h"
+#include "../GameObjects/PortalExit.h"
 //====================================================================
 
 Level::Level(const tstring & file, GameScene * pScene)
@@ -41,6 +43,8 @@ Level::Level(const tstring & file, GameScene * pScene)
 	, m_ColissionEntities(0)
 	, m_GameEntities(0)
 	, m_pSkyBox(nullptr)
+	, m_pPortalEntrance(nullptr)
+	, m_pPortalExit(nullptr)
 	, m_pGame(pScene)
 {
 
@@ -87,111 +91,118 @@ void Level::Initialize()
 	m_Name = GetAttribueValue<tstring>(root, _T("name"));
 	//for(const pugi::xml_node & child : root.children())
 
-	//Get Heightmap File and parse it!
-	//file = GlobalParameters::GetParameters()->GetParameter<tstring>(_T("CONTENT_DIRECTORY"));
-	tstring heightmapFile = _T("./Resources/Lemmings3D/levels/heightmaps/") + heightmapName;
 
-	vector<vector<D3DXVECTOR3>> positionVec;
-	D3DXVECTOR2 depth;
+	bool create_blocks = GlobalParameters::GetParameters()->GetParameter<bool>(_T("CREATE_LEVEL_BLOCKS"));
+	bool create_objects = GlobalParameters::GetParameters()->GetParameter<bool>(_T("CREATE_LEVEL_OBJECTS"));
+	m_Offset = GlobalParameters::GetParameters()->GetParameter<D3DXVECTOR3>(_T("LEVEL_OFFSET"));
 	m_HeigthDifference = XMLConverter::ConvertTString<float>(GetAttribueValue<tstring>(root, _T("height_scale")));
-	ASSERT(HeightmapParser::Read(heightmapFile, m_Width, m_Height, positionVec, 
-		depth, size * m_HeigthDifference, size), _T("an error has occured, while parsing the heightmap!"));
-	m_HeigthDifference = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));;
-
-	m_MinDepth = depth.x;
-	m_MaxDepth = depth.y;
-
-	UINT sizeY = (UINT)(m_MaxDepth - m_MinDepth);
-	m_SizeXYZ = (UINT)sqrt(pow(m_SizeXZ,2) + pow(sizeY, 2));
 
 	m_pInstancedObject = new InstancedObject(_T("./Resources/Lemmings3D/textures/Test64x64.png"));
-
-	m_Offset = GlobalParameters::GetParameters()->GetParameter<D3DXVECTOR3>(_T("LEVEL_OFFSET"));
-	//make sure the origin is vertically at the correct origin based on the offset.y
-	if(m_MinDepth != m_Offset.y)
+	
+	if(create_blocks)
 	{
-		float difference = m_Offset.y - m_MinDepth;
-		m_MaxDepth += difference;
-		m_MinDepth = m_Offset.y;
-		m_Offset.y += difference;
-	}
+		//Get Heightmap File and parse it!
+		//file = GlobalParameters::GetParameters()->GetParameter<tstring>(_T("CONTENT_DIRECTORY"));
+		tstring heightmapFile = _T("./Resources/Lemmings3D/levels/heightmaps/") + heightmapName;
 
-	float minDepth(999999), maxDepth(0);
-	float minX(999999), maxX(0), minZ(9999999), maxZ(0);
+		vector<vector<D3DXVECTOR3>> positionVec;
+		D3DXVECTOR2 depth;
+		ASSERT(HeightmapParser::Read(heightmapFile, m_Width, m_Height, positionVec, 
+			depth, size * m_HeigthDifference, size), _T("an error has occured, while parsing the heightmap!"));
+		m_HeigthDifference = GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE"));;
 
-	for(vector<D3DXVECTOR3> vec : positionVec)
-	{
-		for(D3DXVECTOR3 pos : vec)
+		m_MinDepth = depth.x;
+		m_MaxDepth = depth.y;
+
+		UINT sizeY = (UINT)(m_MaxDepth - m_MinDepth);
+		m_SizeXYZ = (UINT)sqrt(pow(m_SizeXZ,2) + pow(sizeY, 2));
+		//make sure the origin is vertically at the correct origin based on the offset.y
+		if(m_MinDepth != m_Offset.y)
 		{
-			//add offset
-			pos += m_Offset;
-			if(pos.y < m_Offset.y)
-				pos.y += m_MaxDepth;
-			if(pos.y < minDepth)
-			{
-				minDepth = pos.y;
-			}
-			else if(pos.y > maxDepth)
-			{
-				maxDepth = pos.y;
-			}
-			if(pos.x < minX)
-			{
-				minX = pos.x;
-			}
-			else if(pos.x > maxX)
-			{
-				maxX = pos.x;
-			}
-			if(pos.z < minZ)
-			{
-				minZ = pos.z;
-			}
-			else if(pos.z > maxZ)
-			{
-				maxZ = pos.z;
-			}
-			//snap to grid defined by grid_size
-			LemmingsHelpers::SnapPositionXYZ(pos, size);
-			//add cube to world instance!
-			UINT counter(0);
-			do 
-			{
-				int newInstanceID(0);
-				int rid = rand() % 5;
-				if(rid == 1)
-					newInstanceID = 6;
-				if(rid == 2)
-					newInstanceID = 7;
-				m_pInstancedObject->AddInstance(pos, newInstanceID);
-				//PhysicsCube Creation
-				/*PhysicsCube * cube = new PhysicsCube(pos, size);
-				m_pGame->AddObject(cube);
-				m_pPhysicsCubeVec.push_back(cube);*/
-				pos.y -= size;
-				++counter;
-			} while ( pos.y > m_Offset.y );
-			//Fill holes
-			/*do
-			{
-				m_pInstancedObject->AddInstance(pos, 0);
-				pos.y -= size;
-			} while(pos.y >= m_MinDepth);*/
+			float difference = m_Offset.y - m_MinDepth;
+			m_MaxDepth += difference;
+			m_MinDepth = m_Offset.y;
+			m_Offset.y += difference;
 		}
+
+		float minDepth(999999), maxDepth(0);
+		float minX(999999), maxX(0), minZ(9999999), maxZ(0);
+
+		for(vector<D3DXVECTOR3> vec : positionVec)
+		{
+			for(D3DXVECTOR3 pos : vec)
+			{
+				//add offset
+				pos += m_Offset;
+				if(pos.y < m_Offset.y)
+					pos.y += m_MaxDepth;
+				if(pos.y < minDepth)
+				{
+					minDepth = pos.y;
+				}
+				else if(pos.y > maxDepth)
+				{
+					maxDepth = pos.y;
+				}
+				if(pos.x < minX)
+				{
+					minX = pos.x;
+				}
+				else if(pos.x > maxX)
+				{
+					maxX = pos.x;
+				}
+				if(pos.z < minZ)
+				{
+					minZ = pos.z;
+				}
+				else if(pos.z > maxZ)
+				{
+					maxZ = pos.z;
+				}
+				//snap to grid defined by grid_size
+				LemmingsHelpers::SnapPositionXYZ(pos, size);
+				//add cube to world instance!
+				UINT counter(0);
+				do 
+				{
+					int newInstanceID(0);
+					int rid = rand() % 5;
+					if(rid == 1)
+						newInstanceID = 6;
+					if(rid == 2)
+						newInstanceID = 7;
+					m_pInstancedObject->AddInstance(pos, newInstanceID);
+					//PhysicsCube Creation
+					/*PhysicsCube * cube = new PhysicsCube(pos, size);
+					m_pGame->AddObject(cube);
+					m_pPhysicsCubeVec.push_back(cube);*/
+					pos.y -= size;
+					++counter;
+				} while ( pos.y > m_Offset.y );
+				//Fill holes
+				/*do
+				{
+					m_pInstancedObject->AddInstance(pos, 0);
+					pos.y -= size;
+				} while(pos.y >= m_MinDepth);*/
+			}
+		}
+
+		m_MinDepth = minDepth;
+		m_MaxDepth = maxDepth;
+
+		CreateBlocks();
+		m_CurrentDepth = (m_MinDepth + m_MaxDepth) / 2.0f;
+		m_Center = D3DXVECTOR3((minX + maxX) / 2.0f, m_CurrentDepth, (minZ + maxZ) / 2.0f);
+		m_CurrentDepth -= fmod(m_CurrentDepth, m_HeigthDifference);
+		PaintBlocks();
+		m_pInstancedObject->Initialize();
 	}
-
-	m_MinDepth = minDepth;
-	m_MaxDepth = maxDepth;
-
-	CreateBlocks();
-	m_CurrentDepth = (m_MinDepth + m_MaxDepth) / 2.0f;
-	m_Center = D3DXVECTOR3((minX + maxX) / 2.0f, m_CurrentDepth, (minZ + maxZ) / 2.0f);
-	m_CurrentDepth -= fmod(m_CurrentDepth, m_HeigthDifference);
-	PaintBlocks();
-	CreateObjects();
-
-	m_pInstancedObject->Initialize();
-
+	if(create_objects)
+	{
+		CreateObjects();
+	}
 	m_pSkyBox = new SkyBox(this, m_Center, _T("grassenvmap1024.dds"));
 	m_pSkyBox->Initialize();
 
@@ -224,8 +235,10 @@ void Level::Draw(const GameContext & context)
 		{
 			m_Cubes2DVector[r][c]->Draw(context);
 		}
-	}*/
-	m_pInstancedObject->Draw(context);
+		}*/
+	bool create_blocks = GlobalParameters::GetParameters()->GetParameter<bool>(_T("CREATE_LEVEL_BLOCKS"));
+	if(create_blocks)
+		m_pInstancedObject->Draw(context);
 
 	for( auto pEntity : m_ColissionEntities )
 	{
@@ -243,8 +256,10 @@ void Level::Update(const GameContext & context)
 			m_Cubes2DVector[r][c]->GetComponent<TransformComponent>()->Translate(m_Positions2DVector[r][c]);
 			m_Cubes2DVector[r][c]->Update(context);
 		}
-	}*/
-	m_pInstancedObject->Update(context);
+		}*/
+	bool create_blocks = GlobalParameters::GetParameters()->GetParameter<bool>(_T("CREATE_LEVEL_BLOCKS"));
+	if(create_blocks)
+		m_pInstancedObject->Update(context);
 
 	for( auto pEntity : m_ColissionEntities )
 	{
@@ -368,6 +383,45 @@ float Level::GetHigherDepth()
 	return m_CurrentDepth;
 }
 
+void Level::AddSpecialObject(UINT id, const D3DXVECTOR3 & pos)
+{
+	if(id == 6)
+	{
+		CreatePortalEntrance(pos);
+	}
+	else if(id == 7)
+	{
+		CreatePortalExit(pos);
+	}
+	auto node = m_pLevelParser->GetNode(XML_PARSER_LAYER(LayerTestCategory::xml_test_node, _T("objects")));
+	pugi::xml_node newNode = node.append_child("object");
+	AddAttribute(newNode, _T("id"), id, true);
+	AddAttribute(newNode, _T("pos"), pos, true);
+	AddAttribute(newNode, _T("rot"), D3DXQUATERNION(0,0,0,1), true);
+}
+
+void Level::CreatePortalEntrance(const D3DXVECTOR3 & pos)
+{
+	if(m_pPortalEntrance == nullptr)
+	{
+		m_pPortalEntrance = new PortalEnter();
+		m_pGame->AddSceneObject(m_pPortalEntrance);
+		m_pPortalEntrance->Translate(pos);
+		m_pPortalEntrance->Initialize();
+	}
+}
+
+void Level::CreatePortalExit(const D3DXVECTOR3 & pos)
+{
+	if(m_pPortalExit == nullptr)
+	{
+		m_pPortalExit = new PortalExit();
+		m_pGame->AddSceneObject(m_pPortalExit);
+		m_pPortalExit->Translate(pos);
+		m_pPortalExit->Initialize();
+	}
+}
+
 void Level::CreateBlocks()
 {
 	auto node = m_pLevelParser->GetNode(XML_PARSER_LAYER(LayerTestCategory::xml_test_node, _T("blocks")));
@@ -406,7 +460,15 @@ void Level::CreateObjects()
 		D3DXVECTOR3 pos = GetAttribueValue<D3DXVECTOR3>(node_it, _T("pos"));
 		D3DXQUATERNION rot = GetAttribueValue<D3DXQUATERNION>(node_it, _T("rot"));
 		int id = GetAttribueValue<int>(node_it, _T("id"));
-		if(id > 1 && id < 6)
+		if(id == 6)
+		{
+			CreatePortalEntrance(pos);
+		}
+		else if(id == 7)
+		{
+			CreatePortalExit(pos);
+		}
+		else if(id > 1 && id < 6)
 		{
 			auto pEntity = CreateGameEntity(id, pos);
 			pEntity->Rotate(rot);

@@ -16,7 +16,7 @@ GameLoadingScreen::GameLoadingScreen(const tstring & previousScreen, UINT leveL_
 	, m_Thread()
 	, m_InnerThread()
 {
-
+	AudioManager::GetInstance()->PlaySong(_T("Loading"));
 }
 
 GameLoadingScreen::~GameLoadingScreen(void)
@@ -41,23 +41,23 @@ void GameLoadingScreen::Initialize()
 	ScreenManager::GetInstance()->AddActiveScreen(m_name);
 	ScreenManager::GetInstance()->SetControlScreen(m_name);
 	// start a thread for the creation of the level
-
 	m_Thread = std::thread([&] () 
 	{
-		AudioManager::GetInstance()->PlaySong(container.GetChildParameter<tstring>(strstr.str(), _T("SOUND_TRACK")));
 		tstringstream strstr;
 		strstr << _T("level") << m_LevelID;
-		ScreenManager::GetInstance()->AddScreen(new GameScreen(strstr.str()));
+		ScreenManager::GetInstance()->AddScreen(new GameScreen(strstr.str(), m_LevelID));
 		m_InnerThread = std::thread([&] ()
 		{
 			ColissionCollector::GetInstance()->CopyEnvironment();
-			Stopwatch::GetInstance()->CreateTimer(_T("leveL_start_timer"), 1.0f, true, false, []() 
+			Stopwatch::GetInstance()->CreateTimer(_T("leveL_start_timer"), 1.0f, true, false, [&]() 
 			{	
 				ScreenManager::GetInstance()->AddActiveScreen(_T("GameScreen"));
 				ScreenManager::GetInstance()->RemoveActiveScreen(_T("LoadingScreen"));
 				ScreenManager::GetInstance()->RemoveScreen(_T("LoadingScreen"));
 				ScreenManager::GetInstance()->SetPhysicsDrawEnabled(false);
 				ScreenManager::GetInstance()->SetControlScreen(_T("GameScreen"));
+				AudioManager::GetInstance()->PlaySoundEffect(_T("Loading Finished"));
+				ParameterClass & container = ParameterManager::GetInstance()->CreateOrGet(_T("Levels"));
 			});
 		});
 	});

@@ -1,3 +1,4 @@
+#pragma once
 //====================== #INCLUDES ===================================
 #include <memory>
 #include "Helpers/SpriteFont.h"

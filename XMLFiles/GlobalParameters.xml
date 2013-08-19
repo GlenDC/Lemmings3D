@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Parameters>
 	<!-- Cursor Variables -->
+	<Parameter name="CREATE_LEVEL_BLOCKS" value="True" />
+	<Parameter name="CREATE_LEVEL_OBJECTS" value="True" />
 	<Parameter name="CURSOR_SPEED" value="50.0" />
 	<Parameter name="CURSOR_SCROLL_BORDER" value="10" />
 	<Parameter name="MOUSE_SPEED_ACCELERATION" value = "1.5" />
@@ -15,7 +17,12 @@
 	<Parameter name="LOG_WAIT_TIME" value="0.5" />
 	<Parameter name="MAX_LOG_DELAY_TIME" value="2.0" />
 	<Parameter name="ALLOW_STATUS_LOG" value="True" />
-	<Parameter name="HERO_SPEED" value="1.0" />
-	<Parameter name="HERO_RUN_SPEED" value="2.0" />
-	<Parameter name="MUTE_MASTER_SOUND" value="True" />
+	<Parameter name="HERO_SPEED" value="5.0" />
+	<Parameter name="HERO_RUN_SPEED" value="8.0" />
+	<Parameter name="LEMMING_SPEED" value="3.5" />
+	<Parameter name="LEMMING_RUN_SPEED" value="5.0" />
+	<Parameter name="MUTE_MASTER_SOUND" value="False" />
+	<Parameter name="AI_SPAWN_DELAY" value="10.0" />
+	<Parameter name="AUTO_COLLISION_MIN" value="60;160;180" />
+	<Parameter name="AUTO_COLLISION_MAX" value="180;200;365" />
 </Parameters>
