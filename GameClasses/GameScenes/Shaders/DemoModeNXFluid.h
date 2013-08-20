@@ -5,15 +5,15 @@
 #include "Helpers/GeneralStructs.h"
 #include "Components/CameraComponent.h"
 #include "Managers/InputManager.h"
-#include "../../Entities/State.h" 
+#include "DemoModeBase.h" 
 #include <vector>
 #include <memory>
 //====================================================================
 
-//====================== DemoModeBase Class ====================
+//====================== DemoModeNXFluid Class ====================
 // Description:
-//		Base Class foor all Demo states
-// Last Modification: July 2013
+//		Mode Class to test the NXFluid Implementation
+// Last Modification: August 2013
 // Glen De Cauwsemaecker
 // www.glendc.com
 //====================================================================
@@ -21,38 +21,27 @@
 class SpriteFont;
 class UIDockInterface;
 class GameScene;
-class GameEntity;
-class GameObject;
-class EditorCamera;
+class WaterObject;
 
-class DemoModeBase : public State
+class DemoModeNXFluid : public DemoModeBase
 {
 public:
-	virtual ~DemoModeBase(void);
+	DemoModeNXFluid(GameScene * scene);
+	virtual ~DemoModeNXFluid(void);
 
 	virtual void Initialize(void);
 	virtual void Update(const GameContext& context);
-	virtual void Draw(const GameContext& context) = 0;
+	virtual void Draw(const GameContext& context);
 	virtual void Draw2D(const GameContext& context);
 
 	virtual void Activate();
 	virtual void Deactivate();
 
-protected:
-	DemoModeBase(GameScene * scene, const tstring & title, const tstring & description = _T("Enter description here..."));
-	UIDockInterface * m_pDescriptionDock;
-	std::shared_ptr<SpriteFont> m_pDefaultFont;
-	GameScene * m_pScene;
-	bool m_ContentActive;
-
-	GameEntity * m_pDemoObject;
-	static const float ROTATION_SPEED;
-
-	EditorCamera *m_pCamera;
-
 private:
+	WaterObject * m_pFluids;
+
 	// Disabling default copy constructor and default assignment operator.
-	DemoModeBase(const DemoModeBase& yRef);									
-	DemoModeBase& operator=(const DemoModeBase& yRef);
+	DemoModeNXFluid(const DemoModeNXFluid& yRef);									
+	DemoModeNXFluid& operator=(const DemoModeNXFluid& yRef);
 };
 

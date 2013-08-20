@@ -3,6 +3,7 @@
 //----------------------------------------------------------------------
 #include "Scenegraph/GameScene.h"
 #include "../../GameObjects/GameEntity.h"
+#include "../../GameObjects/EditorCamera.h"
 //======================================================================
 
 DemoMode4::DemoMode4(GameScene * scene)
@@ -22,6 +23,8 @@ void DemoMode4::Initialize()
 	m_pScene->AddSceneObject(m_pDemoObject);
 	m_ContentActive = false;
 	m_pDemoObject->Translate(9999,9999,9999);
+
+	m_pCamera->SetCanControl(false);
 }
 
 void DemoMode4::Update(const GameContext& context)

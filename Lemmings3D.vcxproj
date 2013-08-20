@@ -126,6 +126,7 @@
     <ClCompile Include="GameClasses\GameObjects\LemmingCharacter.cpp" />
     <ClCompile Include="GameClasses\GameObjects\PreviewObject.cpp" />
     <ClCompile Include="GameClasses\GameObjects\PhysicsCube.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\WaterObject.cpp" />
     <ClCompile Include="GameClasses\GameObjects\WorldInstancedObject.cpp" />
     <ClCompile Include="GameClasses\GameScenes\EditModeScreen.cpp" />
     <ClCompile Include="GameClasses\GameScenes\BaseModeScreen.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="GameClasses\GameScenes\Shaders\DemoMode4.cpp" />
     <ClCompile Include="GameClasses\GameScenes\Shaders\DemoModeBase.cpp" />
     <ClCompile Include="GameClasses\GameScenes\Shaders\DemoModeController.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Shaders\DemoModeNXFluid.cpp" />
     <ClCompile Include="GameClasses\GameScenes\Shaders\DemoModeNXJoint.cpp" />
     <ClCompile Include="GameClasses\Helpers\HeightmapParser.cpp" />
     <ClCompile Include="GameClasses\Helpers\Rectangle.cpp" />
@@ -237,6 +239,7 @@
     <ClInclude Include="GameClasses\GameObjects\LemmingCharacter.h" />
     <ClInclude Include="GameClasses\GameObjects\PhysicsCube.h" />
     <ClInclude Include="GameClasses\GameObjects\PreviewObject.h" />
+    <ClInclude Include="GameClasses\GameObjects\WaterObject.h" />
     <ClInclude Include="GameClasses\GameObjects\WorldInstancedObject.h" />
     <ClInclude Include="GameClasses\GameScenes\EditModeScreen.h" />
     <ClInclude Include="GameClasses\GameScenes\BaseModeScreen.h" />
@@ -260,6 +263,7 @@
     <ClInclude Include="GameClasses\GameScenes\Shaders\DemoMode4.h" />
     <ClInclude Include="GameClasses\GameScenes\Shaders\DemoModeBase.h" />
     <ClInclude Include="GameClasses\GameScenes\Shaders\DemoModeController.h" />
+    <ClInclude Include="GameClasses\GameScenes\Shaders\DemoModeNXFluid.h" />
     <ClInclude Include="GameClasses\GameScenes\Shaders\DemoModeNXJoint.h" />
     <ClInclude Include="GameClasses\Helpers\HeightmapParser.h" />
     <ClInclude Include="GameClasses\Helpers\Rectangle.h" />

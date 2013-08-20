@@ -59,6 +59,7 @@ void DemoModeController::Activate()
 
 	m_pPlayer = new Hero();
 	m_pScene->AddSceneObject(m_pPlayer);
+	m_pPlayer->Translate(0,5,0);
 	m_pPlayer->SetControlled(true);
 }
 

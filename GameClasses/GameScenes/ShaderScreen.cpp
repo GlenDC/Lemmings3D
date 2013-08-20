@@ -26,6 +26,7 @@
 #include "Shaders/DemoMode4.h"
 #include "Shaders/DemoModeController.h"
 #include "Shaders/DemoModeNXJoint.h"
+#include "Shaders/DemoModeNXFluid.h"
 #include "../Entities/WorldBroadCast.h"
 #include "../GameObjects/SkyBox.h"
 //====================================================================
@@ -64,6 +65,10 @@ ShaderScreen::ShaderScreen(void)
 	state_nxjoint->Initialize();
 	m_pStates->AddState(_T("DemoNXJoint"),state_nxjoint);
 
+	auto state_nxfluid = new DemoModeNXFluid(this);
+	state_nxfluid->Initialize();
+	m_pStates->AddState(_T("DemoNXFluid"),state_nxfluid);
+
 	m_pStates->SetState(_T("Demo1"));
 
 	m_pSpriteFont = SpritefontManager::GetInstance()->CreateOrGet(_T("GameOver"));
@@ -98,7 +103,6 @@ ShaderScreen::ShaderScreen(void)
 		m_pStates->SetState(_T("Demo4"));
 		WorldBroadCast::GetInstance()->Send(_T("Switched to Experiment 4..."));
 	}, false, false);
-
 	start_x += offset;
 	m_pDemoDock->AddButton(start_x, but_demo_y, _T("btn_test_character"), _T("shaders_btn_shader_controller.png"), [&] ()
 	{
@@ -113,11 +117,46 @@ ShaderScreen::ShaderScreen(void)
 		m_pStates->SetState(_T("DemoNXJoint"));
 		WorldBroadCast::GetInstance()->Send(_T("Switched to nx joint test zone..."));
 	}, false, false);
-
+	start_x += offset;
+	m_pDemoDock->AddButton(start_x, but_demo_y, _T("btn_nxfluid"), _T("shaders_btn_shader_nxfluid.png"), [&] ()
+	{
+		m_pDemoDock->ToggleElement(_T("btn_nxfluid"));
+		m_pStates->SetState(_T("DemoNXFluid"));
+		WorldBroadCast::GetInstance()->Send(_T("Switched to nx fluid test zone..."));
+	}, false, false);
 	m_pDemoDock->Initialize();
 
 	int x_quit(1695), x_vol(1865), y_but(10);
+	int x_rendering(1540), x_camera(1380);
 	m_pMenuDock = new UIDockInterface(0, 678, 1280, 720, m_pSpriteFont, nullptr);
+	//debug rendering buttons
+	m_pMenuDock->AddButton(x_rendering,y_but, _T("ABtn_EnableRendering"), _T("Header_Btn_Rect_EnableDebugRendering.png"), [&] () 
+	{
+		Stopwatch::GetInstance()->CreateTimer(_T("RenderingRefresh"), 0.05f, false, false, [&] () 
+		{
+			m_pMenuDock->SetElementVisible(_T("ABtn_EnableRendering"), false);
+			m_pMenuDock->SetElementDisabled(_T("ABtn_EnableRendering"), true);
+			m_pMenuDock->SetElementVisible(_T("ABtn_DisableRendering"), true);
+			m_pMenuDock->SetElementDisabled(_T("ABtn_DisableRendering"), false);
+			ScreenManager::GetInstance()->SetPhysicsDrawEnabled(true);
+			WorldBroadCast::GetInstance()->Send(_T("Physics debug rendering enabled..."));
+		});
+	});
+	m_pMenuDock->AddButton(x_rendering,y_but, _T("ABtn_DisableRendering"), _T("Header_Btn_Rect_DisableDebugRendering.png"), [&] () 
+	{ 
+		Stopwatch::GetInstance()->CreateTimer(_T("RenderingRefresh"), 0.05f, false, false, [&] () 
+		{
+			m_pMenuDock->SetElementVisible(_T("ABtn_DisableRendering"), false);
+			m_pMenuDock->SetElementDisabled(_T("ABtn_DisableRendering"), true);
+			m_pMenuDock->SetElementVisible(_T("ABtn_EnableRendering"), true);
+			m_pMenuDock->SetElementDisabled(_T("ABtn_EnableRendering"), false);
+			ScreenManager::GetInstance()->SetPhysicsDrawEnabled(false);
+			WorldBroadCast::GetInstance()->Send(_T("Physics debug rendering disabled..."));
+		});
+	});
+	m_pMenuDock->SetElementVisible(_T("ABtn_DisableRendering"), false);
+	m_pMenuDock->SetElementDisabled(_T("ABtn_DisableRendering"), true);
+
 	m_pMenuDock->AddButton(x_quit, y_but, _T("btn_quit"), _T("shaders_btn_quit.png"), [&] ()
 	{
 		WorldBroadCast::GetInstance()->Clear();

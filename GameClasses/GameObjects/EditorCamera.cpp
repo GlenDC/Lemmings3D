@@ -8,6 +8,7 @@
 
 EditorCamera::EditorCamera(void)
 	: BaseCamera()
+	, m_CanControl(true)
 {
 }
 
@@ -23,7 +24,7 @@ void EditorCamera::Initialize()
 
 void EditorCamera::Update(const GameContext& context)
 {
-	if(m_pCamera->IsActive())
+	if(m_pCamera->IsActive() && m_CanControl)
 	{
 		//HANDLE INPUT
 		D3DXVECTOR2 move = D3DXVECTOR2(0,0);

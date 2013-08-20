@@ -48,6 +48,8 @@ public:
 	float GetCameraHeight() const { return m_CameraHeight; }
 	D3DXVECTOR3 GetCameraTargetPosition() const;
 
+	float GetCollectionRange() const { return m_CollectionRange; }
+
 protected:
 	ModelComponent* m_pVisualModel;
 	Material *m_pVisualMaterial;
@@ -57,6 +59,7 @@ protected:
 	MaterialType m_MaterialName;
 	bool m_IsVisible;
 	float m_CameraHeight;
+	float m_CollectionRange;
 
 private:
 	friend class BaseScreen;

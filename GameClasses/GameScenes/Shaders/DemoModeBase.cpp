@@ -1,8 +1,8 @@
 //========================================= INCLUDES ==========================================
 #include "DemoModeBase.h"
 //---------------------------------------------------------------------------------------------
-#include "..\..\Managers\SpritefontManager.h"
-#include "..\..\UserInterface\UIDockInterface.h"
+#include "../../Managers/SpritefontManager.h"
+#include "../../UserInterface/UIDockInterface.h"
 #include "../../GameObjects/GameEntity.h"
 #include "OverlordComponents.h"
 #include "../../GameObjects/EditorCamera.h"

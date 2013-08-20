@@ -2,6 +2,7 @@
 #include "DemoMode1.h"
 //----------------------------------------------------------------------
 #include "Scenegraph/GameScene.h"
+#include "../../GameObjects/EditorCamera.h"
 //======================================================================
 
 DemoMode1::DemoMode1(GameScene * scene)
@@ -16,6 +17,8 @@ DemoMode1::~DemoMode1(void)
 
 void DemoMode1::Initialize()
 {
+	DemoModeBase::Initialize();
+	m_pCamera->SetCanControl(false);
 }
 
 void DemoMode1::Update(const GameContext& context)

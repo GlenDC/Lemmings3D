@@ -18,6 +18,7 @@
 class Game;
 class GameScreen;
 class ColissionEntity;
+class GameEntity;
 class Level;
 class PhysicsCube;
 
@@ -33,8 +34,8 @@ public:
 	virtual void Update(GameContext& context);
 	virtual void Draw(GameContext& context);
 
-	void AddUser(ColissionEntity * pUser);
-	bool RemoveUser(ColissionEntity * pUser);
+	void AddUser(GameEntity * pUser);
+	bool RemoveUser(GameEntity * pUser);
 
 	void RefreshColissionList(const GameContext & context);
 	void RefreshCollection(const GameContext & context);
@@ -82,7 +83,7 @@ private:
 	std::vector<D3DXVECTOR3> m_SleepList;
 	std::vector<IdleEntity>  m_IdleList;
 	std::vector<PhysicsCube*> m_ActiveList;
-	std::vector<ColissionEntity*> m_UserVec;
+	std::vector<GameEntity*> m_UserVec;
 
 	shared_ptr<Level> m_pLevel;
 	GameScreen * m_pGameScene;

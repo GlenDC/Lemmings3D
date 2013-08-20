@@ -20,7 +20,12 @@ class EditorCamera : public BaseCamera
 public:
 	EditorCamera(void);
 	~EditorCamera(void);
+
+	void SetCanControl(bool can_control) { m_CanControl = can_control; }
+
 protected:
+	bool m_CanControl;
+
 	virtual void Initialize();
 	virtual void Update(const GameContext& context);
 

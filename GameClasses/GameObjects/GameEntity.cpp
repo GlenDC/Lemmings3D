@@ -17,8 +17,9 @@ GameEntity::GameEntity(Material * material)
 	,m_VisualResourcePath(_T("./Resources/Sphere.ovm"))
 	,m_MaterialName(MaterialType::MatCustom)
 	,m_IsVisible(true)
-	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 1.5f)
+	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 0.75f)
 	,m_MaterialAndModelCreated(false)
+	,m_CollectionRange(50)
 {
 
 }
@@ -31,8 +32,9 @@ GameEntity::GameEntity(MaterialType material)
 	,m_VisualResourcePath(_T("./Resources/Sphere.ovm"))
 	,m_MaterialName(material)
 	,m_IsVisible(true)
-	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 1.5f)
+	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 0.75f)
 	,m_MaterialAndModelCreated(false)
+	,m_CollectionRange(50)
 {
 }
 
@@ -44,8 +46,9 @@ GameEntity::GameEntity(const tstring & visualModelPath, MaterialType material)
 	,m_VisualResourcePath(visualModelPath)
 	,m_MaterialName(material)
 	,m_IsVisible(true)
-	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 1.5f)
+	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 0.75f)
 	,m_MaterialAndModelCreated(false)
+	,m_CollectionRange(50)
 {
 }
 
@@ -57,14 +60,15 @@ GameEntity::GameEntity(const tstring & visualModelPath, Material * material)
 	,m_VisualResourcePath(visualModelPath)
 	,m_MaterialName(MaterialType::MatCustom)
 	,m_IsVisible(true)
-	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 1.5f)
+	,m_CameraHeight(GlobalParameters::GetParameters()->GetParameter<float>(_T("GRID_SIZE")) * 0.75f)
 	,m_MaterialAndModelCreated(false)
+	,m_CollectionRange(50)
 {
 }
 
 GameEntity::~GameEntity() //Default Destructor
 {
-	//SafeDelete(m_pVisualMaterial);
+	SafeDelete(m_pVisualMaterial);
 }
 
 void GameEntity::Initialize()

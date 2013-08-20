@@ -1,7 +1,6 @@
 #pragma once
 //====================== #INCLUDES ===================================
 #include "GameEntity.h"
-#include "ColissionEntity.h"
 //====================================================================
 
 //====================== KeyPickup Class =============================
@@ -27,10 +26,10 @@ public:
 	virtual void Initialize();
 	virtual void Update(const GameContext & context);
 
-	void SetOwner(ColissionEntity * owner) { m_pOwner = owner; }
+	void SetOwner(GameEntity * owner) { m_pOwner = owner; }
 
 private:
-	ColissionEntity * m_pOwner;
+	GameEntity * m_pOwner;
 	static const int MODEL_ID = 1;
 	D3DXVECTOR3 m_OriginalPosition;
 	float m_Height, m_Rotation;

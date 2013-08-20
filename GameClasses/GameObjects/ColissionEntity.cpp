@@ -14,7 +14,6 @@ ColissionEntity::ColissionEntity(Material * material)
 	, m_pRigidBody(nullptr)
 	, m_ColliderComponents(0)
 	, m_IsStatic(false)
-	, m_CollectionRange(50)
 	, m_pPickup(nullptr)
 	, m_pOriginalKey(nullptr)
 {
@@ -27,7 +26,6 @@ ColissionEntity::ColissionEntity(MaterialType material)
 	, m_pRigidBody(nullptr)
 	, m_ColliderComponents(0)
 	, m_IsStatic(false)
-	, m_CollectionRange(50)
 	, m_pPickup(nullptr)
 	, m_pOriginalKey(nullptr)
 {
@@ -40,7 +38,6 @@ ColissionEntity::ColissionEntity(const tstring & visualModelPath, MaterialType m
 	, m_pRigidBody(nullptr)
 	, m_ColliderComponents(0)
 	, m_IsStatic(false)
-	, m_CollectionRange(50)
 	, m_pPickup(nullptr)
 	, m_pOriginalKey(nullptr)
 {
@@ -53,7 +50,6 @@ ColissionEntity::ColissionEntity(const tstring & visualModelPath, Material * mat
 	, m_pRigidBody(nullptr)
 	, m_ColliderComponents(0)
 	, m_IsStatic(false)
-	, m_CollectionRange(50)
 	, m_pPickup(nullptr)
 	, m_pOriginalKey(nullptr)
 {

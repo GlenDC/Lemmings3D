@@ -57,8 +57,6 @@ public:
 	void RemoveRigidBody();
 
 	void DisableGravity();
-
-	float GetCollectionRange() const { return m_CollectionRange; }
 protected:
 	virtual void InitializeRigidBody();
 
@@ -66,7 +64,6 @@ protected:
 	RigidBodyComponent *m_pRigidBody;
 	std::vector<BaseColliderComponent*> m_ColliderComponents;
 	bool m_IsStatic;
-	float m_CollectionRange;
 	KeyPickup *m_pPickup;
 	ColissionEntity * m_pOriginalKey;
 

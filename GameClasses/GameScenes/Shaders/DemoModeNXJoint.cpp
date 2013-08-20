@@ -6,6 +6,7 @@
 #include "../../GameObjects/ColissionEntity.h"
 #include "../../Managers/ScreenManager.h"
 #include "../../GameObjects/FlyCube.h"
+#include "../../GameObjects/EditorCamera.h"
 //======================================================================
 
 DemoModeNXJoint::DemoModeNXJoint(GameScene * scene)
@@ -27,7 +28,6 @@ DemoModeNXJoint::~DemoModeNXJoint(void)
 void DemoModeNXJoint::Initialize()
 {
 	DemoModeBase::Initialize();
-	m_pCamera->Enable();
 }
 
 void DemoModeNXJoint::Update(const GameContext& context)

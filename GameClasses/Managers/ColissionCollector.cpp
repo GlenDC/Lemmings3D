@@ -8,6 +8,7 @@
 #include "../GameScenes/GameScreen.h"
 #include "../GameObjects/PhysicsCube.h"
 #include "../GameObjects/ColissionEntity.h"
+#include "../GameObjects/GameEntity.h"
 #include "../Lib/GlobalParameters.h"
 #include <future>
 //====================================================================
@@ -77,12 +78,12 @@ void ColissionCollector::Update(GameContext& context)
 // nothing to draw
 void ColissionCollector::Draw(GameContext& context) {}
 
-void ColissionCollector::AddUser(ColissionEntity * pUser)
+void ColissionCollector::AddUser(GameEntity * pUser)
 {
 	m_UserVec.push_back(pUser);
 }
 
-bool ColissionCollector::RemoveUser(ColissionEntity * pUser)
+bool ColissionCollector::RemoveUser(GameEntity * pUser)
 {
 	for(UINT i = 0 ; i < m_UserVec.size() ; ++i)
 	{
