@@ -1,20 +1,21 @@
 //=========================== INCLUDES =================================
 #include "DemoMode1.h"
+//----------------------------------------------------------------------
+#include "Scenegraph/GameScene.h"
 //======================================================================
 
-DemoMode1::DemoMode1()
-	: DemoModeBase(_T("Cubes breakdown"))
+DemoMode1::DemoMode1(GameScene * scene)
+	: DemoModeBase(scene, _T("Cubes breakdown"))
 {
-
 }
 
 DemoMode1::~DemoMode1(void)
 {
+
 }
 
 void DemoMode1::Initialize()
 {
-
 }
 
 void DemoMode1::Update(const GameContext& context)

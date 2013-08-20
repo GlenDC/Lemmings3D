@@ -1,11 +1,13 @@
 //=========================== INCLUDES =================================
 #include "DemoMode4.h"
+//----------------------------------------------------------------------
+#include "Scenegraph/GameScene.h"
+#include "../../GameObjects/GameEntity.h"
 //======================================================================
 
-DemoMode4::DemoMode4()
-	: DemoModeBase(_T("A primitive representation of water"))
+DemoMode4::DemoMode4(GameScene * scene)
+	: DemoModeBase(scene, _T("A primitive representation of water"))
 {
-
 }
 
 DemoMode4::~DemoMode4(void)
@@ -14,7 +16,12 @@ DemoMode4::~DemoMode4(void)
 
 void DemoMode4::Initialize()
 {
+	DemoModeBase::Initialize();
 
+	m_pDemoObject = new GameEntity(MaterialType::MatSpikey);
+	m_pScene->AddSceneObject(m_pDemoObject);
+	m_ContentActive = false;
+	m_pDemoObject->Translate(9999,9999,9999);
 }
 
 void DemoMode4::Update(const GameContext& context)
@@ -24,7 +31,6 @@ void DemoMode4::Update(const GameContext& context)
 
 void DemoMode4::Draw(const GameContext& context)
 {
-
 }
 
 void DemoMode4::Draw2D(const GameContext& context)

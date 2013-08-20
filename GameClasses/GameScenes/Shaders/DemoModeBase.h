@@ -20,24 +20,31 @@
 
 class SpriteFont;
 class UIDockInterface;
+class GameScene;
+class GameEntity;
 
 class DemoModeBase : public State
 {
 public:
 	virtual ~DemoModeBase(void);
 
-	virtual void Initialize(void) = 0;
+	virtual void Initialize(void);
 	virtual void Update(const GameContext& context);
 	virtual void Draw(const GameContext& context) = 0;
 	virtual void Draw2D(const GameContext& context);
 
-	virtual void Activate() { State::Activate(); }
-	virtual void Deactivate() { State::Deactivate(); }
+	virtual void Activate();
+	virtual void Deactivate();
 
 protected:
-	DemoModeBase(const tstring & title, const tstring & description = _T("Enter description here..."));
+	DemoModeBase(GameScene * scene, const tstring & title, const tstring & description = _T("Enter description here..."));
 	UIDockInterface * m_pDescriptionDock;
 	std::shared_ptr<SpriteFont> m_pDefaultFont;
+	GameScene * m_pScene;
+	bool m_ContentActive;
+
+	GameEntity * m_pDemoObject;
+	static const float ROTATION_SPEED;
 
 private:
 	// Disabling default copy constructor and default assignment operator.

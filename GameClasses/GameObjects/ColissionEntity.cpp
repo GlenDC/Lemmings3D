@@ -62,15 +62,8 @@ ColissionEntity::ColissionEntity(const tstring & visualModelPath, Material * mat
 
 ColissionEntity::~ColissionEntity() //Default Destructor
 {
-	SafeDelete(m_pPhysicsMaterial);
-	if(!m_IsEnabled)
-	{
-		for( UINT i = 0 ; i < m_ColliderComponents.size() ; ++i )
-		{
-			SafeDelete(m_ColliderComponents[i]);
-		}
-	}
-	m_ColliderComponents.clear();
+	//SafeDelete(m_pPhysicsMaterial);
+//	m_ColliderComponents.clear();
 }
 
 void ColissionEntity::Initialize()

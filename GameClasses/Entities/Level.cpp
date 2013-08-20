@@ -407,7 +407,6 @@ void Level::CreatePortalEntrance(const D3DXVECTOR3 & pos)
 		m_pPortalEntrance = new PortalEnter();
 		m_pGame->AddSceneObject(m_pPortalEntrance);
 		m_pPortalEntrance->Translate(pos);
-		m_pPortalEntrance->Initialize();
 	}
 }
 
@@ -418,7 +417,6 @@ void Level::CreatePortalExit(const D3DXVECTOR3 & pos)
 		m_pPortalExit = new PortalExit();
 		m_pGame->AddSceneObject(m_pPortalExit);
 		m_pPortalExit->Translate(pos);
-		m_pPortalExit->Initialize();
 	}
 }
 

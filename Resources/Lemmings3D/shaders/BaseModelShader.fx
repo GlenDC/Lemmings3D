@@ -20,7 +20,7 @@ SamplerState samLinear
 RasterizerState Solid
 {
 	FillMode = SOLID;
-	CullMode = BACK;
+	CullMode = NONE;
 };
 BlendState EnableBlend
 {

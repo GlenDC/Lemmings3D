@@ -1,9 +1,11 @@
 //=========================== INCLUDES =================================
 #include "DemoMode2.h"
+//----------------------------------------------------------------------
+#include "Scenegraph/GameScene.h"
 //======================================================================
 
-DemoMode2::DemoMode2()
-	: DemoModeBase(_T("Merged cubes"))
+DemoMode2::DemoMode2(GameScene * scene)
+	: DemoModeBase(scene, _T("Merged cubes"))
 {
 
 }

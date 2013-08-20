@@ -173,6 +173,7 @@
     <ClCompile Include="GameClasses\Materials\SkikeyMaterial.cpp" />
     <ClCompile Include="GameClasses\Materials\SkinnedMaterial.cpp" />
     <ClCompile Include="GameClasses\Materials\UberShaderMaterial.cpp" />
+    <ClCompile Include="GameClasses\Materials\WarpMaterial.cpp" />
     <ClCompile Include="GameClasses\UserInterface\AmountButton.cpp" />
     <ClCompile Include="GameClasses\UserInterface\BaseCursor.cpp" />
     <ClCompile Include="GameClasses\UserInterface\UIButton.cpp" />
@@ -284,6 +285,7 @@
     <ClInclude Include="GameClasses\Materials\SkinnedMaterial.h" />
     <ClInclude Include="GameClasses\Materials\SpikeyMaterial.h" />
     <ClInclude Include="GameClasses\Materials\UberShaderMaterial.h" />
+    <ClInclude Include="GameClasses\Materials\WarpMaterial.h" />
     <ClInclude Include="GameClasses\UserInterface\AmountButton.h" />
     <ClInclude Include="GameClasses\UserInterface\BaseCursor.h" />
     <ClInclude Include="GameClasses\UserInterface\UIButton.h" />

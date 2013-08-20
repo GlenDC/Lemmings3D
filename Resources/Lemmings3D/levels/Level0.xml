@@ -8,11 +8,9 @@
 		<block pos="108;168;336" id="1" />
 		<block pos="108;168;324" id="1" />
 		<block pos="96;168;324" id="1" />
-		<block pos="96;156;324" id="0" />
+		<block pos="96;156;324" id="5" />
 		<block pos="120;168;312" id="1" />
 		<block pos="108;168;312" id="1" />
-		<block pos="132;168;312" id="1" />
-		<block pos="132;168;300" id="1" />
 		<block pos="120;168;300" id="1" />
 		<block pos="108;168;300" id="1" />
 		<block pos="120;168;288" id="1" />
@@ -38,28 +36,28 @@
 		<block pos="132;156;180" id="1" />
 		<block pos="120;156;180" id="0" />
 		<block pos="108;156;180" id="0" />
-		<block pos="120;156;192" id="0" />
-		<block pos="108;156;192" id="0" />
+		<block pos="120;156;192" id="5" />
+		<block pos="108;156;192" id="5" />
 		<block pos="120;156;204" id="0" />
-		<block pos="108;156;204" id="0" />
-		<block pos="108;156;216" id="0" />
-		<block pos="120;156;216" id="0" />
-		<block pos="108;156;228" id="0" />
-		<block pos="120;156;228" id="0" />
-		<block pos="108;156;240" id="0" />
-		<block pos="120;156;240" id="0" />
-		<block pos="108;156;252" id="0" />
+		<block pos="108;156;204" id="5" />
+		<block pos="108;156;216" id="5" />
+		<block pos="120;156;216" id="5" />
+		<block pos="108;156;228" id="5" />
+		<block pos="120;156;228" id="5" />
+		<block pos="108;156;240" id="5" />
+		<block pos="120;156;240" id="5" />
+		<block pos="108;156;252" id="5" />
 		<block pos="120;156;252" id="5" />
-		<block pos="108;156;264" id="0" />
+		<block pos="108;156;264" id="5" />
 		<block pos="120;156;264" id="0" />
-		<block pos="108;156;276" id="0" />
+		<block pos="108;156;276" id="5" />
 		<block pos="120;156;276" id="0" />
-		<block pos="108;156;288" id="0" />
+		<block pos="108;156;288" id="5" />
 		<block pos="120;156;288" id="0" />
-		<block pos="108;156;300" id="0" />
+		<block pos="108;156;300" id="5" />
 		<block pos="120;156;300" id="0" />
 		<block pos="120;156;312" id="0" />
-		<block pos="108;156;312" id="0" />
+		<block pos="108;156;312" id="5" />
 		<block pos="132;156;264" id="1" />
 		<block pos="132;156;276" id="1" />
 		<block pos="144;156;276" id="1" />
@@ -111,7 +109,7 @@
 		<block pos="120;144;264" id="0" />
 		<block pos="120;144;276" id="0" />
 		<block pos="108;144;276" id="0" />
-		<block pos="108;144;264" id="0" />
+		<block pos="108;144;264" id="5" />
 		<block pos="120;168;120" id="1" />
 		<block pos="108;168;120" id="1" />
 		<block pos="108;168;108" id="1" />
@@ -140,8 +138,8 @@
 		<block pos="132;192;0" id="0" />
 		<block pos="84;168;60" id="0" />
 		<block pos="72;180;60" id="0" />
-		<block pos="84;180;60" id="0" />
-		<block pos="72;192;60" id="0" />
+		<block pos="84;180;60" id="1" />
+		<block pos="72;192;60" id="1" />
 		<block pos="84;192;48" id="0" />
 		<block pos="84;204;48" id="0" />
 		<block pos="96;204;36" id="0" />
@@ -163,7 +161,7 @@
 		<block pos="132;204;48" id="0" />
 		<block pos="132;180;60" id="0" />
 		<block pos="96;180;60" id="0" />
-		<block pos="84;180;72" id="0" />
+		<block pos="84;180;72" id="1" />
 		<block pos="96;180;72" id="0" />
 		<block pos="96;192;60" id="0" />
 		<block pos="132;192;60" id="0" />
@@ -178,11 +176,6 @@
 		<block pos="96;204;72" id="0" />
 		<block pos="96;192;72" id="0" />
 		<block pos="132;192;72" id="0" />
-		<block pos="144;180;132" id="1" />
-		<block pos="168;180;132" id="1" />
-		<block pos="168;180;144" id="1" />
-		<block pos="180;180;144" id="1" />
-		<block pos="84;192;132" id="0" />
 		<block pos="108;180;336" id="0" />
 		<block pos="132;180;336" id="0" />
 		<block pos="108;192;348" id="0" />
@@ -198,6 +191,20 @@
 		<block pos="108;192;60" id="0" />
 		<block pos="108;192;72" id="0" />
 		<block pos="120;192;72" id="0" />
+		<block pos="132;168;132" id="1" />
+		<block pos="180;168;132" id="1" />
+		<block pos="84;168;96" id="1" />
+		<block pos="84;168;144" id="1" />
+		<block pos="72;168;144" id="1" />
+		<block pos="84;168;156" id="1" />
+		<block pos="120;168;156" id="1" />
+		<block pos="108;168;168" id="1" />
+		<block pos="96;168;180" id="1" />
+		<block pos="96;168;168" id="1" />
+		<block pos="84;168;168" id="1" />
+		<block pos="84;168;180" id="1" />
+		<block pos="144;180;324" id="0" />
+		<block pos="156;180;324" id="0" />
 	</blocks>
 	<painted>
 		<paint pos="96;168;336" id="1" />
@@ -216,10 +223,10 @@
 		<paint pos="144;168;156" id="1" />
 		<paint pos="156;168;156" id="1" />
 		<paint pos="168;168;156" id="1" />
-		<paint pos="180;168;144" id="5" />
-		<paint pos="168;168;144" id="5" />
-		<paint pos="168;168;132" id="5" />
-		<paint pos="144;168;132" id="5" />
+		<paint pos="180;168;144" id="1" />
+		<paint pos="168;168;144" id="1" />
+		<paint pos="168;168;132" id="1" />
+		<paint pos="144;168;132" id="1" />
 		<paint pos="132;168;144" id="1" />
 		<paint pos="120;168;144" id="1" />
 		<paint pos="108;168;144" id="1" />
@@ -245,22 +252,269 @@
 		<paint pos="84;168;84" id="1" />
 		<paint pos="72;168;84" id="1" />
 		<paint pos="72;168;96" id="1" />
-		<paint pos="156;168;132" id="5" />
+		<paint pos="156;168;132" id="1" />
 		<paint pos="84;180;120" id="1" />
 		<paint pos="48;180;120" id="1" />
 		<paint pos="108;156;156" id="5" />
 		<paint pos="132;156;144" id="5" />
 		<paint pos="120;168;156" id="1" />
 		<paint pos="108;168;156" id="1" />
+		<paint pos="156;168;144" id="1" />
+		<paint pos="144;168;144" id="1" />
+		<paint pos="36;168;168" id="1" />
+		<paint pos="36;168;156" id="1" />
+		<paint pos="36;168;144" id="1" />
+		<paint pos="48;168;144" id="1" />
+		<paint pos="60;168;144" id="1" />
+		<paint pos="60;168;132" id="1" />
+		<paint pos="48;168;132" id="1" />
+		<paint pos="48;168;120" id="1" />
+		<paint pos="60;168;120" id="1" />
+		<paint pos="60;168;108" id="1" />
+		<paint pos="48;168;108" id="1" />
+		<paint pos="60;168;96" id="1" />
+		<paint pos="84;168;120" id="1" />
+		<paint pos="216;168;168" id="1" />
+		<paint pos="216;168;180" id="5" />
+		<paint pos="216;168;192" id="5" />
+		<paint pos="216;168;204" id="5" />
+		<paint pos="228;168;156" id="5" />
+		<paint pos="204;168;204" id="1" />
+		<paint pos="216;168;216" id="1" />
+		<paint pos="228;168;216" id="1" />
+		<paint pos="240;168;228" id="1" />
+		<paint pos="216;180;204" id="1" />
+		<paint pos="216;180;192" id="1" />
+		<paint pos="216;180;180" id="1" />
+		<paint pos="228;180;156" id="1" />
+		<paint pos="12;168;252" id="1" />
+		<paint pos="12;168;264" id="1" />
+		<paint pos="12;168;276" id="1" />
+		<paint pos="0;168;276" id="1" />
+		<paint pos="0;168;288" id="1" />
+		<paint pos="12;204;144" id="1" />
+		<paint pos="12;204;156" id="1" />
+		<paint pos="0;204;144" id="1" />
+		<paint pos="12;204;192" id="1" />
+		<paint pos="12;204;180" id="1" />
+		<paint pos="12;216;168" id="1" />
+		<paint pos="12;204;168" id="1" />
+		<paint pos="0;204;204" id="1" />
+		<paint pos="12;192;204" id="1" />
+		<paint pos="12;192;192" id="5" />
+		<paint pos="12;192;180" id="5" />
+		<paint pos="12;192;168" id="5" />
+		<paint pos="24;192;156" id="1" />
+		<paint pos="12;192;144" id="5" />
+		<paint pos="0;192;228" id="1" />
+		<paint pos="0;192;216" id="1" />
+		<paint pos="24;192;132" id="1" />
+		<paint pos="36;204;132" id="1" />
+		<paint pos="36;192;132" id="1" />
+		<paint pos="36;192;120" id="1" />
+		<paint pos="36;192;108" id="1" />
+		<paint pos="36;192;96" id="1" />
+		<paint pos="36;192;84" id="1" />
+		<paint pos="36;192;72" id="1" />
+		<paint pos="24;192;96" id="1" />
+		<paint pos="48;192;84" id="1" />
+		<paint pos="60;192;72" id="1" />
+		<paint pos="72;192;48" id="1" />
+		<paint pos="36;180;132" id="5" />
+		<paint pos="24;180;144" id="1" />
+		<paint pos="36;180;120" id="5" />
+		<paint pos="36;180;108" id="5" />
+		<paint pos="48;180;96" id="1" />
+		<paint pos="60;180;84" id="1" />
+		<paint pos="72;180;72" id="1" />
+		<paint pos="204;156;204" id="5" />
+		<paint pos="204;156;192" id="1" />
+		<paint pos="204;156;180" id="1" />
+		<paint pos="216;156;216" id="5" />
+		<paint pos="240;156;228" id="5" />
+		<paint pos="228;156;216" id="5" />
+		<paint pos="216;156;168" id="5" />
+		<paint pos="216;156;156" id="1" />
+		<paint pos="204;156;144" id="1" />
+		<paint pos="192;156;144" id="1" />
+		<paint pos="192;156;156" id="1" />
+		<paint pos="228;156;144" id="1" />
+		<paint pos="132;156;324" id="5" />
+		<paint pos="144;156;324" id="5" />
+		<paint pos="156;156;324" id="5" />
+		<paint pos="168;156;324" id="1" />
+		<paint pos="180;156;324" id="1" />
+		<paint pos="84;156;336" id="1" />
+		<paint pos="72;156;336" id="1" />
+		<paint pos="96;156;180" id="5" />
+		<paint pos="84;156;180" id="5" />
+		<paint pos="84;156;168" id="5" />
+		<paint pos="84;156;156" id="5" />
+		<paint pos="48;156;156" id="1" />
+		<paint pos="60;156;156" id="1" />
+		<paint pos="72;156;144" id="5" />
+		<paint pos="36;156;168" id="5" />
+		<paint pos="240;156;240" id="1" />
+		<paint pos="252;156;252" id="1" />
+		<paint pos="264;156;264" id="1" />
+		<paint pos="276;156;276" id="1" />
+		<paint pos="288;156;276" id="1" />
+		<paint pos="300;156;288" id="5" />
+		<paint pos="276;156;300" id="1" />
+		<paint pos="276;156;312" id="1" />
+		<paint pos="288;156;300" id="5" />
+		<paint pos="264;156;324" id="1" />
+		<paint pos="276;168;324" id="1" />
+		<paint pos="288;168;300" id="1" />
+		<paint pos="300;168;288" id="1" />
+		<paint pos="300;168;276" id="1" />
+		<paint pos="288;168;312" id="1" />
+		<paint pos="276;168;264" id="1" />
+		<paint pos="288;168;264" id="1" />
+		<paint pos="264;168;252" id="1" />
+		<paint pos="264;168;240" id="1" />
+		<paint pos="252;168;240" id="1" />
+		<paint pos="192;144;168" id="1" />
+		<paint pos="192;144;180" id="1" />
+		<paint pos="192;144;192" id="1" />
+		<paint pos="192;144;204" id="1" />
+		<paint pos="204;144;216" id="1" />
+		<paint pos="204;144;228" id="1" />
+		<paint pos="216;144;228" id="1" />
+		<paint pos="228;144;228" id="1" />
+		<paint pos="228;144;240" id="1" />
+		<paint pos="216;144;240" id="1" />
+		<paint pos="216;144;252" id="1" />
+		<paint pos="240;144;252" id="1" />
+		<paint pos="252;144;264" id="1" />
+		<paint pos="216;144;264" id="1" />
+		<paint pos="264;144;276" id="1" />
+		<paint pos="276;144;288" id="1" />
+		<paint pos="288;144;288" id="1" />
+		<paint pos="276;144;300" id="5" />
+		<paint pos="264;144;312" id="1" />
+		<paint pos="252;144;324" id="1" />
+		<paint pos="240;144;324" id="1" />
+		<paint pos="228;144;324" id="1" />
+		<paint pos="180;144;312" id="1" />
+		<paint pos="192;144;312" id="1" />
+		<paint pos="204;144;312" id="1" />
+		<paint pos="156;144;312" id="1" />
+		<paint pos="168;144;324" id="5" />
+		<paint pos="144;144;324" id="5" />
+		<paint pos="132;144;324" id="5" />
+		<paint pos="120;144;312" id="1" />
+		<paint pos="216;144;324" id="1" />
+		<paint pos="252;192;48" id="1" />
+		<paint pos="240;192;36" id="1" />
+		<paint pos="240;192;24" id="5" />
+		<paint pos="240;192;12" id="5" />
+		<paint pos="240;192;0" id="1" />
+		<paint pos="276;192;60" id="5" />
+		<paint pos="276;192;72" id="1" />
+		<paint pos="300;192;96" id="1" />
+		<paint pos="300;192;84" id="5" />
+		<paint pos="300;204;84" id="1" />
+		<paint pos="288;204;72" id="1" />
+		<paint pos="276;204;60" id="1" />
+		<paint pos="264;204;48" id="5" />
+		<paint pos="252;204;36" id="5" />
+		<paint pos="240;204;24" id="1" />
+		<paint pos="240;204;12" id="5" />
+		<paint pos="276;204;12" id="1" />
+		<paint pos="240;216;12" id="1" />
+		<paint pos="252;216;24" id="5" />
+		<paint pos="252;216;36" id="1" />
+		<paint pos="264;216;48" id="1" />
+		<paint pos="276;216;48" id="1" />
+		<paint pos="288;216;60" id="1" />
+		<paint pos="300;216;72" id="1" />
+		<paint pos="300;228;60" id="1" />
+		<paint pos="288;228;48" id="1" />
+		<paint pos="276;228;36" id="1" />
+		<paint pos="264;228;36" id="1" />
+		<paint pos="252;228;24" id="1" />
+		<paint pos="252;228;12" id="1" />
+		<paint pos="264;228;12" id="1" />
+		<paint pos="264;228;24" id="1" />
+		<paint pos="276;228;12" id="1" />
+		<paint pos="288;228;24" id="1" />
+		<paint pos="288;228;36" id="1" />
+		<paint pos="300;228;36" id="1" />
+		<paint pos="300;228;48" id="1" />
+		<paint pos="312;228;24" id="1" />
+		<paint pos="312;228;60" id="1" />
+		<paint pos="324;228;60" id="1" />
+		<paint pos="336;228;48" id="1" />
+		<paint pos="336;228;36" id="1" />
+		<paint pos="324;240;48" id="1" />
+		<paint pos="312;240;48" id="1" />
+		<paint pos="312;240;36" id="1" />
+		<paint pos="324;240;36" id="1" />
+		<paint pos="276;240;24" id="1" />
+		<paint pos="264;240;180" id="1" />
+		<paint pos="264;240;192" id="1" />
 	</painted>
 	<objects>
-		<object id="0" pos="96;174;336" rot="(0,0,0,1)" />
-		<object id="0" pos="96;174;324" rot="(0,0,0,1)" />
 		<object id="2" pos="216;186;204" rot="(0,0,0,1)" />
 		<object id="4" pos="216;186;192" rot="(0,0,0,1)" />
 		<object id="5" pos="216;186;180" rot="(0,0,0,1)" />
 		<object id="4" pos="108;174;84" rot="(0,0,0,1)" />
 		<object id="6" pos="120;174;348" rot="(0,0,0,1)" />
 		<object id="7" pos="120;174;72" rot="(0,0,0,1)" />
+		<object id="8" pos="132;174;324" rot="(0,0,0,1)" />
+		<object id="8" pos="204;174;204" rot="(0,0,0,1)" />
+		<object id="8" pos="12;174;252" rot="(0,0,0,1)" />
+		<object id="8" pos="12;174;228" rot="(0,0,0,1)" />
+		<object id="8" pos="36;198;132" rot="(0,0,0,1)" />
+		<object id="8" pos="48;198;84" rot="(0,0,0,1)" />
+		<object id="8" pos="72;198;60" rot="(0,0,0,1)" />
+		<object id="8" pos="252;198;48" rot="(0,0,0,1)" />
+		<object id="8" pos="228;198;168" rot="(0,0,0,1)" />
+		<object id="8" pos="240;198;156" rot="(0,0,0,1)" />
+		<object id="8" pos="288;210;228" rot="(0,0,0,1)" />
+		<object id="8" pos="108;210;360" rot="(0,0,0,1)" />
+		<object id="8" pos="12;210;168" rot="(0,0,0,1)" />
+		<object id="8" pos="12;210;144" rot="(0,0,0,1)" />
+		<object id="9" pos="156;150;312" rot="(0,0,0,1)" />
+		<object id="9" pos="228;150;228" rot="(0,0,0,1)" />
+		<object id="9" pos="228;150;240" rot="(0,0,0,1)" />
+		<object id="9" pos="204;150;216" rot="(0,0,0,1)" />
+		<object id="9" pos="204;150;228" rot="(0,0,0,1)" />
+		<object id="9" pos="60;162;156" rot="(0,0,0,1)" />
+		<object id="9" pos="48;162;156" rot="(0,0,0,1)" />
+		<object id="9" pos="204;162;192" rot="(0,0,0,1)" />
+		<object id="9" pos="180;162;324" rot="(0,0,0,1)" />
+		<object id="9" pos="132;162;180" rot="(0,0,0,1)" />
+		<object id="9" pos="84;174;96" rot="(0,0,0,1)" />
+		<object id="9" pos="72;174;96" rot="(0,0,0,1)" />
+		<object id="9" pos="48;174;132" rot="(0,0,0,1)" />
+		<object id="9" pos="36;174;156" rot="(0,0,0,1)" />
+		<object id="9" pos="228;186;156" rot="(0,0,0,1)" />
+		<object id="9" pos="240;198;36" rot="(0,0,0,1)" />
+		<object id="9" pos="276;198;72" rot="(0,0,0,1)" />
+		<object id="9" pos="300;198;96" rot="(0,0,0,1)" />
+		<object id="9" pos="300;210;84" rot="(0,0,0,1)" />
+		<object id="9" pos="264;222;48" rot="(0,0,0,1)" />
+		<object id="9" pos="276;222;48" rot="(0,0,0,1)" />
+		<object id="9" pos="312;246;48" rot="(0,0,0,1)" />
+		<object id="9" pos="312;246;36" rot="(0,0,0,1)" />
+		<object id="9" pos="264;246;180" rot="(0,0,0,1)" />
+		<object id="8" pos="96;174;180" rot="(0,0,0,1)" />
+		<object id="8" pos="132;174;144" rot="(0,0,0,1)" />
+		<object id="8" pos="84;174;108" rot="(0,0,0,1)" />
+		<object id="8" pos="180;174;168" rot="(0,0,0,1)" />
+		<object id="8" pos="252;174;240" rot="(0,0,0,1)" />
+		<object id="1" pos="180;174;132" rot="(0,0,0,1)" />
+		<object id="4" pos="48;174;144" rot="(0,0,0,1)" />
+		<object id="4" pos="72;174;108" rot="(0,0,0,1)" />
+		<object id="2" pos="84;174;180" rot="(0,0,0,1)" />
+		<object id="2" pos="108;174;324" rot="(0,0,0,1)" />
+		<object id="3" pos="120;174;204" rot="(0,0,0,1)" />
+		<object id="3" pos="108;174;144" rot="(0,0,0,1)" />
+		<object id="5" pos="48;186;96" rot="(0,0,0,1)" />
+		<object id="5" pos="84;186;72" rot="(0,0,0,1)" />
+		<object id="5" pos="24;198;156" rot="(0,0,0,1)" />
+		<object id="5" pos="36;198;108" rot="(0,0,0,1)" />
 	</objects>
 </Level>

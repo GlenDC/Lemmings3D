@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <Parameters>
 	<Parameter name="Name" value="GlenDC" />
-	<Parameter name="EDITOR_CAMERA_POS" value="141.798;255.773;230.922" />
-	<Parameter name="EDITOR_CAMERA_YAW" value="-524.555" />
-	<Parameter name="EDITOR_CAMERA_PITCH" value="603.817" />
+	<Parameter name="EDITOR_CAMERA_POS" value="133.913;220.087;163.428" />
+	<Parameter name="EDITOR_CAMERA_YAW" value="-534.002" />
+	<Parameter name="EDITOR_CAMERA_PITCH" value="603.785" />
 	<Parameter name="EDITOR_CAMERA_FOV" value="70" />
 	<Parameter name="EDITOR_CAMERA_SPEED" value="100" />
 	<Parameter name="EDITOR_CAMERA_ROT_SPEED" value="0.5" />
@@ -13,5 +13,5 @@
 	<Parameter name="GAME_CAMERA_FOV" value="70" />
 	<Parameter name="GAME_CAMERA_SPEED" value="100" />
 	<Parameter name="GAME_CAMERA_ROT_SPEED" value="0.5" />
-	<Parameter name="MUTE_MASTER_VOLUME" value="False" />
+	<Parameter name="MUTE_MASTER_VOLUME" value="True" />
 </Parameters>

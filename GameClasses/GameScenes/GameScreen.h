@@ -61,6 +61,8 @@ public:
 
 	float GetCameraFOV() const { return m_CameraFOV; }
 
+	void SaveLemming();
+
 private:
 	enum class AppMode : byte 
 	{
@@ -98,7 +100,7 @@ private:
 	bool	m_RefreshLevelTimer,
 			m_BuildModePosRefresh;
 
-	UINT m_LevelID;
+	UINT m_LevelID, m_LemmingsSaved;
 
 	//Camera info
 	float m_CameraFOV, m_CameraZoom, m_CameraSpeed;

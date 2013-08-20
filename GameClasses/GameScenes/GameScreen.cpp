@@ -59,6 +59,7 @@ GameScreen::GameScreen(const tstring & level_file, UINT level_id)
 	,m_pCameraRotationTexture(nullptr)
 	,m_CameraRotationSprite()
 	,m_LevelFile(level_file)
+	,m_LemmingsSaved(0)
 {
 	TimeManager::GetInstance()->SetGameScreen(this);
 }
@@ -312,6 +313,14 @@ void GameScreen::SetGameUIDisabled(bool disabled)
 	m_pGameMenu->SetElementDisabled(_T("Main_Button_Rect_C"), disabled);
 	m_pGameMenu->SetElementDisabled(_T("Main_Button_Rect_F"), disabled);
 	m_pGameMenu->SetElementDisabled(_T("Main_Button_Rect_I"), disabled);
+}
+
+void GameScreen::SaveLemming()
+{
+	++m_LemmingsSaved;
+	tstringstream strstr;
+	strstr << _T("Saved a lemming... you saved ") << m_LemmingsSaved << _T(" in total!");
+	WorldBroadCast::GetInstance()->Send(strstr.str());
 }
 
 void GameScreen::SwitchMode(AppMode mode)

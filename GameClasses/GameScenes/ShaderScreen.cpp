@@ -37,19 +37,19 @@ ShaderScreen::ShaderScreen(void)
 	m_pStates = new StateManager();
 	m_pStates->Initialize();
 
-	auto state_1 = new DemoMode1();
+	auto state_1 = new DemoMode1(this);
 	state_1->Initialize();
 	m_pStates->AddState(_T("Demo1"),state_1);
 
-	auto state_2 = new DemoMode2();
+	auto state_2 = new DemoMode2(this);
 	state_2->Initialize();
 	m_pStates->AddState(_T("Demo2"),state_2);
 
-	auto state_3 = new DemoMode3();
+	auto state_3 = new DemoMode3(this);
 	state_3->Initialize();
 	m_pStates->AddState(_T("Demo3"),state_3);
 
-	auto state_4 = new DemoMode4();
+	auto state_4 = new DemoMode4(this);
 	state_4->Initialize();
 	m_pStates->AddState(_T("Demo4"),state_4);
 

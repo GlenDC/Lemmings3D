@@ -1,6 +1,7 @@
 #pragma once
 //====================== #INCLUDES ===================================
 #include "ColissionEntity.h"
+#include "GameEntity.h"
 //====================================================================
 
 //====================== PortalExit Class =============================
@@ -14,6 +15,7 @@
 class RigidBodyComponent;
 class PhysicsMaterial;
 class BaseColliderComponent;
+class WarpMaterial;
 
 class PortalExit : public ColissionEntity
 {
@@ -24,12 +26,15 @@ public:
 	virtual ~PortalExit();
 
 	virtual void Initialize();
+	virtual void Update(const GameContext & context);
 
 protected:
 	virtual void InitializeRigidBody();
 
 private:
 	static const int MODEL_ID = 7;
+	GameEntity * m_pWarp;
+	WarpMaterial * m_pWarpMaterial;
 
 	// Disabling default copy constructor and default assignment operator.
 	PortalExit(const PortalExit& yRef);									

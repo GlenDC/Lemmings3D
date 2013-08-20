@@ -196,7 +196,7 @@ void MainMenuScreen::Deactivated()
 void MainMenuScreen::Exit()
 {
 	AudioManager::GetInstance()->PlaySoundEffect(_T("Goodbye"));
-	Stopwatch::GetInstance()->CreateTimer(_T("exit"), 1.5f, true, false, [&] ()
+	Stopwatch::GetInstance()->CreateTimer(_T("exit"), 1.0f, true, false, [&] ()
 	{
 		ScreenManager::GetInstance()->QuitGame();
 	});

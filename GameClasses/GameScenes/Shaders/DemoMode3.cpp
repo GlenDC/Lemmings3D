@@ -1,9 +1,11 @@
 //=========================== INCLUDES =================================
 #include "DemoMode3.h"
+//----------------------------------------------------------------------
+#include "Scenegraph/GameScene.h"
 //======================================================================
 
-DemoMode3::DemoMode3()
-	: DemoModeBase(_T("A primitive representation of nature"))
+DemoMode3::DemoMode3(GameScene * scene)
+	: DemoModeBase(scene, _T("A primitive representation of nature"))
 {
 
 }

@@ -766,9 +766,9 @@ void PointLight(Light L, float3 normal, float3 specular, float3 viewDirection, f
 
 void CalculatePanningDiffuse(float3 normal, float3 viewDirection, float2 texCoord, inout float3 resultColor)
 {
-	float alpha1 = m_PanAlpha1.Sample(m_TextureSampler, texCoord).r;
-	float alpha2 = m_PanAlpha2.Sample(m_TextureSampler, texCoord).r;
 	float aniSpeed = m_Time / 4;
+	float alpha1 = m_PanAlpha1.Sample(m_TextureSampler, texCoord + aniSpeed*float2(-m_PanSpeed1,0)).r;
+	float alpha2 = m_PanAlpha2.Sample(m_TextureSampler, texCoord + aniSpeed*float2(-m_PanSpeed1,0)).r;
 	
 	//reset color value to 0
 	resultColor *= (1 - (alpha1+alpha2));

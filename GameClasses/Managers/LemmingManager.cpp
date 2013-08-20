@@ -5,6 +5,7 @@
 #include "Scenegraph/GameScene.h"
 //--------------------------------------------------------------------
 #include <algorithm>
+#include "ColissionCollector.h"
 //====================================================================
 
 LemmingManager* LemmingManager::m_pInstance = nullptr;
@@ -58,4 +59,17 @@ void LemmingManager::CreateLemming(const D3DXVECTOR3 & pos)
 	m_pGameScene->AddSceneObject(lemming);
 	lemming->Initialize();
 	m_Lemmings.push_back(lemming);
+}
+
+void LemmingManager::DeleteLemming(LemmingAI* lemming)
+{
+	auto it = std::find(m_Lemmings.begin(), m_Lemmings.end(), lemming);
+	if(it != m_Lemmings.end())
+	{
+		m_Lemmings.erase(it);
+		ColissionCollector::GetInstance()->RemoveUser(lemming);
+		lemming->Translate(-9999,-9999,-9999);
+		//todo delete...
+		//m_pGameScene->RemoveSceneObject(lemming);
+	}
 }

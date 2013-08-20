@@ -31,6 +31,7 @@ public:
 	void Draw(GameContext& context);
 
 	void CreateLemming(const D3DXVECTOR3 & pos);
+	void DeleteLemming(LemmingAI* lemming);
 	void SetGameScene(GameScene * scene) { m_pGameScene = scene; }
 
 private:

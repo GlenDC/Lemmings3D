@@ -6,7 +6,7 @@
 //====================================================================
 
 SpikeyMaterial::SpikeyMaterial():
-	Material(_T("./Resources/SpikeyShader.fx")),
+	Material(_T("./Resources/Lemmings3D/shaders/SpikeyShader.fx")),
 	m_vecLightDirection(D3DXVECTOR3(-0.5f, -0.5f, 0.5f)),
 	m_pLightDirVariable(0),
 	m_Color(D3DXCOLOR(1,1,1,1)),

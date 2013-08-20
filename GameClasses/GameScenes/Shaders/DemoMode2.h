@@ -20,11 +20,12 @@
 
 class SpriteFont;
 class UIDockInterface;
+class GameScene;
 
 class DemoMode2 : public DemoModeBase
 {
 public:
-	DemoMode2();
+	DemoMode2(GameScene * scene);
 	virtual ~DemoMode2(void);
 
 	virtual void Initialize(void);

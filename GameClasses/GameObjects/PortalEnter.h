@@ -15,6 +15,7 @@
 class RigidBodyComponent;
 class PhysicsMaterial;
 class BaseColliderComponent;
+class WarpMaterial;
 
 class PortalEnter : public GameEntity
 {
@@ -30,6 +31,8 @@ public:
 private:
 	static const int MODEL_ID = 6;
 	bool m_CanSpawn;
+	GameEntity * m_pWarp;
+	WarpMaterial * m_pWarpMaterial;
 
 	// Disabling default copy constructor and default assignment operator.
 	PortalEnter(const PortalEnter& yRef);									

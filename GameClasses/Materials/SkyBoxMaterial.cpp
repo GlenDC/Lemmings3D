@@ -47,5 +47,5 @@ void SkyBoxMaterial::Update(const GameContext & context)
 void SkyBoxMaterial::SetPosition(const D3DXVECTOR3 & pos)
 { 
 	m_PreviewPosition = pos;
-	m_WorldMatrix = LemmingsHelpers::MatrixTranslation(pos);
+	m_WorldMatrix = LemmingsHelpers::MatrixScale(500,500,500) * LemmingsHelpers::MatrixTranslation(pos);
 }

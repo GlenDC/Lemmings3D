@@ -64,7 +64,7 @@ GameEntity::GameEntity(const tstring & visualModelPath, Material * material)
 
 GameEntity::~GameEntity() //Default Destructor
 {
-	SafeDelete(m_pVisualMaterial);
+	//SafeDelete(m_pVisualMaterial);
 }
 
 void GameEntity::Initialize()

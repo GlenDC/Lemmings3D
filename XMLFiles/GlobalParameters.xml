@@ -21,7 +21,7 @@
 	<Parameter name="HERO_RUN_SPEED" value="8.0" />
 	<Parameter name="LEMMING_SPEED" value="3.5" />
 	<Parameter name="LEMMING_RUN_SPEED" value="5.0" />
-	<Parameter name="MUTE_MASTER_SOUND" value="False" />
+	<Parameter name="MUTE_MASTER_SOUND" value="True" />
 	<Parameter name="AI_SPAWN_DELAY" value="10.0" />
 	<Parameter name="AUTO_COLLISION_MIN" value="60;160;180" />
 	<Parameter name="AUTO_COLLISION_MAX" value="180;200;365" />
