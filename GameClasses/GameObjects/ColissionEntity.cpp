@@ -229,6 +229,11 @@ void ColissionEntity::RemoveRigidBody()
 	m_pRigidBody = nullptr;
 }
 
+void ColissionEntity::DisableGravity()
+{
+	m_pRigidBody->AddConstraints(Constraints::DISABLE_GRAVITY);
+}
+
 void ColissionEntity::InitializeRigidBody()
 {
 	m_pRigidBody = new RigidBodyComponent();

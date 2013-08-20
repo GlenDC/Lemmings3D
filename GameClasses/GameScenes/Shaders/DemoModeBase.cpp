@@ -5,6 +5,7 @@
 #include "..\..\UserInterface\UIDockInterface.h"
 #include "../../GameObjects/GameEntity.h"
 #include "OverlordComponents.h"
+#include "../../GameObjects/EditorCamera.h"
 //=============================================================================================
 
 const float DemoModeBase::ROTATION_SPEED = 2.0f;
@@ -16,6 +17,7 @@ DemoModeBase::DemoModeBase(GameScene * scene, const tstring & title, const tstri
 	, m_pScene(scene)
 	, m_ContentActive(false)
 	, m_pDemoObject(nullptr)
+	, m_pCamera(nullptr)
 {
 	m_pDefaultFont = SpritefontManager::GetInstance()->CreateOrGet(_T("GameOver"));
 
@@ -33,16 +35,10 @@ DemoModeBase::~DemoModeBase(void)
 
 void DemoModeBase::Initialize()
 {
-	auto object = new GameObject();
-	m_pScene->AddSceneObject(object);
-
-	auto camera = new CameraComponent();
-	object->AddComponent(camera);
-	camera->Initialize();
-	camera->GetTransform()->Translate(0,0,-50.0f);
-	camera->SetActive();
-
-	object->Initialize();
+	m_pCamera = new EditorCamera();
+	m_pScene->AddSceneObject(m_pCamera);
+	m_pCamera->GetComponent<CameraComponent>()->SetActive();
+	m_pCamera->Translate(0,0,-50);
 }
 
 void DemoModeBase::Update(const GameContext& context)
@@ -83,6 +79,8 @@ void DemoModeBase::Activate()
 	{
 		m_pDemoObject->Translate(0,0,0);
 	}
+	if(m_pCamera)
+		m_pCamera->GetComponent<CameraComponent>()->SetActive();
 	m_ContentActive = true;
 }
 

@@ -21,6 +21,8 @@
 class SpriteFont;
 class UIDockInterface;
 class GameScene;
+class GameObject;
+class Hero;
 
 class DemoModeController : public DemoModeBase
 {
@@ -37,6 +39,9 @@ public:
 	virtual void Deactivate();
 
 private:
+	GameObject *m_pFloor;
+	Hero * m_pPlayer;
+
 	// Disabling default copy constructor and default assignment operator.
 	DemoModeController(const DemoModeController& yRef);									
 	DemoModeController& operator=(const DemoModeController& yRef);

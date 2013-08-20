@@ -31,7 +31,7 @@
 //====================================================================
 
 ShaderScreen::ShaderScreen(void)
-	: BaseScreen(_T("ShaderScreen"), _T("Lemmings3D Main Menu"), false)
+	: BaseScreen(_T("ShaderScreen"), _T("Lemmings3D Main Menu"), true)
 	, m_pSpriteFont(nullptr)
 	, m_pDemoDock(nullptr)
 	, m_pMenuDock(nullptr)
@@ -102,8 +102,8 @@ ShaderScreen::ShaderScreen(void)
 	start_x += offset;
 	m_pDemoDock->AddButton(start_x, but_demo_y, _T("btn_test_character"), _T("shaders_btn_shader_controller.png"), [&] ()
 	{
-		m_pDemoDock->ToggleElement(_T("btn_test_character"));
 		m_pStates->SetState(_T("DemoCharacter"));
+		m_pDemoDock->ToggleElement(_T("btn_test_character"));
 		WorldBroadCast::GetInstance()->Send(_T("Switched to Character Controller Test Zone.."));
 	}, false, false);
 	start_x += offset;

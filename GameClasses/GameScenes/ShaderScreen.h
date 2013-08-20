@@ -1,6 +1,7 @@
 //====================== #INCLUDES ===================================
 #include "BaseScreen.h"
 #include <memory>
+#include <thread>
 #include "Helpers/SpriteFont.h"
 //====================================================================
 
@@ -16,6 +17,7 @@ class StateManager;
 //====================================================================
 
 class ColissionEntity;
+class GameObject;
 
 class ShaderScreen: public BaseScreen
 {
@@ -36,8 +38,9 @@ public:
 private:
 	shared_ptr<SpriteFont> m_pSpriteFont;
 	UIDockInterface *m_pDemoDock, *m_pMenuDock;
-
 	StateManager *m_pStates;
+
+	std::thread m_Thread;
 
 	// Disabling default copy constructor and default assignment operator.
 	ShaderScreen(const ShaderScreen& yRef);									

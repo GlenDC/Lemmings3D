@@ -42,12 +42,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\OverlordEngine;C:\Program Files (x86)\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;PugiXML\src;$(IncludePath);$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files (x86)\FMOD SoundSystem\FMOD Programmers API Windows\api\inc;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\OverlordEngine;PugiXML\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>..\OverlordEngine;PugiXML\src;$(IncludePath)</IncludePath>
+    <IncludePath>PugiXML\src;..\OverlordEngine;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -79,13 +79,16 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>winmm.lib;Debug\OverlordEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;Release\OverlordEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -102,6 +105,7 @@
     <ClCompile Include="GameClasses\Entities\StatusReport.cpp" />
     <ClCompile Include="GameClasses\Entities\WorldBroadCast.cpp" />
     <ClCompile Include="GameClasses\GameObjects\Decal.cpp" />
+    <ClCompile Include="GameClasses\GameObjects\FlyCube.cpp" />
     <ClCompile Include="GameClasses\GameObjects\Hero.cpp" />
     <ClCompile Include="GameClasses\GameObjects\KeyObject.cpp" />
     <ClCompile Include="GameClasses\GameObjects\KeyPickup.cpp" />
@@ -212,6 +216,7 @@
     <ClInclude Include="GameClasses\Entities\StatusReport.h" />
     <ClInclude Include="GameClasses\Entities\WorldBroadCast.h" />
     <ClInclude Include="GameClasses\GameObjects\Decal.h" />
+    <ClInclude Include="GameClasses\GameObjects\FlyCube.h" />
     <ClInclude Include="GameClasses\GameObjects\Hero.h" />
     <ClInclude Include="GameClasses\GameObjects\KeyObject.h" />
     <ClInclude Include="GameClasses\GameObjects\KeyPickup.h" />

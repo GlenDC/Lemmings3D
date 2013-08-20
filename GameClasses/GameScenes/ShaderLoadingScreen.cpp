@@ -39,7 +39,7 @@ void ShaderLoadingScreen::Initialize()
 			ScreenManager::GetInstance()->AddActiveScreen(_T("ShaderScreen"));
 			ScreenManager::GetInstance()->RemoveActiveScreen(_T("LoadingScreen"));
 			ScreenManager::GetInstance()->RemoveScreen(_T("LoadingScreen"));
-			ScreenManager::GetInstance()->SetPhysicsDrawEnabled(false);
+			ScreenManager::GetInstance()->SetPhysicsDrawEnabled(true);
 			ScreenManager::GetInstance()->SetControlScreen(_T("ShaderScreen"));
 			AudioManager::GetInstance()->PlaySoundEffect(_T("Loading Finished"));
 			AudioManager::GetInstance()->PlaySong(_T("Demo"));

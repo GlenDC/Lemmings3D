@@ -85,11 +85,11 @@ void ScreenManager::RemoveScreen(BaseScreen* screen)
 
 void ScreenManager::RemoveScreen(const tstring & name)
 {
-	auto chosenScene = *find_if(m_Screens.begin(), m_Screens.end(), 
+	auto chosenScene = find_if(m_Screens.begin(), m_Screens.end(), 
          [&name](BaseScreen* scene) { return scene->GetName() == name; });
-	if(chosenScene)
+	if(chosenScene != m_Screens.end())
 	{
-		RemoveScreen(chosenScene);
+		RemoveScreen(*chosenScene);
 	}
 }
 
@@ -114,9 +114,9 @@ bool ScreenManager::AddActiveScreen(const tstring & name)
 
 bool ScreenManager::RemoveActiveScreen(const tstring & name)
 {
-	auto chosenScene = *find_if(m_Screens.begin(), m_Screens.end(), 
+	auto chosenScene = find_if(m_Screens.begin(), m_Screens.end(), 
          [&name](BaseScreen* scene) { return scene->GetName() == name; });
-	if (chosenScene != nullptr)
+	if (chosenScene != m_Screens.end())
     {
 		m_ActiveScreens.erase(std::remove_if(m_ActiveScreens.begin(), m_ActiveScreens.end(), 
 			[&name](BaseScreen* scene) { 

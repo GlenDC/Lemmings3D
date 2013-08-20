@@ -8,6 +8,7 @@
 #include "../Lib/GlobalParameters.h"
 //--------------------------------------------------------------------
 #include "Helpers/GeneralStructs.h"
+#include "../Lib/LemmingsHelpers.h"
 //====================================================================
 
 ThirdPersonCamera::ThirdPersonCamera()
@@ -60,14 +61,31 @@ void ThirdPersonCamera::Update(const GameContext& context)
 		//CALCULATE TRANSFORMS
 		auto transform = GetComponent<TransformComponent>();
 
-		D3DXQUATERNION finalQuat = m_pTarget->GetRotation();
-		D3DXMATRIX finalRotMat;
+		if(context.Input->IsMouseButtonDown(VK_RBUTTON))
+		{
+			D3DXVECTOR2 look = D3DXVECTOR2(0,0);
+			if(context.Input->IsMouseButtonDown(VK_RBUTTON))
+			{
+				auto mouseMove = context.Input->GetMouseMovement();
+				look = D3DXVECTOR2(static_cast<float>(mouseMove.x),static_cast<float>(mouseMove.y));
+			}
+			m_TotalYaw += look.x * m_RotationSpeed * context.GameTime.ElapsedSeconds();
+			m_TotalPitch += look.y * m_RotationSpeed * context.GameTime.ElapsedSeconds();
+		}
+		D3DXMATRIX yawRotationMat, pitchRotationMat, finalRotMat;
+		D3DXVECTOR3 transformedRight;
+		D3DXMatrixRotationAxis(&yawRotationMat, &D3DXVECTOR3(0,1,0), m_TotalYaw + LemmingsHelpers::GetYaw(m_pTarget->GetRotation()));
+		D3DXVec3TransformCoord(&transformedRight,&D3DXVECTOR3(1,0,0),&yawRotationMat);
+		D3DXMatrixRotationAxis(&pitchRotationMat, &transformedRight, m_TotalPitch);
+		finalRotMat = yawRotationMat * pitchRotationMat;
+
+		D3DXQUATERNION finalQuat;
 		D3DXQuaternionRotationMatrix(&finalQuat, &finalRotMat);
 
 		if(m_CanMove)
 		{
 			transform->Rotate(finalQuat);
-			pos += m_ZoomOffset * m_pTarget->GetTransform()->GetForward() * -1;
+			pos -= m_ZoomOffset * GetTransform()->GetForward();
 			transform->Translate(pos);
 		}
 	}

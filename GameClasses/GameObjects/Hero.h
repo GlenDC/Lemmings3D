@@ -11,6 +11,8 @@
 // www.glendc.com
 //====================================================================
 
+class ThirdPersonCamera;
+
 class Hero : public Lemming
 {
 private:
@@ -18,11 +20,16 @@ private:
 public:
 	Hero();
 	virtual ~Hero();
-
+	
+	virtual void Initialize();
 	virtual void Update(const GameContext & context);
 	virtual void UpdateControl(const GameContext & context);
 
+	void SetControlled(bool control_character);
+
 private:
+	bool m_Controlled;
+	ThirdPersonCamera *m_pCamera;
 
 	// Disabling default copy constructor and default assignment operator.
 	Hero(const Hero& yRef);									

@@ -22,6 +22,7 @@ class SpriteFont;
 class UIDockInterface;
 class GameScene;
 class GameEntity;
+class GameObject;
 
 class DemoModeBase : public State
 {
@@ -45,6 +46,8 @@ protected:
 
 	GameEntity * m_pDemoObject;
 	static const float ROTATION_SPEED;
+
+	GameObject *m_pCamera;
 
 private:
 	// Disabling default copy constructor and default assignment operator.

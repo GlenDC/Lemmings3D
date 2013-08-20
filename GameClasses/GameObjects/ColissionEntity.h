@@ -56,6 +56,8 @@ public:
 	void ClearColliders();
 	void RemoveRigidBody();
 
+	void DisableGravity();
+
 	float GetCollectionRange() const { return m_CollectionRange; }
 protected:
 	virtual void InitializeRigidBody();

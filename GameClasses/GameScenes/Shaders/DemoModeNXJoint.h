@@ -21,6 +21,7 @@
 class SpriteFont;
 class UIDockInterface;
 class GameScene;
+class ColissionEntity;
 
 class DemoModeNXJoint : public DemoModeBase
 {
@@ -37,6 +38,12 @@ public:
 	virtual void Deactivate();
 
 private:
+	void ShootCube();
+
+	ColissionEntity * m_pActorA, *m_pActorB, *m_pActorC, *m_pActorD, *m_pActorE;
+
+	std::vector<ColissionEntity*> m_Ammo;
+
 	// Disabling default copy constructor and default assignment operator.
 	DemoModeNXJoint(const DemoModeNXJoint& yRef);									
 	DemoModeNXJoint& operator=(const DemoModeNXJoint& yRef);
