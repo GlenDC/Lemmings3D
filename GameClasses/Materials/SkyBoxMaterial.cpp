@@ -24,7 +24,7 @@ SkyBoxMaterial::~SkyBoxMaterial(void)
 
 void SkyBoxMaterial::LoadEffectVariables()
 {
-	m_pCubeMapVariabele = m_pEffect->GetVariableByName("Cubemap")->AsShaderResource();
+	m_pCubeMapVariabele = m_pEffect->GetVariableByName("m_CubeMap")->AsShaderResource();
 }
 
 void SkyBoxMaterial::UpdateEffectVariables(ModelComponent* modelComponent)

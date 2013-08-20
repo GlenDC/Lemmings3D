@@ -69,7 +69,6 @@ Level::~Level(void)
 	m_pPhysicsCubeVec.clear();
 	m_ColissionEntities.clear();
 	m_GameEntities.clear();
-	delete m_pSkyBox;
 }
 
 void Level::Initialize()
@@ -203,8 +202,12 @@ void Level::Initialize()
 	{
 		CreateObjects();
 	}
-	m_pSkyBox = new SkyBox(this, m_Center, _T("grassenvmap1024.dds"));
-	m_pSkyBox->Initialize();
+	m_pSkyBox = new SkyBox();
+	m_pGame->AddSceneObject(m_pSkyBox);
+	m_pSkyBox->Translate(GetCenter());
+	UINT h(GetHeight()), w(Getwidth());
+	float scale_size = 1000.0f;
+	m_pSkyBox->Scale(scale_size, scale_size, scale_size);
 
 	///*tstringstream strstr;
 	//strstr << _T("HeightMap[") << (m_Height-1) << _T("][") << (m_Width-1) << _T("] == {") <<
@@ -260,6 +263,8 @@ void Level::Update(const GameContext & context)
 	bool create_blocks = GlobalParameters::GetParameters()->GetParameter<bool>(_T("CREATE_LEVEL_BLOCKS"));
 	if(create_blocks)
 		m_pInstancedObject->Update(context);
+
+	m_pSkyBox->Update(context);
 
 	for( auto pEntity : m_ColissionEntities )
 	{

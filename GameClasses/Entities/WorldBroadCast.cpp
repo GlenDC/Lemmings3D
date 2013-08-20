@@ -64,7 +64,7 @@ void WorldBroadCast::Draw(const GameContext & context)
 			m_Font.get(),
 			broadcast.Text,
 			origin - D3DXVECTOR2(0, i * TEXT_OFFSET),
-			D3DXCOLOR(1,1,1,broadcast.Alpha)
+			D3DXCOLOR(0.9f,0.9f,0,broadcast.Alpha)
 			);
 	}
 }

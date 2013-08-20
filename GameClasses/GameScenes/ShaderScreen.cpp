@@ -24,7 +24,10 @@
 #include "Shaders/DemoMode2.h"
 #include "Shaders/DemoMode3.h"
 #include "Shaders/DemoMode4.h"
+#include "Shaders/DemoModeController.h"
+#include "Shaders/DemoModeNXJoint.h"
 #include "../Entities/WorldBroadCast.h"
+#include "../GameObjects/SkyBox.h"
 //====================================================================
 
 ShaderScreen::ShaderScreen(void)
@@ -52,6 +55,14 @@ ShaderScreen::ShaderScreen(void)
 	auto state_4 = new DemoMode4(this);
 	state_4->Initialize();
 	m_pStates->AddState(_T("Demo4"),state_4);
+
+	auto state_controller = new DemoModeController(this);
+	state_controller->Initialize();
+	m_pStates->AddState(_T("DemoCharacter"),state_controller);
+
+	auto state_nxjoint = new DemoModeNXJoint(this);
+	state_nxjoint->Initialize();
+	m_pStates->AddState(_T("DemoNXJoint"),state_nxjoint);
 
 	m_pStates->SetState(_T("Demo1"));
 
@@ -87,6 +98,22 @@ ShaderScreen::ShaderScreen(void)
 		m_pStates->SetState(_T("Demo4"));
 		WorldBroadCast::GetInstance()->Send(_T("Switched to Experiment 4..."));
 	}, false, false);
+
+	start_x += offset;
+	m_pDemoDock->AddButton(start_x, but_demo_y, _T("btn_test_character"), _T("shaders_btn_shader_controller.png"), [&] ()
+	{
+		m_pDemoDock->ToggleElement(_T("btn_test_character"));
+		m_pStates->SetState(_T("DemoCharacter"));
+		WorldBroadCast::GetInstance()->Send(_T("Switched to Character Controller Test Zone.."));
+	}, false, false);
+	start_x += offset;
+	m_pDemoDock->AddButton(start_x, but_demo_y, _T("btn_nxjoint"), _T("shaders_btn_shader_nxjoint.png"), [&] ()
+	{
+		m_pDemoDock->ToggleElement(_T("btn_nxjoint"));
+		m_pStates->SetState(_T("DemoNXJoint"));
+		WorldBroadCast::GetInstance()->Send(_T("Switched to nx joint test zone..."));
+	}, false, false);
+
 	m_pDemoDock->Initialize();
 
 	int x_quit(1695), x_vol(1865), y_but(10);
@@ -152,6 +179,10 @@ ShaderScreen::~ShaderScreen(void)
 void ShaderScreen::Initialize()
 {
 	BaseScreen::Initialize();
+
+	/*auto skybox = new SkyBox();
+	skybox->Scale(50,50,50);
+	AddSceneObject(skybox);*/
 }
 
 void ShaderScreen::Update(const GameContext& context)

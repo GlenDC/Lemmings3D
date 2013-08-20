@@ -144,6 +144,8 @@
     <ClCompile Include="GameClasses\GameScenes\Shaders\DemoMode3.cpp" />
     <ClCompile Include="GameClasses\GameScenes\Shaders\DemoMode4.cpp" />
     <ClCompile Include="GameClasses\GameScenes\Shaders\DemoModeBase.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Shaders\DemoModeController.cpp" />
+    <ClCompile Include="GameClasses\GameScenes\Shaders\DemoModeNXJoint.cpp" />
     <ClCompile Include="GameClasses\Helpers\HeightmapParser.cpp" />
     <ClCompile Include="GameClasses\Helpers\Rectangle.cpp" />
     <ClCompile Include="GameClasses\Lemmings3D.cpp" />
@@ -252,6 +254,8 @@
     <ClInclude Include="GameClasses\GameScenes\Shaders\DemoMode3.h" />
     <ClInclude Include="GameClasses\GameScenes\Shaders\DemoMode4.h" />
     <ClInclude Include="GameClasses\GameScenes\Shaders\DemoModeBase.h" />
+    <ClInclude Include="GameClasses\GameScenes\Shaders\DemoModeController.h" />
+    <ClInclude Include="GameClasses\GameScenes\Shaders\DemoModeNXJoint.h" />
     <ClInclude Include="GameClasses\Helpers\HeightmapParser.h" />
     <ClInclude Include="GameClasses\Helpers\Rectangle.h" />
     <ClInclude Include="GameClasses\Interfaces\IAction.h" />
